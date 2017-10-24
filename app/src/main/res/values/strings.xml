@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">SnuHacks</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="parse_html"> Welcome! </string>
+    <string name="check_attendance_button">Check attendance!</string>
+    <string name="logout">Log out</string>
+    <string name="attendance_button"> Mark attendance!</string>
+    <string name="html_button">Get the data usage</string>
+    <string name="title_activity_livepage">LivepageActivity</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="easier">Make your life easier.</string>
+    <string name="developer">Developed </string>
+    <string name="mudit">Mudit Saxena</string>
+    <string name="design">UX </string>
+    <string name="Tarini">Tarini Anchan</string>
+    <string name="Dost">Anirudh Jay Kumar \n\n Vasu Kalra \n\n Anirudh Madhusudhanan \n\n Chirag Jaiswal</string>
+    <string name="supported"> Supported</string>
+</resources>
+ 
