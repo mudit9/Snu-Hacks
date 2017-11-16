@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,6 +53,9 @@ public class Attendance extends AppCompatActivity {
         AVLoadingIndicatorView avi4;
         TextView meh11;
         Float number1;
+        String woaw;
+
+
 
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -69,10 +73,10 @@ public class Attendance extends AppCompatActivity {
             AttendanceText.setTypeface(custom_font);
             final FancyButton CheckAttendanceButton = (FancyButton) findViewById(R.id.check_attendance_button) ;
             final FancyButton MarkAttendanceButton = (FancyButton) findViewById(R.id.mark_attendance_button);
-           // if (extras != null) {
-            //    netId = extras.getString("username");
-            //    password = extras.getString("password");
-          //  }
+            prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            woaw = prefs.getString("attendance", "");
+
+
             MarkAttendanceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,6 +102,19 @@ public class Attendance extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             avi.smoothToShow();
+            SharedPreferences prefs;
+            SharedPreferences.Editor editor;
+
+         /*   if(woaw.equals(""))
+           {
+               woaw = woaw + "<br> Might not be refreshed. Might be old data.";
+               Log.e("#","wedededed4d");
+            //    System.out.print(woaw);
+                parsedHtmlNode.setText(Html.fromHtml(woaw));
+            }
+            */
+          //  else
+          //      Log.e("#","afafaf");
         }
 
         @Override
@@ -119,17 +136,17 @@ public class Attendance extends AppCompatActivity {
                     for (int i = 0; i < bttn.size()-1; i++) {
                         Element meh = bttn.get(i + 1);
                         Elements meh2 = meh.select("td");
-                        x = x + meh2.get(0).text() + "  -  " + meh2.get(1).text() + "  -  " ;
+                        x = x + meh2.get(0).text(   ) + "  -  " + meh2.get(1).text() + "  -  " ;
                         try {
-                            number1 = Float.parseFloat(meh2.get(5).text());
+                            number1 = Float.parseFloat(meh2.get(6).text());
                             if (number1 < 75.0)
-                                x = x + "<b> <font color = #ff0000>" + meh2.get(5).text() + "</font> </b>" + "<br>";
+                                x = x + "<b> <font color = #ff0000>" + meh2.get(6).text() + "</font> </b>" + "<br>";
                             else
-                                x = x + "<b><font color = #13c000>" + meh2.get(5).text() + "</font> </b>" +"<br>";
+                                x = x + "<b><font color = #13c000>" + meh2.get(6).text() + "</font> </b>" +"<br>";
 
                         }
                         catch (Exception e) {
-                            x = x + meh2.get(5).text()+"<br>";
+                            x = x + meh2.get(6).text()+"<br>";
                         }
                         x=x.replace("-",":");
 
@@ -137,10 +154,19 @@ public class Attendance extends AppCompatActivity {
 
                 htmlContentInStringFormat = x;
                 styledText = Html.fromHtml(htmlContentInStringFormat);
+                SharedPreferences prefs;
+                SharedPreferences.Editor editor;
+                prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                editor = prefs.edit();
+                editor.putString("attendance", htmlContentInStringFormat);
+                editor.apply();
 
             } catch (IOException e) {
-                e.printStackTrace();
-                styledText = "Probably not connected to Student Wifi.";
+            //    e.printStackTrace();
+              //  styledText = "Probably not connected to Student Wifi.";
+                styledText = "ff";
+                Log.e("#","Catch going in");
+
             }
             return null;
         }
@@ -149,8 +175,20 @@ public class Attendance extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             avi.smoothToHide();
+            SharedPreferences prefs;
+            prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            woaw = prefs.getString("attendance", "");
+            Log.e("#","j" + woaw);
+            if(!styledText.equals("ff"))
             parsedHtmlNode.setText(styledText);
+            else {
+                woaw = woaw + "<br> Might not be refreshed. Might be old data.";
+                Log.e("#","wedededed4d");
+                //    System.out.print(woaw);
+                parsedHtmlNode.setText(Html.fromHtml(woaw));
+            }
             parsedHtmlNode.setMovementMethod(new ScrollingMovementMethod());
+
         }
     }
     private class JsoupAsyncTask2 extends AsyncTask<Void, Void, Void> {
@@ -179,6 +217,7 @@ public class Attendance extends AppCompatActivity {
                         .cookies(html.cookies())
                         .execute();
 
+
                 Document doc = html2.parse();
                 Element alert = doc.getElementsByClass("alert alert-warning alert-dismissible").first();
                 Element success = doc.getElementsByClass("alert alert-success alert-dismissible").first();
@@ -192,7 +231,7 @@ public class Attendance extends AppCompatActivity {
 
             } catch (IOException e) {
                 htmlContentInStringFormat = "Probably not connected to Student Wifi.";
-                e.printStackTrace();
+
             }
             return null;
         }
@@ -203,6 +242,7 @@ public class Attendance extends AppCompatActivity {
             avi4.smoothToHide();
             parsedHtmlNode.setText(Html.fromHtml(htmlContentInStringFormat));
             parsedHtmlNode.setMovementMethod(new ScrollingMovementMethod());
+
         }
 
     }

@@ -27,6 +27,10 @@
             android:name=".About"
             android:label="SnuHacks" />
         <activity
+            android:name=".Laundry"
+            android:label="SnuHacks" />
+
+        <activity
             android:name=".Attendance"
             android:label="SnuHacks" />
         <activity

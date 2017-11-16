@@ -48,25 +48,6 @@
          />
 
     <mehdi.sakout.fancybuttons.FancyButton
-        android:id="@+id/messMenuButton"
-        android:layout_width="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="10dp"
-        fancy:fb_defaultColor="@color/black"
-        fancy:fb_focusColor="#B5BFC0"
-        fancy:fb_borderWidth="3dp"
-        fancy:fb_borderColor="@color/realwhite"
-        fancy:fb_radius="50dp"
-        fancy:fb_text="Mess Menu"
-        fancy:fb_textColor="@color/white"
-        android:layout_height="45dp"
-        android:layout_marginBottom="15dp"
-        android:layout_above="@+id/logout_button"
-        android:layout_centerHorizontal="true" />
-
-    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/data_button"
         android:layout_width="wrap_content"
         android:paddingBottom="10dp"
@@ -85,6 +66,7 @@
         android:layout_above="@+id/messMenuButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/attendance_button"
@@ -118,6 +100,43 @@
         android:layout_below="@+id/messMenuButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/messMenuButton"
+        android:layout_width="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        fancy:fb_defaultColor="@color/black"
+        fancy:fb_focusColor="#B5BFC0"
+        fancy:fb_borderWidth="3dp"
+        fancy:fb_borderColor="@color/realwhite"
+        fancy:fb_radius="50dp"
+        fancy:fb_text="Mess Menu"
+        fancy:fb_textColor="@color/white"
+        android:layout_height="45dp"
+        android:layout_marginBottom="22dp"
+        android:layout_above="@+id/logout_button"
+        android:layout_alignLeft="@+id/attendance_button"
+        android:layout_alignStart="@+id/attendance_button"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/laundryButton"
+        android:layout_width="wrap_content"
+        fancy:fb_defaultColor="@color/black"
+        fancy:fb_focusColor="#B5BFC0"
+        fancy:fb_borderWidth="3dp"
+        fancy:fb_borderColor="@color/realwhite"
+        fancy:fb_radius="50dp"
+        fancy:fb_text="Laundry Reminder"
+        fancy:fb_textColor="@color/white"
+        android:layout_height="45dp"
+        android:layout_below="@+id/data_button"
+        android:layout_alignLeft="@+id/data_button"
+        android:layout_alignStart="@+id/data_button" />
 
 
 </RelativeLayout>
