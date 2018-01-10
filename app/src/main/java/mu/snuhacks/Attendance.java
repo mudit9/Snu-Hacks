@@ -104,7 +104,7 @@ public class Attendance extends AppCompatActivity {
             avi.smoothToShow();
             SharedPreferences prefs;
             SharedPreferences.Editor editor;
-
+//jjjj
          /*   if(woaw.equals(""))
            {
                woaw = woaw + "<br> Might not be refreshed. Might be old data.";
