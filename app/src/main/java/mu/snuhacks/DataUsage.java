@@ -140,6 +140,10 @@ public class DataUsage extends AppCompatActivity {
                 e.printStackTrace();
                 flag = 1;
             }
+            catch(Exception e)
+            {
+                flag = 2;
+            }
             return null;
         }
 
@@ -155,6 +159,10 @@ public class DataUsage extends AppCompatActivity {
             }
             if(flag == 1)
                 parsedHtmlNode.setText("Probably not connected to Student Wifi");
+            if(flag == 2)
+            {
+                parsedHtmlNode.setText("Something went  wrong :( ");
+            }
             parsedHtmlNode.setMovementMethod(new ScrollingMovementMethod());
         }
     }

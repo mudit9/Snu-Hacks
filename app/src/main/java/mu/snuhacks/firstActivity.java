@@ -62,7 +62,7 @@ public class firstActivity extends AppCompatActivity {
         FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         FancyButton aboutbutton = (FancyButton) findViewById(R.id.aboutButton);
-        FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
+       // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
         parsedHtmlNode.setTypeface(custom_font);
@@ -96,14 +96,14 @@ public class firstActivity extends AppCompatActivity {
                 startActivity(startAbout);
             }
         });
-        LaundryButton.setOnClickListener(new View.OnClickListener() {
+     /*   LaundryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startAbout = new Intent(firstActivity.this, Laundry.class);
                 startActivity(startAbout);
             }
         });
-
+*/
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

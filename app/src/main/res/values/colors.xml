@@ -5,7 +5,8 @@
     <color name="white">#cbcbcb</color>
     <color name="black">#040404</color>
     <color name="snuhack">#424242</color>
+    <color name="green">#7FFF00</color>
     <color name="realwhite">#a1a1a1</color>
-
+    <color name="red">#ff0000</color>
     <color name="colorAccent">#FF4081</color>
 </resources>

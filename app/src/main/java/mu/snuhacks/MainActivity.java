@@ -23,16 +23,20 @@ package mu.snuhacks;
         import com.squareup.okhttp.Callback;
         import com.squareup.okhttp.FormEncodingBuilder;
         import com.squareup.okhttp.OkHttpClient;
+        import com.squareup.okhttp.Protocol;
         import com.squareup.okhttp.Request;
         import com.squareup.okhttp.RequestBody;
         import com.squareup.okhttp.Response;
 
+        import org.jsoup.Connection;
+        import org.jsoup.Jsoup;
         import org.jsoup.nodes.Document;
 
         import java.io.IOException;
         import java.net.CookieManager;
         import java.net.CookiePolicy;
         import java.security.cert.CertificateException;
+        import java.util.Random;
 
         import javax.net.ssl.HostnameVerifier;
         import javax.net.ssl.SSLContext;
@@ -43,22 +47,26 @@ package mu.snuhacks;
 
         import mehdi.sakout.fancybuttons.FancyButton;
 
+        import static java.lang.Math.random;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity ";
     private Handler handler;
     private SharedPreferences prefs;
     private String NetId = null, password = null;
     public SharedPreferences.Editor editor;
+    public String[] messages = {"Aellow Ho raha hai... ","Loading.."};
 
     // private String name=null;
     private EditText etNetId, etPass;
-
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         NetId = prefs.getString("username", null);
         password = prefs.getString("password", null);
+
 
         if(NetId != null && password != null){
             Intent startFirst = new Intent(MainActivity.this, firstActivity.class);
@@ -126,10 +134,15 @@ public class MainActivity extends AppCompatActivity {
                 .add("user_id", NetId)
                 .add("user_password", password)
                 .build();
+  //      Request request = new Request.Builder()
+        //            .url("https://studentmaintenance.webapps.snu.edu.in/students/public/studentslist/studentslist/loginauth")
+  //              .post(requestBody)
+    //            .build();
         Request request = new Request.Builder()
-                    .url("https://studentmaintenance.webapps.snu.edu.in/students/public/studentslist/studentslist/loginauth")
-                .post(requestBody)
-                .build();
+                   .url("https://prodweb.snu.in/psp/CSPROD/EMPLOYEE/HRMS/h/?tab=DEFAULT")
+                 .post(requestBody)
+                  .build();
+
 
         Call call = client.newCall(request);
         call.enqueue(callback);
@@ -137,9 +150,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void confirmDetails() {
+        Random ran = new Random();
+        int xa = ran.nextInt(2);
         final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading...");
+        //dialog.setMessage(messages[xa]);
+        dialog.setMessage(messages[0]);
         dialog.setIndeterminate(true);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -151,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
 
+
                 @Override
                 public void onResponse(Response response) throws IOException {
                     System.out.println(response.toString());
@@ -159,12 +176,22 @@ public class MainActivity extends AppCompatActivity {
                      * to show error in authentication. If this class is refereed
                      * then there is an error authenticating the user.
                      */
+                    Connection.Response html = Jsoup.connect("https://prodweb.snu.in/psp/CSPROD/EMPLOYEE/HRMS/h/?tab=DEFAULT")
+                            .data("userid", NetId)
+                            .data("pwd", password)
+                            .userAgent("Mozilla")
+                            .header("X-Requested-With", "XMLHttpRequest")
+                            .method(Connection.Method.POST)
+                            .execute();
+
+                    Document doc = html.parse();
                     dialog.dismiss();
-                    String doc = response.toString();
-                    String responseData = response.body().toString();
-                    System.out.println(responseData);
-                    System.out.println(doc);
-                    if (response.toString().contains("https://studentmaintenance.webapps.snu.edu.in/SISERP/public/studentslist/studentslist/loginuser")) {
+                //    Log.d("#","BLAH" + doc.toString());
+                   String responseData = response.toString();
+                 //=   Log.d("#",response.toString());
+                  //  System.out.println(responseData);
+                   // System.out.println(doc);
+                    if (doc.toString().contains("Please use SNU Net Id and Password to login")) {
                         Log.e(TAG, "Bad login credentials");
                         /**
                          * If true then wrong SNU Net ID.

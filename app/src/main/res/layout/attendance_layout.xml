@@ -143,4 +143,38 @@
         android:layout_alignLeft="@+id/line123"
         android:layout_alignStart="@+id/line123" />
 
+    <TextView
+        android:text="Active right now!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/activenow"
+        tools:text="Active right now!"
+        android:textColor="#44ff00"
+        android:layout_alignTop="@+id/meh13"
+        android:layout_alignRight="@+id/html_content"
+        android:layout_alignEnd="@+id/html_content"
+        android:layout_marginRight="18dp"
+        android:visibility="gone"
+        android:layout_marginEnd="18dp" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/check_credit_attendance"
+        android:textColor="@color/white"
+        android:text="Attendance (credit hours)"
+        android:paddingBottom="10dp"
+        fancy:fb_textColor="@color/white"
+        fancy:fb_defaultColor="@color/black"
+        fancy:fb_focusColor="#B5BFC0"
+        fancy:fb_borderWidth="3dp"
+        fancy:fb_borderColor="@color/realwhite"
+        fancy:fb_radius="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="12dp"
+        android:layout_above="@+id/check_attendance_button"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

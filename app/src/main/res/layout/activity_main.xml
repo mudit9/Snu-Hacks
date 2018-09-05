@@ -83,16 +83,16 @@ tools:context=".MainActivity">
         android:textStyle="normal|italic" />
 
     <mehdi.sakout.fancybuttons.FancyButton
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_button"
         fancy:fb_defaultColor="@color/white"
         fancy:fb_focusColor="#B5BFC0"
-        fancy:fb_radius="30dp"
+        fancy:fb_radius="10dp"
         fancy:fb_textColor="@color/black"
         fancy:fb_text="Log in"
-        android:layout_marginTop="97dp"
+        android:layout_marginTop="101dp"
         android:textColor="@color/white"
+        android:layout_width="100dp"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true" />
 
