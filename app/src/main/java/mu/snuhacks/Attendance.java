@@ -35,6 +35,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 
 
@@ -89,8 +94,8 @@ public class Attendance extends AppCompatActivity {
             woaw = prefs.getString("attendance", "");
         //    active.setVisibility(View.GONE);
 
-            JsoupAsyncTask4 jsoupAsyncTask4 = new JsoupAsyncTask4();
-            jsoupAsyncTask4.execute();
+           // JsoupAsyncTask4 jsoupAsyncTask4 = new JsoupAsyncTask4();
+          //  jsoupAsyncTask4.execute();
             MarkAttendanceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,8 +111,8 @@ public class Attendance extends AppCompatActivity {
                     MarkAttendanceButton.setVisibility(View.GONE);
                     CheckAttendanceButton.setVisibility(View.GONE);
                     CheckAttendanceCreditButton.setVisibility(View.GONE);
-                    try{active.setVisibility(View.GONE);}
-                    catch(Exception c){};
+                //    try{active.setVisibility(View.GONE);}
+               //     catch(Exception c){};
                     meh11.setVisibility(View.GONE);
 
                 }
@@ -121,8 +126,8 @@ public class Attendance extends AppCompatActivity {
                     CheckAttendanceButton.setVisibility(View.GONE);
                     CheckAttendanceCreditButton.setVisibility(View.GONE);
                     meh11.setVisibility(View.GONE);
-                    try{active.setVisibility(View.GONE);}
-                    catch(Exception c){};
+               //     try{active.setVisibility(View.GONE);}
+              //      catch(Exception c){};
                 }
             });
         }
@@ -152,6 +157,26 @@ public class Attendance extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                } };
+
+                // Install the all-trusting trust manager
+                try {
+                    SSLContext sc = SSLContext.getInstance("SSL");
+                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                } catch (Exception e) {
+                    throw   new RuntimeException(e);
+                }
 
                 Response html = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
                         .data("login_user_name", netId)
@@ -168,35 +193,46 @@ public class Attendance extends AppCompatActivity {
                         .cookies(html.cookies())
                         .execute();
 
-                    Document doc = html2.parse();
-                    Log.e("doc",doc.toString());
-                    //Element bttn = doc.getElementsByClass("btn btn-block btn-primary").last();
-                    String x = " ";
-                    Elements bttn = doc.select("tr");
-                    for (int i = 0; i < bttn.size()-1; i++) {
-                        Element meh = bttn.get(i + 1);
-                        Log.d("meh",meh.toString());
-                        Elements meh2 = meh.select("td");
-                        Log.d("tag",meh2.toString());
-                        x = x + meh2.get(0).text(   ) + "  -  " + meh2.get(1).text() + "  -  " ;
+
+
+                        Document doc = html2.parse();
+                        Log.e("doc", doc.toString());
                         try {
-                            Log.e("TEXTTTTT", meh2.get(6).text());
-                            number1 = Float.parseFloat(meh2.get(6).text());
-                            if (number1 < 75.0)
-                                x = x + "<b> <font color = #ff0000>" + meh2.get(6).text() + "</font> </b>" + "<br>";
-                            else
-                                x = x + "<b><font color = #13c000>" + meh2.get(6).text() + "</font> </b>" +"<br>";
+                            //Element bttn = doc.getElementsByClass("btn btn-block btn-primary").last();
+                            String x = " ";
+                            Elements bttn2 = doc.getElementsByClass("panel panel-primary");
+                            Elements bttn = bttn2.select("tr");
+                            Log.d("bttn", bttn.toString());
+                            for (int i = 0; i < bttn.size() - 1; i++) {
+                                Element meh = bttn.get(i + 1);
+                                Log.d("meh", meh.toString());
+                                //Elements
+                                Elements meh2 = meh.select("td");
+                                Log.d("tag", meh2.toString());
+                                x = x + meh2.get(0).text() + "  -  " + meh2.get(1).text() + "  -  ";
+                                try {
+                                    Log.e("TEXTTTTT", meh2.get(6).text());
+                                    number1 = Float.parseFloat(meh2.get(6).text());
+                                    if (number1 < 75.0)
+                                        x = x + "<b> <font color = #ff0000>" + meh2.get(6).text() + "</font> </b>" + "<br>";
+                                    else
+                                        x = x + "<b><font color = #13c000>" + meh2.get(6).text() + "</font> </b>" + "<br>";
 
+                                } catch (Exception e) {
+                                    x = x + meh2.get(6).text() + "<br>";
+                                }
+                                x = x.replace("-", ":");
+
+                            }
+
+
+                            htmlContentInStringFormat = x;
+                            styledText = Html.fromHtml(htmlContentInStringFormat);
                         }
-                        catch (Exception e) {
-                            x = x + meh2.get(6).text()+"<br>";
+                        catch (Exception e)
+                        {
+                            styledText = "Something went wrong.";
                         }
-                        x=x.replace("-",":");
-
-                    }
-
-                htmlContentInStringFormat = x;
-                styledText = Html.fromHtml(htmlContentInStringFormat);
                 SharedPreferences prefs;
                 SharedPreferences.Editor editor;
                 prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
@@ -207,10 +243,10 @@ public class Attendance extends AppCompatActivity {
                 editor.apply();
 
             } catch (IOException e) {
-            //    e.printStackTrace();
+                e.printStackTrace();
                styledText = "ffff";
                // styledText = "ff";
-                Log.e("#","Catch going in");
+                Log.e("#",e.toString());
 
             }
             return null;
@@ -281,6 +317,26 @@ public class Attendance extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                } };
+
+                // Install the all-trusting trust manager
+                try {
+                    SSLContext sc = SSLContext.getInstance("SSL");
+                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 
                 Response html = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
                         .data("login_user_name", netId)
@@ -322,62 +378,62 @@ public class Attendance extends AppCompatActivity {
         }
 
     }
-    private class JsoupAsyncTask4 extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            active.setText("Checking...");
-            try {
-                active.setTextColor(getResources().getColor(R.color.white));
-                active.setVisibility(View.VISIBLE);
-            }
-            catch (Exception e)
-            {
-                //
-            }
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                Response html = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/summary")
-                        .data("login_user_name", netId)
-                        .data("login_password", password)
-                        .userAgent("Mozilla")
-                        .header("X-Requested-With", "XMLHttpRequest")
-                        .method(Connection.Method.POST)
-                        .execute();
-
-                Document doc = html.parse();
-                if(doc.toString().contains("Submit"))
-                flag2 = 1;
-
-            } catch (Exception e) {
-
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-
-            if(flag2 ==1) {
-                active.setText("Active.");
-                active.setTextColor(getResources().getColor(R.color.green));
-                active.setVisibility(View.VISIBLE);
-            }
-
-            else {
-                active.setText("Not active.");
-                active.setTextColor(getResources().getColor(R.color.red));
-                active.setVisibility(View.VISIBLE);
-            }
-                // else
-              //  active.setVisibility(View.GONE);
-        }
-
-    }
+//    private class JsoupAsyncTask4 extends AsyncTask<Void, Void, Void> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            active.setText("Checking...");
+//            try {
+//                active.setTextColor(getResources().getColor(R.color.white));
+//                active.setVisibility(View.VISIBLE);
+//            }
+//            catch (Exception e)
+//            {
+//                //
+//            }
+//        }
+//
+//
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            try {
+//
+//                Response html = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/summary")
+//                        .data("login_user_name", netId)
+//                        .data("login_password", password)
+//                        .userAgent("Mozilla")
+//                        .header("X-Requested-With", "XMLHttpRequest")
+//                        .method(Connection.Method.POST)
+//                        .execute();
+//
+//                Document doc = html.parse();
+//                if(doc.toString().contains("Submit"))
+//                flag2 = 1;
+//
+//            } catch (Exception e) {
+//
+//            }
+//            return null;
+//        }
+//        @Override
+//        protected void onPostExecute(Void result) {
+//
+//            if(flag2 ==1) {
+//                active.setText("Active.");
+//                active.setTextColor(getResources().getColor(R.color.green));
+//                active.setVisibility(View.VISIBLE);
+//            }
+//
+//            else {
+//                active.setText("Not active.");
+//                active.setTextColor(getResources().getColor(R.color.red));
+//                active.setVisibility(View.VISIBLE);
+//            }
+//                // else
+//              //  active.setVisibility(View.GONE);
+//        }
+//
+//    }
     private class JsoupAsyncTask5 extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -387,8 +443,8 @@ public class Attendance extends AppCompatActivity {
             total_credits = 0f;
             SharedPreferences prefs;
             SharedPreferences.Editor editor;
-            try{active.setVisibility(View.GONE);}
-            catch(Exception c){};
+           // try{active.setVisibility(View.GONE);}
+            //catch(Exception c){};
 
          /*   if(woaw.equals(""))
            {
@@ -405,6 +461,26 @@ public class Attendance extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                } };
+
+                // Install the all-trusting trust manager
+                try {
+                    SSLContext sc = SSLContext.getInstance("SSL");
+                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 
                 Response html = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
                         .data("login_user_name", netId)
@@ -507,8 +583,8 @@ public class Attendance extends AppCompatActivity {
             SharedPreferences prefs;
             prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
             woaw = prefs.getString("attendance_credit", "");
-            try{active.setVisibility(View.GONE);}
-            catch(Exception c){};
+           // try{active.setVisibility(View.GONE);}
+           // catch(Exception c){};
             Log.e("#","j" + woaw);
             if(styledText.equals("ffff"))
             {

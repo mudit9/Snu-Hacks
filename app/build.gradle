@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "mu.snuhacks"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 16
-        versionName "2.3"
+        targetSdkVersion 26
+        versionCode 18
+        versionName "2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
