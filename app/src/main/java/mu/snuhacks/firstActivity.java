@@ -3,6 +3,7 @@ package mu.snuhacks;
 <color name="white">#DBFCFF</color>
     <color name="black">#788A8C</color>
     */
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -12,9 +13,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -36,8 +42,8 @@ import static android.support.v4.content.ContextCompat.startActivity;
  */
 
 public class firstActivity extends AppCompatActivity {
-    private Document htmlDocument;
-    public SharedPreferences.Editor editor;
+    private final String TAG = "HomeActivity";
+    public Context mContext = firstActivity.this;
 
     private SharedPreferences prefs;
 
@@ -45,11 +51,13 @@ public class firstActivity extends AppCompatActivity {
     String password;
    // Bundle extras = getIntent().getExtras();
     String username;
+    public int ACTIVITY_NUM = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         username = prefs.getString("username","");
         password = prefs.getString("password","");
@@ -58,6 +66,7 @@ public class firstActivity extends AppCompatActivity {
       //      username = extras.getString("username");
      //       password = extras.getString("password");
      //   }
+        setupBottomNavigationView();
         FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
         FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
@@ -123,6 +132,21 @@ public class firstActivity extends AppCompatActivity {
         startActivity(log_out);
         finish();
     }
+
+    /**
+     * BottomNavigationView setup
+     */
+    private void setupBottomNavigationView() {
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
+
+
 
 }
 

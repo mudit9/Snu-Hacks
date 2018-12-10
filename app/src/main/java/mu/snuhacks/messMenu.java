@@ -1,6 +1,7 @@
 package mu.snuhacks;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -10,12 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jsoup.Connection;
@@ -45,12 +50,16 @@ public class messMenu extends AppCompatActivity {
     FancyButton dh2;
     TextView menu;
     String password;
+    private final String TAG = "HomeActivity";
+    public Context mContext = messMenu.this;
     AVLoadingIndicatorView avi2;
     Integer usage3;
     String netId;
     CharSequence styledText;
     Float use;
     AVLoadingIndicatorView avi3;
+    public int ACTIVITY_NUM = 4;
+
 
 
 
@@ -70,6 +79,7 @@ public class messMenu extends AppCompatActivity {
         avi2= (AVLoadingIndicatorView) findViewById(R.id.avielement2);
         avi3 = (AVLoadingIndicatorView) findViewById(R.id.avielement3);
         menu = (TextView) findViewById(R.id.menu1);
+        setupBottomNavigationView();
         parsedHtmlNode = (TextView) findViewById(R.id.welcome7);
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
         parsedHtmlNode.setTypeface(custom_font);
@@ -91,6 +101,19 @@ public class messMenu extends AppCompatActivity {
             }
         });
     }
+    /**
+     * BottomNavigationView setup
+     */
+    private void setupBottomNavigationView() {
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
+
 
     private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -160,7 +183,7 @@ public class messMenu extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try {
 
-                String breakfast="c";
+                String breakfast="";
                 String lunch="";
                 String dinner="";
                 Connection.Response response = Jsoup.connect("http://messmenu.snu.in/messMenu.php")

@@ -1,6 +1,7 @@
 package mu.snuhacks;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -8,12 +9,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jsoup.Connection;
@@ -47,8 +52,11 @@ public class DataUsage extends AppCompatActivity {
     //Bundle extras = getIntent().getExtras();
     Button data_button;
     String password;
+    private final String TAG = "HomeActivity";
+    public Context mContext = DataUsage.this;
     Integer usage3;
     String netId;
+    public int ACTIVITY_NUM = 3;
     Float use;
     int flag = 0;
 
@@ -72,6 +80,7 @@ public class DataUsage extends AppCompatActivity {
         parsedHtmlNode = (TextView) findViewById(R.id.welcome);
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
         parsedHtmlNode.setTypeface(custom_font2);
+        setupBottomNavigationView();
         Circleprogress = (CircleProgress) findViewById(R.id.circle_progress);
         Circleprogress.setVisibility(View.GONE);
         avi2 = (AVLoadingIndicatorView) findViewById(R.id.avielement2);
@@ -85,6 +94,16 @@ public class DataUsage extends AppCompatActivity {
             }
         });
     }
+    private void setupBottomNavigationView() {
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
+
 
     private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
 

@@ -9,4 +9,5 @@
     <color name="realwhite">#a1a1a1</color>
     <color name="red">#ff0000</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="grey">#bfbfbf</color>
 </resources>

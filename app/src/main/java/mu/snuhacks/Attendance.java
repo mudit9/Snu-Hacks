@@ -13,11 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jsoup.Connection;
@@ -61,6 +64,9 @@ public class Attendance extends AppCompatActivity {
         TextView meh11;
         int flag2;
         Float course_credit;
+        public int ACTIVITY_NUM = 1;
+    private final String TAG = "HomeActivity";
+    public Context mContext = Attendance.this;
         Float number1;
         Float total;
         String woaw;
@@ -82,7 +88,7 @@ public class Attendance extends AppCompatActivity {
             avi4 = (AVLoadingIndicatorView) findViewById(R.id.avielement4);
             avi = (AVLoadingIndicatorView) findViewById(R.id.avielement);
             parsedHtmlNode = (TextView)findViewById(R.id.html_content);
-
+            setupBottomNavigationView();
             active = (TextView) findViewById(R.id.activenow);
             AttendanceText = (TextView)findViewById(R.id.textAtt);
             Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
@@ -131,6 +137,16 @@ public class Attendance extends AppCompatActivity {
                 }
             });
         }
+
+    private void setupBottomNavigationView() {
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
 
 
     private class JsoupAsyncTask3 extends AsyncTask<Void, Void, Void>{

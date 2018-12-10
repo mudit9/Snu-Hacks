@@ -19,6 +19,7 @@ package mu.snuhacks;
         import android.widget.Toast;
 
         //import com.google.analytics.tracking.android.EasyTracker;
+        import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
         import com.squareup.okhttp.Call;
         import com.squareup.okhttp.Callback;
         import com.squareup.okhttp.FormEncodingBuilder;
@@ -31,6 +32,7 @@ package mu.snuhacks;
         import org.jsoup.Connection;
         import org.jsoup.Jsoup;
         import org.jsoup.nodes.Document;
+        import org.jsoup.nodes.Element;
 
         import java.io.IOException;
         import java.net.CookieManager;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private String NetId = null, password = null;
     public SharedPreferences.Editor editor;
     public String[] messages = {"Aellow Ho raha hai... ","Loading.."};
-
+    public Context mContext = MainActivity.this;
     // private String name=null;
     private EditText etNetId, etPass;
     @Override
@@ -75,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
-
         etNetId = (EditText) findViewById(R.id.username);
         etPass = (EditText) findViewById(R.id.password);
         FancyButton btLogin = (FancyButton) findViewById(R.id.login_button);
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
+
                         SharedPreferences.Editor editor;
                         editor = prefs.edit();
                         editor.putString("username", NetId);
@@ -222,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, e.toString());
         }
     }
+
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {

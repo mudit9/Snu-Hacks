@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ic_house"
+        android:icon="@drawable/ic_home"
+        android:title="" />
+
+    <item
+        android:id="@+id/ic_attendance"
+        android:icon="@drawable/ic_attendance"
+        android:title="" />
+
+    <item
+        android:id="@+id/ic_mark_attendance"
+        android:icon="@drawable/ic_mark_attendance"
+        android:title="" />
+
+    <item
+        android:id="@+id/ic_data_usage"
+        android:icon="@drawable/ic_data_usage"
+        android:title="" />
+
+    <item
+        android:id="@+id/ic_mess_menu"
+        android:icon="@drawable/ic_mess_menu"
+        android:title="" />
+
+</menu>
