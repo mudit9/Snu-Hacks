@@ -33,7 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_home" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/mudit.jpeg" />
+                                      <entry key="outputName" value="mudit" />
                                     </map>
                                   </option>
                                 </PersistentState>

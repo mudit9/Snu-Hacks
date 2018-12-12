@@ -39,7 +39,9 @@
         <activity
             android:name=".messMenu"
             android:label="SnuHacks" />
-
+        <activity
+            android:name=".diagonal_layout_mudit"
+            android:label="SnuHacks" />
     </application>
 
 
