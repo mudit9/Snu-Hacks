@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import com.github.florent37.hollyviewpager.HollyViewPager;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
 
+import mu.snuhacks.fragment.RecyclerViewFragment;
 import mu.snuhacks.fragment.ScrollViewFragment;
 
 public class test extends AppCompatActivity {
@@ -31,9 +32,9 @@ public class test extends AppCompatActivity {
         hollyViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                //if(position%2==0)
-                //    return new RecyclerViewFragment();
-                //else
+                if(position%2==0)
+                    return new RecyclerViewFragment();
+                else
                 return ScrollViewFragment.newInstance((String) getPageTitle(position));
             }
 
@@ -42,7 +43,10 @@ public class test extends AppCompatActivity {
                 return pageCount;}
             @Override
             public CharSequence getPageTitle(int position) {
-                return "TITLE " + position;
+                if (position == 1)
+                    return "DH1";
+                 else
+                    return "DH2";
                 }
               });
 

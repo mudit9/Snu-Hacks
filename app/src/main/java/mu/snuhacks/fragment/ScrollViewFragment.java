@@ -46,7 +46,8 @@ public class ScrollViewFragment extends Fragment {
 ///        if(getArguments().getString("title").equals("TITLE 1") )
    //         title.setText("DH1");
      //   else
-            title.setText("DH2");
+
+        title.setText("DH2");
 
 
         FrameLayout cardView1 = getActivity().findViewById(R.id.card1);
@@ -60,7 +61,6 @@ public class ScrollViewFragment extends Fragment {
         meal1.setText("Breakfast");
         meal2.setText("Lunch");
         meal3.setText("Dinner");
-
 
 
 

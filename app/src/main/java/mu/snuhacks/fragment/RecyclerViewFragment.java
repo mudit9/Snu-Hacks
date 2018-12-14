@@ -20,7 +20,6 @@ import mu.snuhacks.recycler.RecyclerAdapter;
  */
 public class RecyclerViewFragment extends Fragment {
 
-    RecyclerView recyclerView = getActivity().findViewById(R.id.recyclerView);
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,8 +29,10 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        RecyclerView recyclerView = getActivity().findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         recyclerView.setAdapter(new RecyclerAdapter());
 
         HollyViewPagerBus.registerRecyclerView(getActivity(), recyclerView);
