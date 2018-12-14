@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -87,9 +88,9 @@ public class ScrollViewFragment extends Fragment {
         meal1.setText("Breakfast");
         meal2.setText("Lunch");
         meal3.setText("Dinner");
-        menu1.setText(Menu_full.get(0));
-        menu2.setText(Menu_full.get(1));
-        menu3.setText(Menu_full.get(2));
+        menu1.setText(Html.fromHtml(Menu_full.get(0)));
+        menu2.setText(Html.fromHtml(Menu_full.get(1)));
+        menu3.setText(Html.fromHtml(Menu_full.get(2)));
 
 
 
