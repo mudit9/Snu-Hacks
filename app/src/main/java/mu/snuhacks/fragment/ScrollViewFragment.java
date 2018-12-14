@@ -20,9 +20,7 @@ import mu.snuhacks.R;
  */
 public class ScrollViewFragment extends Fragment {
 
-    ObservableScrollView scrollView = getView().findViewById(R.id.scrollView);
 
-    TextView title = getView().findViewById(R.id.title);
 
     public static ScrollViewFragment newInstance(String title){
         Bundle args = new Bundle();
@@ -41,11 +39,15 @@ public class ScrollViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ObservableScrollView scrollView = getActivity().findViewById(R.id.scrollView);
+
+        TextView title = getActivity().findViewById(R.id.title);
 
 ///        if(getArguments().getString("title").equals("TITLE 1") )
    //         title.setText("DH1");
      //   else
             title.setText("DH2");
+
 
         FrameLayout cardView1 = getActivity().findViewById(R.id.card1);
         FrameLayout cardView2 = getActivity().findViewById(R.id.card2);
