@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import mu.snuhacks.R;
 
 
@@ -18,6 +20,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     protected static final int TYPE_HEADER = 0;
     protected static final int TYPE_CELL = 1;
+    public ArrayList<String> Menu_full;
+    public RecyclerAdapter(ArrayList<String> menu_full){
+        Menu_full = menu_full;
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -28,11 +34,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, menu;
+        public TextView meal, menu;
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.meal);
+            meal = (TextView) view.findViewById(R.id.meal);
             menu = (TextView) view.findViewById(R.id.menu);
         }
     }
@@ -55,13 +61,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         Log.d("afa",""+i);
         if (i == 1){
-            holder.title.setText("Breakfast");
+            holder.meal.setText("Breakfast");
+            holder.menu.setText(Menu_full.get(i-1));
         }
         if (i == 2){
-            holder.title.setText("Lunch");
+            holder.meal.setText("Lunch");
+            holder.menu.setText(Menu_full.get(i-1));
+
         }
         if (i == 3){
-            holder.title.setText("Dinner");
+            holder.meal.setText("Dinner");
+            holder.menu.setText(Menu_full.get(i-1));
+
         }
     }
 

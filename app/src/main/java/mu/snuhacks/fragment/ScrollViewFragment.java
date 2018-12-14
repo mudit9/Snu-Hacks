@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.github.florent37.hollyviewpager.HollyViewPagerBus;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+
+import java.util.ArrayList;
 
 import mu.snuhacks.R;
 
@@ -21,10 +24,10 @@ import mu.snuhacks.R;
 public class ScrollViewFragment extends Fragment {
 
 
-
-    public static ScrollViewFragment newInstance(String title){
+    public static ScrollViewFragment newInstance(String title, ArrayList<String> menu_full){
         Bundle args = new Bundle();
         args.putString("title",title);
+        args.putStringArrayList("menu",menu_full);
         ScrollViewFragment fragment = new ScrollViewFragment();
         fragment.setArguments(args);
         return fragment;
@@ -39,14 +42,13 @@ public class ScrollViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ArrayList<String> Menu_full;
+
         ObservableScrollView scrollView = getActivity().findViewById(R.id.scrollView);
 
         TextView title = getActivity().findViewById(R.id.title);
 
-///        if(getArguments().getString("title").equals("TITLE 1") )
-   //         title.setText("DH1");
-     //   else
-
+        Menu_full = getArguments().getStringArrayList("menu");
         title.setText("DH2");
 
 
@@ -58,9 +60,18 @@ public class ScrollViewFragment extends Fragment {
         TextView meal2 = cardView2.findViewById(R.id.meal);
         TextView meal3 = cardView3.findViewById(R.id.meal);
 
+        TextView menu1 = cardView1.findViewById(R.id.menu);
+        TextView menu2 = cardView2.findViewById(R.id.menu);
+        TextView menu3 = cardView3.findViewById(R.id.menu);
+
+
         meal1.setText("Breakfast");
         meal2.setText("Lunch");
         meal3.setText("Dinner");
+        menu1.setText(Menu_full.get(0));
+        menu2.setText(Menu_full.get(1));
+        menu3.setText(Menu_full.get(2));
+
 
 
 

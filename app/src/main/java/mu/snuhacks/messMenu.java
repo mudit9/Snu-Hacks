@@ -142,7 +142,8 @@ public class messMenu extends AppCompatActivity {
                     Element elementsByTags1 = elementsByTags.getElementsByTag("tr").get(0);
                     Elements elementByTags2 = elementsByTags1.getElementsByTag("td");
                     System.out.println(elementByTags2.get(1).toString());
-                    breakfast = elementByTags2.get(1).text();
+                    breakfast
+                            = elementByTags2.get(1).text();
                     lunch = elementByTags2.get(2).text();
                     dinner = elementByTags2.get(3).text();
                     htmlContentInStringFormat = "<b>" + "Breakfast" + "</b>" + "<br>" +breakfast + "<br>" + "<b> " + "Lunch" + "</b> " + "<br>" + lunch + "<br>" + "<b>" + "Dinner" + "</b> " + "<br>" + dinner;

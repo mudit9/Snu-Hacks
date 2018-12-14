@@ -16,5 +16,11 @@
     <string name="Tarini">Tarini Anchan</string>
     <string name="Dost">Anirudh Jay Kumar \n\n Vasu Kalra \n\n Anirudh Madhusudhanan \n\n Chirag Jaiswal</string>
     <string name="supported"> Supported</string>
+    <string name="dh1_lunch"></string>
+    <string name="dh1_breakfast"></string>
+    <string name="dh1_dinner"></string>
+    <string name="dh2_lunch"></string>
+    <string name="dh2_breakfast"></string>
+    <string name="dh2_dinner"></string>
 </resources>
  
