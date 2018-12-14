@@ -23,7 +23,10 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.enableAnimation(false);
         bottomNavigationViewEx.enableItemShiftingMode(false);
         bottomNavigationViewEx.enableShiftingMode(false);
-        bottomNavigationViewEx.setTextVisibility(false);
+        bottomNavigationViewEx.setTextVisibility(true);
+        bottomNavigationViewEx.setIconSize(27,27);
+        bottomNavigationViewEx.setTextSize(15);
+
     }
 
     public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx view){
@@ -51,7 +54,7 @@ public class BottomNavigationViewHelper {
                         break;
 
                     case R.id.ic_mark_attendance:
-                        Intent intent4 = new Intent(context, diagonal_layout_mudit.class);//ACTIVITY_NUM = 3
+                        Intent intent4 = new Intent(context, test.class);//ACTIVITY_NUM = 3
                         context.startActivity(intent4);
                         callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

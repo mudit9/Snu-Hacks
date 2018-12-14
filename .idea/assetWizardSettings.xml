@@ -8,6 +8,17 @@
             <PersistentState>
               <option name="children">
                 <map>
+                  <entry key="confirmationStep">
+                    <value>
+                      <PersistentState>
+                        <option name="values">
+                          <map>
+                            <entry key="resourceDirectory" value="debug" />
+                          </map>
+                        </option>
+                      </PersistentState>
+                    </value>
+                  </entry>
                   <entry key="imageAssetPanel">
                     <value>
                       <PersistentState>
@@ -34,8 +45,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/mudit.jpeg" />
-                                      <entry key="outputName" value="mudit" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/background4.jpg" />
+                                      <entry key="outputName" value="background4" />
                                     </map>
                                   </option>
                                 </PersistentState>

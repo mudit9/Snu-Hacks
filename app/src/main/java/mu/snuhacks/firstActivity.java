@@ -51,7 +51,7 @@ public class firstActivity extends AppCompatActivity {
     String password;
    // Bundle extras = getIntent().getExtras();
     String username;
-    public int ACTIVITY_NUM = 0;
+    public int ACTIVITY_NUM = 2;
 
 
     @Override

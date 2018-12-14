@@ -4,12 +4,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="75dp"
         android:layout_alignParentBottom="true">
 
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:itemIconTint="@color/black"
+            
             android:id="@+id/bottom_nav_viewbar"
             android:background="@drawable/white_grey_border"
             app:menu="@menu/bottom_navigation_menu">

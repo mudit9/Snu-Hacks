@@ -42,6 +42,8 @@
         <activity
             android:name=".diagonal_layout_mudit"
             android:label="SnuHacks" />
+        <activity android:name=".test"
+            android:label="SnuHacks"/>
     </application>
 
 
