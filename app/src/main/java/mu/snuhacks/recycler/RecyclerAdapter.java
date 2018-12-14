@@ -2,8 +2,10 @@ package mu.snuhacks.recycler;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -60,18 +62,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         Log.d("afa",""+i);
+        for(int j = 0; j<3; j++){
+            String textToHighlight = "Chicken";
+            String textToHighlight2 = "Paneer";
+            // Construct the formatted text
+            String replacedWith = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
+            String replacedWith2 = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
+
+            // Get the text from TextView
+            String originalString = Menu_full.get(j);
+
+            // Replace the specified text/word with formatted text/word
+            String modifiedString1 = originalString.replaceAll(textToHighlight,replacedWith);
+            String modifiedString = modifiedString1.replaceAll(textToHighlight2,replacedWith2);
+
+            Log.d("Tag",modifiedString);
+            Menu_full.set(j,modifiedString);
+        }
         if (i == 1){
             holder.meal.setText("Breakfast");
-            holder.menu.setText(Menu_full.get(i-1));
+            holder.menu.setText(Html.fromHtml(Menu_full.get(i-1)));
         }
         if (i == 2){
             holder.meal.setText("Lunch");
-            holder.menu.setText(Menu_full.get(i-1));
+            holder.menu.setText(Html.fromHtml(Menu_full.get(i-1)));
 
         }
         if (i == 3){
             holder.meal.setText("Dinner");
-            holder.menu.setText(Menu_full.get(i-1));
+            holder.menu.setText(Html.fromHtml(Menu_full.get(i-1)));
 
         }
     }

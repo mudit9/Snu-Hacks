@@ -37,8 +37,9 @@
             android:layout_gravity="top|left"
             android:fontFamily="sans-serif-light"
             android:layout_marginLeft="30dp"
+            android:textStyle="bold"
             android:layout_marginTop="70dp"
-            android:textSize="25sp"
+            android:textSize="28sp"
             />
 
         <LinearLayout
@@ -180,7 +181,8 @@
         android:layout_marginTop="320dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:textColor="#717171"
+        android:textColor="@color/black"
+        android:textSize="30sp"
         android:text="hi my name is mudit saxena :) "/>
 
 

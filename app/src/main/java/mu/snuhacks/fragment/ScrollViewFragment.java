@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -51,6 +52,24 @@ public class ScrollViewFragment extends Fragment {
         Menu_full = getArguments().getStringArrayList("menu");
         title.setText("DH2");
 
+        for(int j = 0; j<3; j++){
+            String textToHighlight = "Chicken";
+            String textToHighlight2 = "Paneer";
+            // Construct the formatted text
+            String replacedWith = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
+            String replacedWith2 = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
+
+            // Get the text from TextView
+            String originalString = Menu_full.get(j);
+
+            // Replace the specified text/word with formatted text/word
+            String modifiedString1 = originalString.replaceAll(textToHighlight,replacedWith);
+            String modifiedString = modifiedString1.replaceAll(textToHighlight2,replacedWith2);
+
+            Log.d("Tag",modifiedString);
+            Menu_full.set(j,modifiedString);
+
+        }
 
         FrameLayout cardView1 = getActivity().findViewById(R.id.card1);
         FrameLayout cardView2 = getActivity().findViewById(R.id.card2);
