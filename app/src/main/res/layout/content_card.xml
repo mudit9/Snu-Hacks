@@ -16,6 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:id="@+id/meal"
             android:textSize="30sp"
             android:text="meal"/>
@@ -24,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/menu"
+                android:textAlignment="center"
                 android:text="menu"/>
 
         </LinearLayout>

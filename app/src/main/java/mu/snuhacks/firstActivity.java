@@ -101,7 +101,7 @@ public class firstActivity extends AppCompatActivity {
         aboutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startAbout = new Intent(firstActivity.this, About.class);
+                Intent startAbout = new Intent(firstActivity.this, diagonal_layout_mudit.class);
                 startActivity(startAbout);
             }
         });

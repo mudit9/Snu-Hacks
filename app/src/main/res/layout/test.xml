@@ -18,5 +18,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:hvp_headerHeight="150dp" />
-
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avielement3"
+        style="@style/AVLoadingIndicatorView"
+        app:indicatorName="BallClipRotateMultipleIndicator"
+        app:indicatorColor="@color/white"
+        android:layout_width="75dp"
+        android:layout_marginTop="70dp"
+        android:visibility="gone"
+        android:layout_height="75dp" />
 </LinearLayout>
