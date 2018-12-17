@@ -57,8 +57,8 @@ public class ScrollViewFragment extends Fragment {
             String textToHighlight = "Chicken";
             String textToHighlight2 = "Paneer";
             // Construct the formatted text
-            String replacedWith = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
-            String replacedWith2 = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
+            String replacedWith = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
+            String replacedWith2 = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
 
             // Get the text from TextView
             String originalString = Menu_full.get(j);

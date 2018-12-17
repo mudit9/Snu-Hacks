@@ -15,9 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -47,8 +50,6 @@ public class DataUsage extends AppCompatActivity {
     String htmlContentInStringFormat;
     AVLoadingIndicatorView avi1;
     CircleProgress Circleprogress;
-    TextView Dataaa;
-    AVLoadingIndicatorView avi2;
     //Bundle extras = getIntent().getExtras();
     Button data_button;
     String password;
@@ -59,40 +60,47 @@ public class DataUsage extends AppCompatActivity {
     public int ACTIVITY_NUM = 3;
     Float use;
     int flag = 0;
+    ProgressBar mProgress;
+    private InterstitialAd mInterstitialAd;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   if (extras != null) {
-     //       netId = extras.getString("username");
-      //      password = extras.getString("password");
-     //   }
-        setContentView(R.layout.data_usage);
+        setContentView(R.layout.data_usage_test);
+        mProgress = findViewById(R.id.ProgressBar1);
+        // mInterstitialAd = new InterstitialAd(this);
+        //  mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        //  mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
-        netId = prefs.getString("username","");
-        password = prefs.getString("password","");
-        avi1 = (AVLoadingIndicatorView) findViewById(R.id.avielement1);
+        netId = prefs.getString("username", "");
+        password = prefs.getString("password", "");
         System.out.println(netId + " f " + password);
-        Dataaa = (TextView) findViewById(R.id.DATAUSAGE);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
-        Dataaa.setTypeface(custom_font);
-        parsedHtmlNode = (TextView) findViewById(R.id.welcome);
-        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
-        parsedHtmlNode.setTypeface(custom_font2);
+        parsedHtmlNode = findViewById(R.id.welcome);
+      //  Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
+        // parsedHtmlNode.setTypeface(custom_font2);
         setupBottomNavigationView();
-        Circleprogress = (CircleProgress) findViewById(R.id.circle_progress);
+
+        Circleprogress = findViewById(R.id.circle_progress);
         Circleprogress.setVisibility(View.GONE);
-        avi2 = (AVLoadingIndicatorView) findViewById(R.id.avielement2);
-        FancyButton data_button = (FancyButton) findViewById(R.id.data_usage_button);
-        data_button.setOnClickListener(new View.OnClickListener() {
+       // FancyButton data_button = (FancyButton) findViewById(R.id.data_usage_button);
+        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
+        jsoupAsyncTask.execute();
+
+     /*   data_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
-                jsoupAsyncTask.execute();
+               if (mInterstitialAd.isLoaded()) {
+                   mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
 
             }
         });
+    } */
     }
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
@@ -110,7 +118,7 @@ public class DataUsage extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            avi1.smoothToShow();;
+            mProgress.setIndeterminate(true);
         }
 
         @Override
@@ -168,7 +176,6 @@ public class DataUsage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            avi1.smoothToHide();;
             parsedHtmlNode.setText(htmlContentInStringFormat);
             try{
             Circleprogress.setProgress(usage3);
@@ -183,6 +190,8 @@ public class DataUsage extends AppCompatActivity {
                 parsedHtmlNode.setText("Something went  wrong :( ");
             }
             parsedHtmlNode.setMovementMethod(new ScrollingMovementMethod());
+            mProgress.setIndeterminate(false);
+
         }
     }
 }

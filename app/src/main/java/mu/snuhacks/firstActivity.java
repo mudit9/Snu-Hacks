@@ -61,13 +61,13 @@ public class firstActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         username = prefs.getString("username","");
         password = prefs.getString("password","");
-        setContentView(R.layout.firstscreen);
+        setContentView(R.layout.firstscreen_test);
      //   if (extras != null) {
       //      username = extras.getString("username");
      //       password = extras.getString("password");
      //   }
         setupBottomNavigationView();
-        FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
+      //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
         FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         FancyButton aboutbutton = (FancyButton) findViewById(R.id.aboutButton);
@@ -91,13 +91,13 @@ public class firstActivity extends AppCompatActivity {
                 startActivity(startData);
             }
         });
-        messMenu1.setOnClickListener(new View.OnClickListener() {
+     /*   messMenu1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startData = new Intent(firstActivity.this, messMenu.class);
                 startActivity(startData);
             }
-        });
+        });*/
         aboutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

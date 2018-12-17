@@ -19,6 +19,8 @@ package mu.snuhacks;
         import android.widget.Toast;
 
         //import com.google.analytics.tracking.android.EasyTracker;
+        import com.google.android.gms.ads.InterstitialAd;
+        import com.google.android.gms.ads.MobileAds;
         import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
         import com.squareup.okhttp.Call;
         import com.squareup.okhttp.Callback;
@@ -68,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
         prefs = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         NetId = prefs.getString("username", null);
         password = prefs.getString("password", null);
+        MobileAds.initialize(this, "ca-app-pub-2461190858191596~7989426659");
+
+        //mInterstitialAd = new InterstitialAd(this);
+        //mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
 
         if(NetId != null && password != null){

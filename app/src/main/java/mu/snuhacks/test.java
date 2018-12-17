@@ -1,4 +1,5 @@
 package mu.snuhacks;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,9 +7,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.github.florent37.hollyviewpager.HollyViewPager;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jsoup.Connection;
@@ -30,12 +36,14 @@ import mu.snuhacks.fragment.RecyclerViewFragment;
 import mu.snuhacks.fragment.ScrollViewFragment;
 
 public class test extends AppCompatActivity {
-
+    private Context mContext;
     int pageCount = 2;
     AVLoadingIndicatorView avi3;
     public ArrayList<String> dh1_menu; //WILL GO IN RECYCLER FRAGMENT
     public ArrayList<String> dh2_menu; //WILL GO IN SCROLLVIEW FRAGMENT
     public HollyViewPager hollyViewPager;
+    ProgressBar mProgressbar;
+    public int ACTIVITY_NUM=0;
 
 
     @Override
@@ -43,20 +51,37 @@ public class test extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
         hollyViewPager = findViewById(R.id.hollyViewPager);
-
+        mContext = this;
+        setupBottomNavigationView();
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //toolbar.setTitleTextColor(0xFFFFFFFF);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mProgressbar = findViewById(R.id.ProgressBar);
 
         avi3= (AVLoadingIndicatorView) findViewById(R.id.avielement3);
         JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
         jsoupAsyncTask2.execute();
 
 
+
         }
+
+    private void setupBottomNavigationView() {
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
 
     private class JsoupAsyncTask2 extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgressbar.setIndeterminate(true);
             avi3.smoothToShow();
         }
 
@@ -93,7 +118,6 @@ public class test extends AppCompatActivity {
                 Connection.Response response = Jsoup.connect("http://messmenu.snu.in/messMenu.php")
                         .method(Connection.Method.POST)
                         .execute();
-                //parse the document from response
                 try {
                     Document document2 = response.parse();
                     Element elementsByTag = document2.getElementsByClass("table table-striped table-bordered table-hover").get(1);
@@ -108,7 +132,6 @@ public class test extends AppCompatActivity {
                     Element elementsByTags2 = elementsByTag1.getElementsByTag("tbody").get(0);
                     Element elementsByTags3 = elementsByTags2.getElementsByTag("tr").get(0);
                     Elements elementByTags4 = elementsByTags3.getElementsByTag("td");
-                    System.out.println(elementByTags4.get(1).toString());
                     breakfast1 = elementByTags4.get(1).text();
                     lunch1 = elementByTags4.get(2).text();
                     dinner1 = elementByTags4.get(3).text();
@@ -130,6 +153,7 @@ public class test extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             avi3.smoothToHide();
+            mProgressbar.setIndeterminate(false);
             hollyViewPager.getViewPager().setPageMargin(getResources().getDimensionPixelOffset(R.dimen.viewpager_margin));
             hollyViewPager.setConfigurator(new HollyViewPagerConfigurator() {
                 @Override
