@@ -30,6 +30,7 @@
             android:textStyle="bold"
             android:textColor="@color/true_white"
             android:textSize="25sp"
+            android:id="@+id/heading"
             android:paddingLeft="20dp"
             android:drawableTint="@color/true_white"
             android:drawableRight="@drawable/ic_mess_menu"

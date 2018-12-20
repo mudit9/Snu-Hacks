@@ -1,17 +1,16 @@
 package mu.snuhacks;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.florent37.hollyviewpager.HollyViewPager;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
@@ -40,6 +39,7 @@ public class messMenu extends AppCompatActivity {
     private Context mContext;
     int pageCount = 2;
     AVLoadingIndicatorView avi3;
+    TextView head;
     public ArrayList<String> dh1_menu; //WILL GO IN RECYCLER FRAGMENT
     public ArrayList<String> dh2_menu; //WILL GO IN SCROLLVIEW FRAGMENT
     public HollyViewPager hollyViewPager;
@@ -50,16 +50,18 @@ public class messMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
+        setContentView(R.layout.mess_menu);
         hollyViewPager = findViewById(R.id.hollyViewPager);
         mContext = this;
         setupBottomNavigationView();
+        head = findViewById(R.id.heading);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         //toolbar.setTitleTextColor(0xFFFFFFFF);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mProgressbar = findViewById(R.id.ProgressBar);
-
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/ADAM.CG PRO.otf");
+        head.setTypeface(custom_font2);
         avi3= (AVLoadingIndicatorView) findViewById(R.id.avielement3);
         JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
         jsoupAsyncTask2.execute();

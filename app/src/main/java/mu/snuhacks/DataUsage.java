@@ -84,7 +84,7 @@ public class DataUsage extends AppCompatActivity {
         parsedHtmlNode = findViewById(R.id.welcome);
       //  Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
         // parsedHtmlNode.setTypeface(custom_font2);
-        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/ADAM.CG PRO.otf");
         head.setTypeface(custom_font2);
         setupBottomNavigationView();
 

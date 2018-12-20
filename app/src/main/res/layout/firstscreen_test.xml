@@ -8,6 +8,7 @@
      xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#DBE1D1"
         android:layout_marginBottom="75dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
@@ -32,9 +33,10 @@
                     android:gravity="center"
                     android:drawableTint="@color/black"
                     android:text="Snu Hacks"
+                    android:id="@+id/heading"
                     android:drawablePadding="10dp"
                     android:textColor="@color/text_color"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                    />
 
                 <mehdi.sakout.fancybuttons.FancyButton
@@ -60,11 +62,10 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="25dp"
-            android:shadowColor="@color/green"
+            android:paddingTop="10dp"
             android:text="@string/parse_html"
             android:textAlignment="center"
-            android:textColor="@color/text_color"
+            android:textColor="#B73038"
             android:textSize="60sp" />
 
 
