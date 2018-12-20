@@ -15,7 +15,8 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/viewpager_margin"
+            android:background="@drawable/black_border_bottom"
             android:paddingBottom="5dp">
 
             <RelativeLayout
@@ -51,16 +52,6 @@
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
-        <ProgressBar
-            android:id="@+id/ProgressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="false"
-            android:maxHeight="10dip"
-            android:minHeight="10dip"
-            android:progress="50"
-            android:progressDrawable="@drawable/greenprogress" />
 
         <TextView
             android:id="@+id/welcome5"
@@ -70,6 +61,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="25dp"
+            android:shadowColor="@color/green"
             android:text="@string/parse_html"
             android:textAlignment="center"
             android:textColor="@color/text_color"
@@ -132,6 +124,12 @@
             fancy:fb_text="Developers"
             fancy:fb_textColor="@color/white" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView_news">
+
+        </ScrollView>
 
     </LinearLayout>
 

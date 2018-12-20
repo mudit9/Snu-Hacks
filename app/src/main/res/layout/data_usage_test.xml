@@ -9,6 +9,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/background8"
         android:layout_marginBottom="75dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
@@ -16,25 +17,32 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp">
+            android:layout_height="@dimen/viewpager_margin"
+            android:layout_gravity="center_vertical|center"
+            android:background="@drawable/white_grey_border_bottom"
+
+            >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+
                 >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
                     android:drawableLeft="@drawable/ic_data_usage"
-                    android:gravity="center"
-                    android:drawableTint="@color/black"
+                    android:gravity="center|right|center_vertical"
+                    android:id="@+id/heading"
+                    android:drawableTint="@color/white"
                     android:text="Data Usage"
                     android:drawablePadding="10dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="30sp"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
                     />
 
                 <mehdi.sakout.fancybuttons.FancyButton
@@ -59,9 +67,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:indeterminate="false"
-            android:maxHeight="10dip"
-            android:minHeight="10dip"
-            android:progress="50"
+            android:maxHeight="8dip"
+            android:minHeight="8dip"
+            android:progress="0"
             android:progressDrawable="@drawable/greenprogress" />
 
         <com.github.lzyzsd.circleprogress.CircleProgress
@@ -81,11 +89,16 @@
             android:text="Make sure you're connected to the student Wifi"
             android:id="@+id/welcome"
             android:layout_gravity="center"
-            android:textColor="@color/text_color"
+            android:textColor="@color/true_white"
             android:textSize="16sp"
             android:layout_marginTop="35dp"
             android:textAlignment="center"
      />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/data_button"
+            android:text="Ads"/>
 
 
     </LinearLayout>

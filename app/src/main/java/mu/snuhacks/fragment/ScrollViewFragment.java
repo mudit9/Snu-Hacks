@@ -91,10 +91,6 @@ public class ScrollViewFragment extends Fragment {
         menu1.setText(Html.fromHtml(Menu_full.get(0)));
         menu2.setText(Html.fromHtml(Menu_full.get(1)));
         menu3.setText(Html.fromHtml(Menu_full.get(2)));
-
-
-
-
         HollyViewPagerBus.registerScrollView(getActivity(), scrollView);
     }
 }

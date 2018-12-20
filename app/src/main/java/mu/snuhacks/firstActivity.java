@@ -12,20 +12,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -52,6 +59,10 @@ public class firstActivity extends AppCompatActivity {
    // Bundle extras = getIntent().getExtras();
     String username;
     public int ACTIVITY_NUM = 2;
+    ScrollView scrollview_news;
+    private InterstitialAd mInterstitialAd;
+    CardView cardView;
+
 
 
     @Override
@@ -67,10 +78,14 @@ public class firstActivity extends AppCompatActivity {
      //       password = extras.getString("password");
      //   }
         setupBottomNavigationView();
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
       //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
         FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         FancyButton aboutbutton = (FancyButton) findViewById(R.id.aboutButton);
+        scrollview_news = findViewById(R.id.scrollView_news);
        // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
@@ -101,7 +116,7 @@ public class firstActivity extends AppCompatActivity {
         aboutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startAbout = new Intent(firstActivity.this, diagonal_layout_mudit.class);
+                Intent startAbout = new Intent(firstActivity.this, About.class);
                 startActivity(startAbout);
             }
         });
@@ -112,7 +127,7 @@ public class firstActivity extends AppCompatActivity {
                 startActivity(startAbout);
             }
         });
-*/
+*/      setScrollview_news();
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +135,23 @@ public class firstActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setScrollview_news(){
+        TextView heading;
+        TextView subtext;
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        for (int i  = 0; i <8; i++) {
+            FrameLayout frameLayout = (FrameLayout) View.inflate(this, R.layout.content_card, null);
+            heading = frameLayout.findViewById(R.id.meal);
+            subtext = frameLayout.findViewById(R.id.menu);
+            heading.setText("heading "+ i);
+            subtext.setText("subtext "+ i);
+            frameLayout.setPadding(0,5,0,0);
+            linearLayout.addView(frameLayout);
+        }
+        scrollview_news.addView(linearLayout);
     }
 
     public void logout() {

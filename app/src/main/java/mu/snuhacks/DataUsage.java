@@ -55,12 +55,14 @@ public class DataUsage extends AppCompatActivity {
     String password;
     private final String TAG = "HomeActivity";
     public Context mContext = DataUsage.this;
+    TextView head;
     Integer usage3;
     String netId;
     public int ACTIVITY_NUM = 3;
     Float use;
     int flag = 0;
     ProgressBar mProgress;
+    Button data;
     private InterstitialAd mInterstitialAd;
 
 
@@ -70,10 +72,11 @@ public class DataUsage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_usage_test);
         mProgress = findViewById(R.id.ProgressBar1);
-        // mInterstitialAd = new InterstitialAd(this);
-        //  mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
-        //  mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        data = findViewById(R.id.data_button);
+        head = findViewById(R.id.heading);
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         netId = prefs.getString("username", "");
         password = prefs.getString("password", "");
@@ -81,6 +84,8 @@ public class DataUsage extends AppCompatActivity {
         parsedHtmlNode = findViewById(R.id.welcome);
       //  Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
         // parsedHtmlNode.setTypeface(custom_font2);
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
+        head.setTypeface(custom_font2);
         setupBottomNavigationView();
 
         Circleprogress = findViewById(R.id.circle_progress);
@@ -89,7 +94,7 @@ public class DataUsage extends AppCompatActivity {
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
         jsoupAsyncTask.execute();
 
-     /*   data_button.setOnClickListener(new View.OnClickListener() {
+       data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                if (mInterstitialAd.isLoaded()) {
@@ -100,8 +105,9 @@ public class DataUsage extends AppCompatActivity {
 
             }
         });
-    } */
+
     }
+
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
@@ -191,6 +197,7 @@ public class DataUsage extends AppCompatActivity {
             }
             parsedHtmlNode.setMovementMethod(new ScrollingMovementMethod());
             mProgress.setIndeterminate(false);
+            mProgress.setVisibility(View.GONE);
 
         }
     }

@@ -1,25 +1,20 @@
 package mu.snuhacks;
-
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.github.lzyzsd.circleprogress.CircleProgress;
+import com.github.florent37.hollyviewpager.HollyViewPager;
+import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -28,84 +23,52 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-import mehdi.sakout.fancybuttons.FancyButton;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
-import static android.R.id.progress;
-
-/**
- * Created by mudit on 12/9/17.
- */
+import mu.snuhacks.fragment.RecyclerViewFragment;
+import mu.snuhacks.fragment.ScrollViewFragment;
 
 public class messMenu extends AppCompatActivity {
-    TextView parsedHtmlNode;
-    String htmlContentInStringFormat;
-    FancyButton dh1;
-    FancyButton dh2;
-    TextView menu;
-    String password;
-    private final String TAG = "HomeActivity";
-    public Context mContext = messMenu.this;
-    AVLoadingIndicatorView avi2;
-    Integer usage3;
-    String netId;
-    CharSequence styledText;
-    Float use;
+    private Context mContext;
+    int pageCount = 2;
     AVLoadingIndicatorView avi3;
-    public int ACTIVITY_NUM = 4;
-
-
+    public ArrayList<String> dh1_menu; //WILL GO IN RECYCLER FRAGMENT
+    public ArrayList<String> dh2_menu; //WILL GO IN SCROLLVIEW FRAGMENT
+    public HollyViewPager hollyViewPager;
+    ProgressBar mProgressbar;
+    public int ACTIVITY_NUM=0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //   if (extras != null) {
-        //       netId = extras.getString("username");
-        //      password = extras.getString("password");
-        //   }
-        setContentView(R.layout.messmenu);
-        SharedPreferences prefs = getSharedPreferences("MyPref", 0);
-        netId = prefs.getString("username","");
-        password = prefs.getString("password","");
-        FancyButton dh1 = (FancyButton) findViewById(R.id.dh11);
-        FancyButton dh2 = (FancyButton) findViewById(R.id.dh22);
-        avi2= (AVLoadingIndicatorView) findViewById(R.id.avielement2);
-        avi3 = (AVLoadingIndicatorView) findViewById(R.id.avielement3);
-        menu = (TextView) findViewById(R.id.menu1);
+        setContentView(R.layout.test);
+        hollyViewPager = findViewById(R.id.hollyViewPager);
+        mContext = this;
         setupBottomNavigationView();
-        parsedHtmlNode = (TextView) findViewById(R.id.welcome7);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
-        parsedHtmlNode.setTypeface(custom_font);
-        ;
-        dh1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
-                jsoupAsyncTask.execute();
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //toolbar.setTitleTextColor(0xFFFFFFFF);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mProgressbar = findViewById(R.id.ProgressBar);
 
-            }
-        });
-        dh2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
-                jsoupAsyncTask2.execute();
+        avi3= (AVLoadingIndicatorView) findViewById(R.id.avielement3);
+        JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
+        jsoupAsyncTask2.execute();
 
-            }
-        });
-    }
-    /**
-     * BottomNavigationView setup
-     */
+
+
+        }
+
     private void setupBottomNavigationView() {
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
@@ -114,99 +77,88 @@ public class messMenu extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
-
-    private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            avi2.smoothToShow();
-            menu.setVisibility(View.GONE);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                String breakfast="c";
-                String lunch="";
-                String dinner="";
-                Connection.Response response = Jsoup.connect("http://messmenu.snu.in/messMenu.php")
-                        .method(Connection.Method.POST)
-                        .execute();
-                //parse the document from response
-                try {
-                    Document document2 = response.parse();
-                    Element elementsByTag = document2.getElementsByClass("table table-striped table-bordered table-hover").get(0);
-                    Element elementsByTags = elementsByTag.getElementsByTag("tbody").get(0);
-                    Element elementsByTags1 = elementsByTags.getElementsByTag("tr").get(0);
-                    Elements elementByTags2 = elementsByTags1.getElementsByTag("td");
-                    System.out.println(elementByTags2.get(1).toString());
-                    breakfast
-                            = elementByTags2.get(1).text();
-                    lunch = elementByTags2.get(2).text();
-                    dinner = elementByTags2.get(3).text();
-                    htmlContentInStringFormat = "<b>" + "Breakfast" + "</b>" + "<br>" +breakfast + "<br>" + "<b> " + "Lunch" + "</b> " + "<br>" + lunch + "<br>" + "<b>" + "Dinner" + "</b> " + "<br>" + dinner;
-                    styledText = Html.fromHtml(htmlContentInStringFormat);
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                    styledText = "No menu available!";
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            avi2.smoothToHide();
-            menu.setText(styledText);
-            menu.setVisibility(View.VISIBLE);
-            menu.setMovementMethod(new ScrollingMovementMethod());
-
-        }
-    }
     private class JsoupAsyncTask2 extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgressbar.setIndeterminate(true);
             avi3.smoothToShow();
-            menu.setVisibility(View.GONE);
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
 
-                String breakfast="";
-                String lunch="";
-                String dinner="";
+                String breakfast1="";
+                String lunch1="";
+                String dinner1="";
+                String breakfast2= "";
+                String lunch2="";
+                String dinner2="";
+                TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                } };
+
+                // Install the all-trusting trust manager
+                try {
+                    SSLContext sc = SSLContext.getInstance("SSL");
+                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                } catch (Exception e) {
+                    throw   new RuntimeException(e);
+                }
                 Connection.Response response = Jsoup.connect("http://messmenu.snu.in/messMenu.php")
                         .method(Connection.Method.POST)
                         .execute();
-                //parse the document from response
                 try {
                     Document document2 = response.parse();
                     Element elementsByTag = document2.getElementsByClass("table table-striped table-bordered table-hover").get(1);
                     Element elementsByTags = elementsByTag.getElementsByTag("tbody").get(0);
                     Element elementsByTags1 = elementsByTags.getElementsByTag("tr").get(0);
                     Elements elementByTags2 = elementsByTags1.getElementsByTag("td");
-                    breakfast = elementByTags2.get(1).text();
-                    lunch = elementByTags2.get(2).text();
-                    dinner = elementByTags2.get(3).text();
-                    htmlContentInStringFormat = "<b>" + "Breakfast" + "</b>" + "<br>" +breakfast + "<br>" + "<b> " + "Lunch" + "</b> " + "<br>" + lunch + "<br>" + "<b>" + "Dinner" + "</b> " + "<br>" + dinner;
-                    styledText = Html.fromHtml(htmlContentInStringFormat);
+                    try{
+                    breakfast2 = elementByTags2.get(1).text();
+                    lunch2 = elementByTags2.get(2).text();
+                    dinner2 = elementByTags2.get(3).text(); }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        breakfast2 = elementByTags2.get(0).text();
+                        lunch2 = elementByTags2.get(0).text();
+                        dinner2 = elementByTags2.get(0).text();
+                    }
+
+                    Element elementsByTag1 = document2.getElementsByClass("table table-striped table-bordered table-hover").get(0);
+                    Element elementsByTags2 = elementsByTag1.getElementsByTag("tbody").get(0);
+                    Element elementsByTags3 = elementsByTags2.getElementsByTag("tr").get(0);
+                    Elements elementByTags4 = elementsByTags3.getElementsByTag("td");
+                    try{
+                        breakfast2 = elementByTags4.get(1).text();
+                        lunch2 = elementByTags4.get(2).text();
+                        dinner2 = elementByTags4.get(3).text(); }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        breakfast1 = elementByTags4.get(0).text();
+                        lunch1 = elementByTags4.get(0).text();
+                        dinner1 = elementByTags4.get(0).text();
+                    }
+
+                    dh1_menu = new ArrayList<>(Arrays.asList(breakfast1, lunch1, dinner1));
+
+                    dh2_menu = new ArrayList<>(Arrays.asList(breakfast2, lunch2, dinner2));
                 }
                 catch (Exception e){
                     e.printStackTrace();
-                    styledText = "No menu available!";
-
                 }
 
             } catch (IOException e) {
@@ -218,9 +170,43 @@ public class messMenu extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             avi3.smoothToHide();
-            menu.setText(styledText);
-            menu.setVisibility(View.VISIBLE);
-            menu.setMovementMethod(new ScrollingMovementMethod());
+            mProgressbar.setIndeterminate(false);
+            mProgressbar.setVisibility(View.GONE);
+            hollyViewPager.getViewPager().setPageMargin(getResources().getDimensionPixelOffset(R.dimen.viewpager_margin));
+            hollyViewPager.setConfigurator(new HollyViewPagerConfigurator() {
+                @Override
+                public float getHeightPercentForPage(int page) {
+                    return ((page+4)%10)/10f;
+                }
+            });
+
+            hollyViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    if(position%2==0) {
+                        Fragment fragment = new RecyclerViewFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArrayList("dh1_menu", dh1_menu);
+                        fragment.setArguments(bundle);
+                        return fragment;
+                    }
+                    else
+                        return ScrollViewFragment.newInstance((String) getPageTitle(position),dh2_menu);
+                }
+
+                @Override
+                public int getCount() {
+                    return pageCount;}
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    if (position == 1)
+                        return "DH2";
+                    else
+                        return "DH1";
+                }
+            });
+
+
         }
     }
-}
+    }
