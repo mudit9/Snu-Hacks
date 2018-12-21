@@ -40,9 +40,5 @@ dependencies {
     implementation 'junit:junit:4.12'
     implementation 'com.github.florent37:hollyviewpager:1.0.1'
     implementation 'com.github.ksoichiro:android-observablescrollview:1.5.2'
-    implementation 'com.github.florent37:expansionpanel:1.2.0'
-
-
-
-
+    implementation 'com.github.florent37:expansionpanel:1.1.1'
 }
