@@ -12,4 +12,5 @@
     <color name="grey">#bfbfbf</color>
     <color name="true_white">#FFF</color>
     <color name="silver">#C0C0C0</color>
+    <color name="text_color">#222222</color>
 </resources>

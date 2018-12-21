@@ -6,26 +6,38 @@ package mu.snuhacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -35,6 +47,7 @@ import java.util.Calendar;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 import static android.R.attr.button;
+import static android.R.attr.colorAccent;
 import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
@@ -51,9 +64,12 @@ public class firstActivity extends AppCompatActivity {
     String password;
    // Bundle extras = getIntent().getExtras();
     String username;
+    TextView head;
     public int ACTIVITY_NUM = 2;
+    ScrollView scrollview_news;
+    private InterstitialAd mInterstitialAd;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,20 +77,28 @@ public class firstActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         username = prefs.getString("username","");
         password = prefs.getString("password","");
-        setContentView(R.layout.firstscreen);
+        setContentView(R.layout.firstscreen_test);
      //   if (extras != null) {
       //      username = extras.getString("username");
      //       password = extras.getString("password");
      //   }
         setupBottomNavigationView();
-        FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+      //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
+        head = findViewById(R.id.heading);
         FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         FancyButton aboutbutton = (FancyButton) findViewById(R.id.aboutButton);
-       // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
+        scrollview_news = findViewById(R.id.scrollView_news);
 
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
+       // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/ADAM.CG PRO.otf");
+        head.setTypeface(custom_font2);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
         parsedHtmlNode.setTypeface(custom_font);
+        parsedHtmlNode.setText("Welcome!");
         FancyButton attendanceButton = (FancyButton) findViewById(R.id.attendance_button);
         FancyButton logoutButton = (FancyButton) findViewById(R.id.logout_button);
         attendanceButton.setOnClickListener(new View.OnClickListener() {
@@ -91,17 +115,17 @@ public class firstActivity extends AppCompatActivity {
                 startActivity(startData);
             }
         });
-        messMenu1.setOnClickListener(new View.OnClickListener() {
+     /*   messMenu1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startData = new Intent(firstActivity.this, messMenu.class);
                 startActivity(startData);
             }
-        });
+        });*/
         aboutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startAbout = new Intent(firstActivity.this, diagonal_layout_mudit.class);
+                Intent startAbout = new Intent(firstActivity.this, About.class);
                 startActivity(startAbout);
             }
         });
@@ -112,7 +136,7 @@ public class firstActivity extends AppCompatActivity {
                 startActivity(startAbout);
             }
         });
-*/
+*/      setScrollview_news();
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +144,34 @@ public class firstActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void setScrollview_news(){
+        TextView heading;
+        TextView subtext;
+        TextView Superheading = new TextView(this);
+        String text = "<font color=#222222>News</font><font color=#B73038>letter</font>";
+        Superheading.setText(Html.fromHtml(text));
+        Superheading.setPadding(0,10,0,10);
+        Superheading.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        Superheading.setTextSize(50);
+        Superheading.setTextColor(Color.parseColor("#B73038"));
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
+        Superheading.setTypeface(custom_font);
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(Superheading);
+        for (int i  = 0; i <8; i++) {
+            FrameLayout frameLayout = (FrameLayout) View.inflate(this, R.layout.content_card, null);
+            heading = frameLayout.findViewById(R.id.meal);
+            subtext = frameLayout.findViewById(R.id.menu);
+            heading.setText("heading "+ i);
+            subtext.setText("subtext "+ i);
+            frameLayout.setPadding(0,5,0,0);
+            linearLayout.addView(frameLayout);
+        }
+        scrollview_news.addView(linearLayout);
     }
 
     public void logout() {

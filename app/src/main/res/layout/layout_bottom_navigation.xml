@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:itemIconTint="@color/black"
-            
+            app:itemTextColor="@color/text_color"
             android:id="@+id/bottom_nav_viewbar"
             android:background="@drawable/white_grey_border"
             app:menu="@menu/bottom_navigation_menu">

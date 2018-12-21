@@ -9,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.florent37.hollyviewpager.HollyViewPager;
 import com.github.florent37.hollyviewpager.HollyViewPagerBus;
 
 import java.util.ArrayList;
 
 import mu.snuhacks.R;
-import mu.snuhacks.recycler.RecyclerAdapter;
+import mu.snuhacks.Adapters.RecyclerAdapter;
 
 /**
  * Created by florentchampigny on 07/08/15.

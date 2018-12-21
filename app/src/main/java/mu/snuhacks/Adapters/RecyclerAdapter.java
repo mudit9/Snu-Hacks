@@ -1,11 +1,10 @@
-package mu.snuhacks.recycler;
+package mu.snuhacks.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -66,8 +65,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             String textToHighlight = "Chicken";
             String textToHighlight2 = "Paneer";
             // Construct the formatted text
-            String replacedWith = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
-            String replacedWith2 = "<b> <font color= #13c000 >" + textToHighlight + "</font> </b>";
+            String replacedWith = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
+            String replacedWith2 = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
 
             // Get the text from TextView
             String originalString = Menu_full.get(j);
