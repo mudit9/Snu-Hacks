@@ -11,10 +11,13 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -31,6 +34,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import mu.snuhacks.Adapters.AttendanceAdapter;
+
 public class AttendanceF extends Fragment {
     private final String TAG = AttendanceF.class.getSimpleName();
 
@@ -39,8 +44,12 @@ public class AttendanceF extends Fragment {
 
     private ConstraintLayout constraintLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView attendanceView;
+    private TextView emptyTextView;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
+    private AttendanceAdapter adapter;
 
+    private ArrayList<AttendanceData> attendanceData;
     private String netId;
     private String password;
     private boolean isConnected = false;
@@ -57,6 +66,7 @@ public class AttendanceF extends Fragment {
             loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(loginIntent);
         }
+        attendanceData = new ArrayList<AttendanceData>();
     }
 
     @Override
@@ -77,6 +87,10 @@ public class AttendanceF extends Fragment {
         View view = layoutInflater.inflate(R.layout.attendance_fragment,parent,false);
         constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
+        attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
+        emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
+        attendanceView.setLayoutManager(manager);
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -85,6 +99,21 @@ public class AttendanceF extends Fragment {
                 fetchAttendanceTask.execute(new String[]{netId,password});
             }
         };
+        String attendace = sharedPreferences.getString("attendance","");
+        if(attendace.length() == 0){
+            emptyTextView.setVisibility(View.VISIBLE);
+            attendanceView.setVisibility(View.GONE);
+        } else{
+            try {
+                attendanceData = (ArrayList<AttendanceData>) ObjectSerializer.deserialize(attendace);
+            } catch(Exception exception){
+                Log.d(TAG,"Exception:- " + exception.getMessage());
+            }
+            emptyTextView.setVisibility(View.GONE);
+            attendanceView.setVisibility(View.VISIBLE);
+            adapter = new AttendanceAdapter(attendanceData);
+            attendanceView.setAdapter(adapter);
+        }
         return view;
     }
 
@@ -166,7 +195,6 @@ public class AttendanceF extends Fragment {
                                 .cookies(login.cookies())
                                 .execute();
                         Document checkAttendanceDoc = checkAttendance.parse();
-                        // #ff0000-< #13c000->
                         try {
                             Elements panelElements = checkAttendanceDoc.getElementsByClass("panel panel-primary");
                             Elements trElements = panelElements.select("tr");
@@ -201,13 +229,28 @@ public class AttendanceF extends Fragment {
                     startActivity(loginIntent);
                 }
             } else {
-                try {
-                    prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
-                    editor = prefs.edit();
-                    editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
-                    editor.apply();
-                } catch(IOException exception){
-                    Log.d(TAG,"Exception:- " + exception.getMessage());
+                if(response.getAttendanceData().size() > 0) {
+                    try {
+                        prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+                        editor = prefs.edit();
+                        editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
+                        editor.apply();
+                    } catch (IOException exception) {
+                        Log.d(TAG, "Exception:- " + exception.getMessage());
+                    }
+                    emptyTextView.setVisibility(View.GONE);
+                    attendanceView.setVisibility(View.VISIBLE);
+                    attendanceData.clear();
+                    attendanceData.addAll(response.getAttendanceData());
+                    if (adapter != null) {
+                        adapter.setAttendanceData(attendanceData);
+                    } else {
+                        adapter = new AttendanceAdapter(attendanceData);
+                        attendanceView.setAdapter(adapter);
+                    }
+                } else{
+                    attendanceView.setVisibility(View.GONE);
+                    emptyTextView.setVisibility(View.VISIBLE);
                 }
             }
         }
