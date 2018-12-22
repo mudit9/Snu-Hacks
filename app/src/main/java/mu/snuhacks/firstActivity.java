@@ -13,9 +13,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -30,6 +33,11 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.jsoup.Connection;
@@ -42,12 +50,15 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import mehdi.sakout.fancybuttons.FancyButton;
+import mu.snuhacks.Adapters.NewsletterAdapter;
 
 import static android.R.attr.button;
 import static android.R.attr.colorAccent;
+import static android.R.attr.data;
 import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
@@ -58,8 +69,14 @@ public class firstActivity extends AppCompatActivity {
     private final String TAG = "HomeActivity";
     public Context mContext = firstActivity.this;
 
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference newsletterReference;
+    private ValueEventListener valueEventListener;
+
+    private NewsletterAdapter adapter;
     private SharedPreferences prefs;
 
+    RecyclerView newsletterView;
     TextView parsedHtmlNode;
     String password;
    // Bundle extras = getIntent().getExtras();
@@ -99,6 +116,9 @@ public class firstActivity extends AppCompatActivity {
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
         parsedHtmlNode.setTypeface(custom_font);
         parsedHtmlNode.setText("Welcome!");
+        newsletterView = (RecyclerView) findViewById(R.id.newsletter_view);
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        newsletterView.setLayoutManager(manager);
         FancyButton attendanceButton = (FancyButton) findViewById(R.id.attendance_button);
         FancyButton logoutButton = (FancyButton) findViewById(R.id.logout_button);
         attendanceButton.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +163,48 @@ public class firstActivity extends AppCompatActivity {
                 logout();
             }
         });
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        newsletterReference = firebaseDatabase.getReference("/data/newsletter");
+        valueEventListener = getValueEventListener();
+        newsletterReference.addValueEventListener(valueEventListener);
+    }
 
+    private ValueEventListener getValueEventListener(){
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    if(adapter == null){
+                        adapter = new NewsletterAdapter();
+                        newsletterView.setAdapter(adapter);
+                        newsletterView.setVisibility(View.VISIBLE);
+                    }
+                    adapter.add(dataSnapshot.getValue(NewsletterData.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG,databaseError.getMessage());
+            }
+        };
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(valueEventListener != null){
+            newsletterReference.removeEventListener(valueEventListener);
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(valueEventListener == null){
+            valueEventListener = getValueEventListener();
+        }
+        newsletterReference.addValueEventListener(valueEventListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -199,6 +260,23 @@ public class firstActivity extends AppCompatActivity {
     }
 
 
+    public class NewsletterData{
+        private String heading;
+        private String content;
+
+        public NewsletterData(String heading,String content){
+            this.heading = heading;
+            this.content = content;
+        }
+
+        public String getHeading(){
+            return heading;
+        }
+
+        public String getContent(){
+            return content;
+        }
+    }
 
 }
 
