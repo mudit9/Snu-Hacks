@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,6 +54,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import mu.snuhacks.Adapters.NewsletterAdapter;
@@ -71,12 +74,12 @@ public class firstActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference newsletterReference;
-    private ValueEventListener valueEventListener;
+    private ChildEventListener childEventListener;
 
+    private RecyclerView newsletterView;
     private NewsletterAdapter adapter;
     private SharedPreferences prefs;
 
-    RecyclerView newsletterView;
     TextView parsedHtmlNode;
     String password;
    // Bundle extras = getIntent().getExtras();
@@ -116,9 +119,6 @@ public class firstActivity extends AppCompatActivity {
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
         parsedHtmlNode.setTypeface(custom_font);
         parsedHtmlNode.setText("Welcome!");
-        newsletterView = (RecyclerView) findViewById(R.id.newsletter_view);
-        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
-        newsletterView.setLayoutManager(manager);
         FancyButton attendanceButton = (FancyButton) findViewById(R.id.attendance_button);
         FancyButton logoutButton = (FancyButton) findViewById(R.id.logout_button);
         attendanceButton.setOnClickListener(new View.OnClickListener() {
@@ -164,23 +164,34 @@ public class firstActivity extends AppCompatActivity {
             }
         });
         firebaseDatabase = FirebaseDatabase.getInstance();
-        newsletterReference = firebaseDatabase.getReference("/data/newsletter");
-        valueEventListener = getValueEventListener();
-        newsletterReference.addValueEventListener(valueEventListener);
+        newsletterReference = firebaseDatabase.getReference("/data/newsletter/");
+        childEventListener = getValueEventListener();
     }
 
-    private ValueEventListener getValueEventListener(){
-        return new ValueEventListener() {
+    private ChildEventListener getValueEventListener(){
+        return new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    if(adapter == null){
-                        adapter = new NewsletterAdapter();
-                        newsletterView.setAdapter(adapter);
-                        newsletterView.setVisibility(View.VISIBLE);
-                    }
-                    adapter.add(dataSnapshot.getValue(NewsletterData.class));
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(adapter == null){
+                    adapter = new NewsletterAdapter();
+                    newsletterView.setAdapter(adapter);
                 }
+                adapter.add(dataSnapshot.getValue(NewsletterData.class));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                adapter.remove(dataSnapshot.getValue(NewsletterData.class));
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -193,18 +204,18 @@ public class firstActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        if(valueEventListener != null){
-            newsletterReference.removeEventListener(valueEventListener);
+        if(childEventListener != null){
+            newsletterReference.removeEventListener(childEventListener);
         }
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        if(valueEventListener == null){
-            valueEventListener = getValueEventListener();
+        if(childEventListener == null){
+            childEventListener = getValueEventListener();
         }
-        newsletterReference.addValueEventListener(valueEventListener);
+        newsletterReference.addChildEventListener(childEventListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -223,7 +234,11 @@ public class firstActivity extends AppCompatActivity {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.addView(Superheading);
-        for (int i  = 0; i <8; i++) {
+        newsletterView = new RecyclerView(this);
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        newsletterView.setLayoutManager(manager);
+        linearLayout.addView(newsletterView);
+       /* for (int i  = 0; i <8; i++) {
             FrameLayout frameLayout = (FrameLayout) View.inflate(this, R.layout.content_card, null);
             heading = frameLayout.findViewById(R.id.meal);
             subtext = frameLayout.findViewById(R.id.menu);
@@ -231,7 +246,7 @@ public class firstActivity extends AppCompatActivity {
             subtext.setText("subtext "+ i);
             frameLayout.setPadding(0,5,0,0);
             linearLayout.addView(frameLayout);
-        }
+        }*/
         scrollview_news.addView(linearLayout);
     }
 
@@ -260,9 +275,12 @@ public class firstActivity extends AppCompatActivity {
     }
 
 
-    public class NewsletterData{
+    public static class NewsletterData{
         private String heading;
         private String content;
+
+        public NewsletterData(){
+        }
 
         public NewsletterData(String heading,String content){
             this.heading = heading;
@@ -275,6 +293,14 @@ public class firstActivity extends AppCompatActivity {
 
         public String getContent(){
             return content;
+        }
+
+        public void setHeadiing(String heading){
+            this.heading = heading;
+        }
+
+        public void setContent(String content){
+            this.content = content;
         }
     }
 

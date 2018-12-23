@@ -30,6 +30,20 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         }
     }
 
+    public void remove(firstActivity.NewsletterData data){
+        int flag = -1;
+        for(int i=0;i<newsletterData.size();i++){
+            if(newsletterData.get(i).getContent().equals(data.getContent()) &&
+                    newsletterData.get(i).getHeading().equals(data.getContent())){
+                flag = i;
+            }
+        }
+        if(flag != -1){
+            newsletterData.remove(flag);
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public int getItemCount() {
         return newsletterData.size();
