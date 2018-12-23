@@ -276,7 +276,7 @@ public class firstActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(adapter == null){
-                    adapter = new NewsletterAdapter();
+                    adapter = new NewsletterAdapter(null);
                     newsletterView.setAdapter(adapter);
                 }
                 NewsletterData data = dataSnapshot.getValue(NewsletterData.class);

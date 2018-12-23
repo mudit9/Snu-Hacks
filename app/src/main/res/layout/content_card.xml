@@ -32,6 +32,30 @@
                 android:id="@+id/menu"
                 android:text="menu"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_image_button"
+                    android:src="@drawable/baseline_edit_black_24"
+                    android:background="@null"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/delete_image_button"
+                    android:src="@drawable/baseline_delete_black_24"
+                    android:background="@null"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
