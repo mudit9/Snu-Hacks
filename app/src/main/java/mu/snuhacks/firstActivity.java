@@ -176,17 +176,23 @@ public class firstActivity extends AppCompatActivity {
                     adapter = new NewsletterAdapter();
                     newsletterView.setAdapter(adapter);
                 }
-                adapter.add(dataSnapshot.getValue(NewsletterData.class));
+                NewsletterData data = dataSnapshot.getValue(NewsletterData.class);
+                data.setKey(dataSnapshot.getKey());
+                adapter.add(data);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                NewsletterData data = dataSnapshot.getValue(NewsletterData.class);
+                data.setKey(dataSnapshot.getKey());
+                adapter.changeData(data);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                adapter.remove(dataSnapshot.getValue(NewsletterData.class));
+                NewsletterData data = dataSnapshot.getValue(NewsletterData.class);
+                data.setKey(dataSnapshot.getKey());
+                adapter.remove(data);
             }
 
             @Override
@@ -278,6 +284,7 @@ public class firstActivity extends AppCompatActivity {
     public static class NewsletterData{
         private String heading;
         private String content;
+        private String key;
 
         public NewsletterData(){
         }
@@ -295,12 +302,20 @@ public class firstActivity extends AppCompatActivity {
             return content;
         }
 
-        public void setHeadiing(String heading){
+        public String getKey(){
+            return key;
+        }
+
+        public void setHeading(String heading){
             this.heading = heading;
         }
 
         public void setContent(String content){
             this.content = content;
+        }
+
+        public void setKey(String key){
+            this.key = key;
         }
     }
 

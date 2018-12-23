@@ -33,13 +33,26 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
     public void remove(firstActivity.NewsletterData data){
         int flag = -1;
         for(int i=0;i<newsletterData.size();i++){
-            if(newsletterData.get(i).getContent().equals(data.getContent()) &&
-                    newsletterData.get(i).getHeading().equals(data.getContent())){
+            if(newsletterData.get(i).getKey().equals(data.getKey())){
                 flag = i;
             }
         }
         if(flag != -1){
             newsletterData.remove(flag);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void changeData(firstActivity.NewsletterData data) {
+        int flag = -1;
+        for (int i = 0; i < newsletterData.size(); i++) {
+            if (newsletterData.get(i).getKey().equals(data.getKey())) {
+                flag = i;
+            }
+        }
+        if(flag !=-1){
+            newsletterData.get(flag).setHeading(data.getHeading());
+            newsletterData.get(flag).setContent(data.getContent());
             notifyDataSetChanged();
         }
     }
