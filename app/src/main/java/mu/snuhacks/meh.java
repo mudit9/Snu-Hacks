@@ -7,12 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -21,13 +18,11 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -40,36 +35,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import mu.snuhacks.Adapters.NewsletterAdapter;
-
-import static android.R.attr.button;
-import static android.R.attr.colorAccent;
-import static android.R.attr.data;
-import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
  * Created by mudit on 12/9/17.
  */
 
-public class firstActivity extends AppCompatActivity {
+public class meh extends AppCompatActivity {
     private final String TAG = "HomeActivity";
     public Context mContext = firstActivity.this;
 
@@ -302,23 +277,17 @@ public class firstActivity extends AppCompatActivity {
                     adapter = new NewsletterAdapter();
                     newsletterView.setAdapter(adapter);
                 }
-                NewsletterData data = dataSnapshot.getValue(NewsletterData.class);
-                data.setKey(dataSnapshot.getKey());
-                adapter.add(data);
+                adapter.add(dataSnapshot.getValue(NewsletterData.class));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                NewsletterData data = dataSnapshot.getValue(NewsletterData.class);
-                data.setKey(dataSnapshot.getKey());
-                adapter.changeData(data);
+
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                NewsletterData data = dataSnapshot.getValue(NewsletterData.class);
-                data.setKey(dataSnapshot.getKey());
-                adapter.remove(data);
+                adapter.remove(dataSnapshot.getValue(NewsletterData.class));
             }
 
             @Override
@@ -365,7 +334,7 @@ public class firstActivity extends AppCompatActivity {
         Superheading.setTypeface(custom_font);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(Superheading);
+        //    linearLayout.addView(Superheading);
         newsletterView = new RecyclerView(this);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         newsletterView.setLayoutManager(manager);
@@ -410,7 +379,6 @@ public class firstActivity extends AppCompatActivity {
     public static class NewsletterData{
         private String heading;
         private String content;
-        private String key;
 
         public NewsletterData(){
         }
@@ -428,20 +396,12 @@ public class firstActivity extends AppCompatActivity {
             return content;
         }
 
-        public String getKey(){
-            return key;
-        }
-
-        public void setHeading(String heading){
+        public void setHeadiing(String heading){
             this.heading = heading;
         }
 
         public void setContent(String content){
             this.content = content;
-        }
-
-        public void setKey(String key){
-            this.key = key;
         }
     }
 
