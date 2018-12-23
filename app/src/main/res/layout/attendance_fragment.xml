@@ -20,6 +20,7 @@
             android:id="@+id/attendance_recycler_view"
             android:visibility="gone"/>
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

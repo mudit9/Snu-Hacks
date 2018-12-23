@@ -4,7 +4,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true">
 
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx

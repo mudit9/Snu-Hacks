@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "892394501670",
+    "firebase_url": "https://snuhacks.firebaseio.com",
+    "project_id": "snuhacks",
+    "storage_bucket": "snuhacks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892394501670:android:c1c773c0b95e4f72",
+        "android_client_info": {
+          "package_name": "mu.snuhacks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892394501670-men6fgbqafp8l9e8iidokfkitecq7gmo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mu.snuhacks",
+            "certificate_hash": "64a05d45c7283b79b1a38c014b145b8c54915981"
+          }
+        },
+        {
+          "client_id": "892394501670-hclifnj28okqaa92mvr4cntlfb7ldqn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6FC6zmcvI-KaoB8Je_f1CvWLBYudX9rM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892394501670-hclifnj28okqaa92mvr4cntlfb7ldqn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,7 +8,7 @@
      xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DBE1D1"
+        android:background="#f6cd61"
         android:layout_marginBottom="75dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
@@ -23,8 +23,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                >
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -59,57 +58,11 @@
             android:id="@+id/welcome5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/parse_html"
             android:textAlignment="center"
-            android:textColor="#B73038"
             android:textSize="60sp" />
-
-
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/data_button"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_above="@+id/messMenuButton"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="38dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="10dp"
-            fancy:fb_borderColor="@color/realwhite"
-            fancy:fb_borderWidth="3dp"
-            fancy:fb_defaultColor="@color/black"
-            fancy:fb_focusColor="#B5BFC0"
-            fancy:fb_radius="50dp"
-            fancy:fb_text="Check data usage"
-            fancy:fb_textColor="@color/white" />
-
-
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/attendance_button"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_alignTop="@+id/data_button"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginLeft="17dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="10dp"
-            fancy:fb_borderColor="@color/realwhite"
-            fancy:fb_borderWidth="3dp"
-            fancy:fb_defaultColor="@color/black"
-            fancy:fb_focusColor="#B5BFC0"
-            fancy:fb_radius="50dp"
-            fancy:fb_text="Attendance"
-            fancy:fb_textColor="@color/white" />
 
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/aboutButton"
@@ -125,11 +78,22 @@
             fancy:fb_text="Developers"
             fancy:fb_textColor="@color/white" />
 
+        <include layout="@layout/first_screen_data"
+            android:id="@+id/data_layout" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newsletter_text"
+            android:paddingBottom="5dp"
+            android:textSize="50dp"
+            android:textAlignment="center"
+            android:paddingTop="5dp"/>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView_news">
-
         </ScrollView>
 
     </LinearLayout>
