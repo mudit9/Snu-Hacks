@@ -1,7 +1,9 @@
 package mu.snuhacks;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
@@ -18,14 +20,16 @@ public class BottomNavigationViewHelper {
 
     private static final String TAG = "BottomNavigationViewHel";
 
-    public static void setupBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx){
+    public static void setupBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx, Context context){
         Log.d(TAG, "setupBottomNavigationView: Setting up BottomNavigationView");
         bottomNavigationViewEx.enableAnimation(false);
         bottomNavigationViewEx.enableItemShiftingMode(false);
         bottomNavigationViewEx.enableShiftingMode(false);
         bottomNavigationViewEx.setTextVisibility(true);
-        bottomNavigationViewEx.setIconSize(27,27);
-        bottomNavigationViewEx.setTextSize(15);
+        bottomNavigationViewEx.setIconSize(23,23);
+        bottomNavigationViewEx.setTextSize(14);
+        Typeface custom_font9 = Typeface.createFromAsset(context.getAssets(), "fonts/Junction-regular.otf");
+        bottomNavigationViewEx.setTypeface(custom_font9);
 
     }
 

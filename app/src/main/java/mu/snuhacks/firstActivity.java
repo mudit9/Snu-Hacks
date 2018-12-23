@@ -81,6 +81,8 @@ public class firstActivity extends AppCompatActivity {
     TextView heading1;
     TextView heading2;
     TextView heading3;
+    FancyButton logoutButton;
+    FancyButton aboutButton;
     TextView heading4;
 
 
@@ -88,7 +90,6 @@ public class firstActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         username = prefs.getString("username","");
         password = prefs.getString("password","");
@@ -103,71 +104,8 @@ public class firstActivity extends AppCompatActivity {
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
         head = findViewById(R.id.heading);
-        FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
-        parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
-        FancyButton aboutbutton = (FancyButton) findViewById(R.id.aboutButton);
-        scrollview_news = findViewById(R.id.scrollView_news);
+        logoutButton = findViewById(R.id.logout_button);
 
-        // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
-        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/ADAM.CG PRO.otf");
-        head.setTypeface(custom_font2);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
-        parsedHtmlNode.setTypeface(custom_font);
-        parsedHtmlNode.setText("Welcome!");
-        FancyButton attendanceButton = (FancyButton) findViewById(R.id.attendance_button);
-        FancyButton logoutButton = (FancyButton) findViewById(R.id.logout_button);
-       /* attendanceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startAttendance = new Intent(firstActivity.this, Attendance.class);
-                startActivity(startAttendance);
-            }
-        }); */
-
-    /*    data_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startData = new Intent(firstActivity.this, DataUsage.class);
-                startActivity(startData);
-            }
-        }); */
-     /*   messMenu1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startData = new Intent(firstActivity.this, messMenu.class);
-                startActivity(startData);
-            }
-        });*/
-        aboutbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startAbout = new Intent(firstActivity.this, About.class);
-                startActivity(startAbout);
-            }
-        });
-     /*   LaundryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startAbout = new Intent(firstActivity.this, Laundry.class);
-                startActivity(startAbout);
-            }
-        });
-     */
-
-
-        username = prefs.getString("username","");
-        password = prefs.getString("password","");
-        setContentView(R.layout.firstscreen_test);
-        //   if (extras != null) {
-        //      username = extras.getString("username");
-        //       password = extras.getString("password");
-        //   }
-        setupBottomNavigationView();
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
-        head = findViewById(R.id.heading);
         head.setPadding(10,0,0,0);
         //  FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
@@ -176,9 +114,9 @@ public class firstActivity extends AppCompatActivity {
 
 
         // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
-        custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Archive.otf");
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Junction-regular.otf");
+        head.setPadding(0,5,0,0);
         head.setTypeface(custom_font2);
-        custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChampagnE.ttf");
         Typeface custom_font7 = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
         parsedHtmlNode.setTypeface(custom_font7);
         String htext = "<font color=#d11141>Welcome!</font>";
@@ -191,7 +129,7 @@ public class firstActivity extends AppCompatActivity {
         Superheading.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
 
         Superheading.setText(Html.fromHtml(text));
-        Superheading.setTextSize(40);
+        Superheading.setTextSize(36);
         Superheading.setTypeface(custom_font7);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -239,11 +177,6 @@ public class firstActivity extends AppCompatActivity {
         xtext = "<font color=#00b159 size =19>Dh2</font><font size =19 color=#3b5998> Menu</font>";
         heading4.setText(Html.fromHtml(xtext));
 
-        heading1.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
-        heading2.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
-        heading3.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
-        heading4.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
-
 
         int TextSize = 17;
 
@@ -258,7 +191,15 @@ public class firstActivity extends AppCompatActivity {
         heading2.setTypeface(custom_font9);
         heading3.setTypeface(custom_font9);
         heading4.setTypeface(custom_font9);
-
+        aboutButton = findViewById(R.id.aboutButton);
+        aboutButton.setVisibility(View.GONE);
+        aboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(firstActivity.this,About.class);
+                startActivity(intent);
+            }
+        });
         setScrollview_news();
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -402,7 +343,7 @@ public class firstActivity extends AppCompatActivity {
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx, getApplicationContext());
         BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
