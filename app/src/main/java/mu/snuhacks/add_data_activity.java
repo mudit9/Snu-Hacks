@@ -148,7 +148,7 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
         final EditText headingEditText = new EditText(this);
         final EditText contentEditText = new EditText(this);
         headingEditText.setText(newsletter.getHeading());
-        headingEditText.setText(newsletter.getContent());
+        contentEditText.setText(newsletter.getContent());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.addView(headingEditText);
         linearLayout.addView(contentEditText);

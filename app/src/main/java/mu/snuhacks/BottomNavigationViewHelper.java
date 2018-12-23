@@ -26,7 +26,6 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.setTextVisibility(true);
         bottomNavigationViewEx.setIconSize(27,27);
         bottomNavigationViewEx.setTextSize(15);
-
     }
 
     public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx view){

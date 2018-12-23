@@ -349,26 +349,18 @@ public class firstActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         newsletterView.setLayoutManager(manager);
         linearLayout.addView(newsletterView);
-
-        FrameLayout add_data = (FrameLayout) View.inflate(this, R.layout.cardview_add_data_layout, null);
-        final EditText name_text = add_data.findViewById(R.id.name_text);
-        final EditText heading_text = add_data.findViewById(R.id.heading_text);
-        final EditText content_text = add_data.findViewById(R.id.content_text);
-        Button add_data_button = add_data.findViewById(R.id.add_data_button);
-        name_text.setVisibility(View.GONE);
-        heading_text.setVisibility(View.GONE);
-        content_text.setVisibility(View.GONE);
-
-        add_data_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent add = new Intent(firstActivity.this,add_data_activity.class);
-                startActivity(add);
-
+        Button configButton = new Button(this);
+        configButton.setText("Change data");
+        if(username.equals("ms418") || username.equals("sk261")){
+            linearLayout.addView(configButton);
+            configButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent configIntent = new Intent(getApplicationContext(),add_data_activity.class);
+                    startActivity(configIntent);
                 }
-        });
-
+            });
+        }
        /* for (int i  = 0; i <8; i++) {
             FrameLayout frameLayout = (FrameLayout) View.inflate(this, R.layout.content_card, null);
             heading = frameLayout.findViewById(R.id.meal);
@@ -378,11 +370,7 @@ public class firstActivity extends AppCompatActivity {
             frameLayout.setPadding(0,5,0,0);
             linearLayout.addView(frameLayout);
         }*/
-        if(username.equals("ms418") || username.equals("sk261"))
-            linearLayout.addView(add_data);
         scrollview_news.addView(linearLayout);
-
-
     }
 
     public void logout() {
