@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#f6cd61"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="60dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
@@ -46,7 +46,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/black"
-                    fancy:fb_defaultColor="@color/true_white"
+                    fancy:fb_defaultColor="#cfd9df"
                     fancy:fb_focusColor="#B5BFC0"
                     fancy:fb_text="Log Out"
                     fancy:fb_textColor="@color/text_color" />
