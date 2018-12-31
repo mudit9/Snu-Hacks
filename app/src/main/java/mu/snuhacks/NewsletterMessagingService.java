@@ -1,5 +1,6 @@
 package mu.snuhacks;
 
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
 import java.util.Map;
 
 public class NewsletterMessagingService extends FirebaseMessagingService {
@@ -25,9 +27,25 @@ public class NewsletterMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){
-        if(remoteMessage.getData().size() > 0){
-            sendNotification(remoteMessage.getData());
+        if(!isAppActivityRunning()) {
+            if (remoteMessage.getData().size() > 0) {
+                sendNotification(remoteMessage.getData());
+            }
         }
+    }
+
+    private boolean isAppActivityRunning(){
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> info = manager.getRunningTasks(1); 
+        if(info != null) {
+            if("mu.snuhacks".equals(info.get(0).topActivity.getPackageName())){
+                return true;
+            } else{
+                return false;
+            }
+        }
+        //Better check condition to be added.
+        return false;
     }
 
     private void sendNotification(Map<String,String> data){
