@@ -26,8 +26,8 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.enableItemShiftingMode(false);
         bottomNavigationViewEx.enableShiftingMode(false);
         bottomNavigationViewEx.setTextVisibility(true);
-        bottomNavigationViewEx.setIconSize(23,23);
-        bottomNavigationViewEx.setTextSize(14);
+        bottomNavigationViewEx.setIconSize(21,21);
+        bottomNavigationViewEx.setTextSize(12);
         Typeface custom_font9 = Typeface.createFromAsset(context.getAssets(), "fonts/Junction-regular.otf");
         bottomNavigationViewEx.setTypeface(custom_font9);
 

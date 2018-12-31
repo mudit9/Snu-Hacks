@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -68,12 +69,20 @@ public class NewsletterMessagingService extends FirebaseMessagingService {
             mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             mNotificationManager.createNotificationChannel(mChannel);
         }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"fcm_channel")
+        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_layout);
+        contentView.setTextViewText(R.id.title,(bundle.getString("heading")));
+        contentView.setTextViewText(R.id.text, bundle.getString("content").substring(0,Math.min(bundle.getString("content").length(),40)));
+
+     /*   NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"fcm_channel")
                 .setSmallIcon(R.mipmap.iconfinal)
                 .setContentTitle(bundle.getString("heading"))
                 .setContentText(bundle.getString("content").substring(0,Math.min(bundle.getString("content").length(),40)) + "...")
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent); */
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"fcm_channel")
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContent(contentView);
+
         mNotificationManager.notify(0,builder.build());
     }
 
