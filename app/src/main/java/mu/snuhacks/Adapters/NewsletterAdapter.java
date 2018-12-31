@@ -45,28 +45,18 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
     }
 
     public void remove(firstActivity.NewsletterData data){
-        int flag = -1;
-        for(int i=0;i<newsletterData.size();i++){
-            if(newsletterData.get(i).getKey().equals(data.getKey())){
-                flag = i;
-            }
-        }
-        if(flag != -1){
-            newsletterData.remove(flag);
+        int index = getIndex(data);
+        if(index != -1){
+            newsletterData.remove(index);
             notifyDataSetChanged();
         }
     }
 
     public void changeData(firstActivity.NewsletterData data) {
-        int flag = -1;
-        for (int i = 0; i < newsletterData.size(); i++) {
-            if (newsletterData.get(i).getKey().equals(data.getKey())) {
-                flag = i;
-            }
-        }
-        if(flag !=-1){
-            newsletterData.get(flag).setHeading(data.getHeading());
-            newsletterData.get(flag).setContent(data.getContent());
+        int index = getIndex(data);
+        if(index != -1){
+            newsletterData.get(index).setHeading(data.getHeading());
+            newsletterData.get(index).setContent(data.getContent());
             notifyDataSetChanged();
         }
     }
@@ -77,8 +67,21 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
     }
 
     public void add(firstActivity.NewsletterData newsletter){
-        newsletterData.add(newsletter);
-        notifyDataSetChanged();
+        if(getIndex(newsletter) == -1) {
+            newsletterData.add(newsletter);
+            notifyDataSetChanged();
+        }
+    }
+
+    private int getIndex(firstActivity.NewsletterData  newsletter){
+        int flag = -1;
+        for (int i = 0; i < newsletterData.size(); i++) {
+            if (newsletterData.get(i).getKey().equals(newsletter.getKey())) {
+                flag = i;
+                break;
+            }
+        }
+        return flag;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
