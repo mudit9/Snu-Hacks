@@ -1,6 +1,7 @@
 package mu.snuhacks.Adapters;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,11 +87,14 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         private TextView content;
         private ImageButton editButton;
         private ImageButton deleteButton;
+        private CardView card;
 
         public ViewHolder(View view){
             super(view);
             heading = (TextView) view.findViewById(R.id.meal);
+            heading.setPadding(0,0,0,5);
             content = (TextView) view.findViewById(R.id.menu);
+            card = (CardView) view.findViewById(R.id.card);
             if(newsletterAdapterInterface != null){
                 editButton = (ImageButton) view.findViewById(R.id.edit_image_button);
                 deleteButton = (ImageButton) view.findViewById(R.id.delete_image_button);
@@ -102,6 +106,8 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         public void bind(final firstActivity.NewsletterData data){
             heading.setText(data.getHeading());
             content.setText(data.getContent());
+            //card.setCardBackgroundColor(Color.parseColor("#fff4e6"));
+
             if(newsletterAdapterInterface != null){
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override

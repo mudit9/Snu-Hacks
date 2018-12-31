@@ -59,6 +59,7 @@ public class firstActivity extends AppCompatActivity {
 
     TextView parsedHtmlNode;
     String password;
+    String name;
     // Bundle extras = getIntent().getExtras();
     String username;
     // Bundle extras = getIntent().getExtras();
@@ -92,6 +93,7 @@ public class firstActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         username = prefs.getString("username","");
         password = prefs.getString("password","");
+        name = prefs.getString("name","");
         setContentView(R.layout.firstscreen_test);
         //   if (extras != null) {
         //      username = extras.getString("username");
@@ -105,7 +107,6 @@ public class firstActivity extends AppCompatActivity {
         head = findViewById(R.id.heading);
         logoutButton = findViewById(R.id.logout_button);
 
-        head.setPadding(10,0,0,0);
         //  FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         scrollview_news = findViewById(R.id.scrollView_news);
@@ -114,14 +115,16 @@ public class firstActivity extends AppCompatActivity {
 
         // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Junction-regular.otf");
-        head.setPadding(0,5,0,0);
+        head.setPadding(10,5,0,0);
         head.setTypeface(custom_font2);
         Typeface custom_font7 = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
         parsedHtmlNode.setTypeface(custom_font7);
-        String htext = "<font color=#d11141>Welcome!</font>";
-        parsedHtmlNode.setTextSize(48);
+        name = name.split(" ")[0];
+        String htext = "<font size = 35 color=#d11141>Welcome </font>" + "<font size=20 color=#22222>" + name + "!</font>";
+        parsedHtmlNode.setTextSize(34);
         parsedHtmlNode.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
         parsedHtmlNode.setText(Html.fromHtml(htext));
+        parsedHtmlNode.setPadding(0,10,0,0);
 
         Superheading = findViewById(R.id.newsletter_text);
         String text = "<font color=#222222>News</font><font color=#d11141>letter</font>";
@@ -148,7 +151,6 @@ public class firstActivity extends AppCompatActivity {
         card_card2.setCardBackgroundColor(Color.parseColor("#fff4e6"));
         card_card3.setCardBackgroundColor(Color.parseColor("#fff4e6"));
         card_card4.setCardBackgroundColor(Color.parseColor("#fff4e6"));
-
 
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
@@ -288,6 +290,7 @@ public class firstActivity extends AppCompatActivity {
         newsletterView = new RecyclerView(this);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         newsletterView.setLayoutManager(manager);
+        linearLayout.setBackgroundColor(Color.parseColor("#f6cd61"));
         linearLayout.addView(newsletterView);
         Button configButton = new Button(this);
         configButton.setText("Change data");

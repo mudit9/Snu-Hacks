@@ -77,8 +77,9 @@ public class DataUsage extends AppCompatActivity {
         parsedHtmlNode = findViewById(R.id.welcome);
       //  Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/LifeSaver.ttf");
         // parsedHtmlNode.setTypeface(custom_font2);
-        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/ADAM.CG PRO.otf");
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Junction-regular.otf");
         head.setTypeface(custom_font2);
+        head.setPadding(10,5,0,0);
         setupBottomNavigationView();
 
         Circleprogress = findViewById(R.id.circle_progress);

@@ -1,63 +1,56 @@
 package mu.snuhacks;
 
 
-        import android.app.ProgressDialog;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.os.Handler;
-        import android.os.Message;
-        import android.support.v7.app.AppCompatActivity;
-        import android.text.Html;
-        import android.text.method.LinkMovementMethod;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-        //import com.google.analytics.tracking.android.EasyTracker;
-        import com.google.android.gms.ads.InterstitialAd;
-        import com.google.android.gms.ads.MobileAds;
-        import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-        import com.squareup.okhttp.Call;
-        import com.squareup.okhttp.Callback;
-        import com.squareup.okhttp.FormEncodingBuilder;
-        import com.squareup.okhttp.OkHttpClient;
-        import com.squareup.okhttp.Protocol;
-        import com.squareup.okhttp.Request;
-        import com.squareup.okhttp.RequestBody;
-        import com.squareup.okhttp.Response;
+import com.google.android.gms.ads.MobileAds;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
-        import org.jsoup.Connection;
-        import org.jsoup.Jsoup;
-        import org.jsoup.nodes.Document;
-        import org.jsoup.nodes.Element;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
-        import java.io.IOException;
-        import java.net.CookieManager;
-        import java.net.CookiePolicy;
-        import java.security.cert.CertificateException;
-        import java.util.Random;
+import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.security.cert.CertificateException;
+import java.util.Random;
 
-        import javax.net.ssl.HostnameVerifier;
-        import javax.net.ssl.SSLContext;
-        import javax.net.ssl.SSLSession;
-        import javax.net.ssl.SSLSocketFactory;
-        import javax.net.ssl.TrustManager;
-        import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
-        import mehdi.sakout.fancybuttons.FancyButton;
+import mehdi.sakout.fancybuttons.FancyButton;
 
-        import static java.lang.Math.random;
+//import com.google.analytics.tracking.android.EasyTracker;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity ";
     private Handler handler;
     private SharedPreferences prefs;
     private String NetId = null, password = null;
+    public String nam2;
     public SharedPreferences.Editor editor;
     public String[] messages = {"Aellow Ho raha hai... ","Loading.."};
     public Context mContext = MainActivity.this;
@@ -146,9 +139,10 @@ public class MainActivity extends AppCompatActivity {
   //              .post(requestBody)
     //            .build();
         Request request = new Request.Builder()
-                   .url("https://prodweb.snu.in/psp/CSPROD/EMPLOYEE/HRMS/h/?tab=DEFAULT")
+                   .url("https://hms.webapps.snu.edu.in/hostel/public/snuhostel/hostel/registerroom")
                  .post(requestBody)
                   .build();
+        Log.d("a",request.toString());
 
 
         Call call = client.newCall(request);
@@ -183,15 +177,30 @@ public class MainActivity extends AppCompatActivity {
                      * to show error in authentication. If this class is refereed
                      * then there is an error authenticating the user.
                      */
-                    Connection.Response html = Jsoup.connect("https://prodweb.snu.in/psp/CSPROD/EMPLOYEE/HRMS/h/?tab=DEFAULT")
-                            .data("userid", NetId)
-                            .data("pwd", password)
+
+                    Connection.Response html = Jsoup.connect("https://hms.webapps.snu.edu.in/hostel/public/login/")
+                            .data("UserID", NetId)
+                            .data("Password", password)
                             .userAgent("Mozilla")
                             .header("X-Requested-With", "XMLHttpRequest")
                             .method(Connection.Method.POST)
                             .execute();
 
                     Document doc = html.parse();
+                    Elements a = doc.getElementsByClass("glyphicon glyphicon-user");
+                    Elements b =  doc.getElementsByClass("pull-right");
+                    Log.d("a",doc.toString());
+                    Log.d("aaa",a.toString());
+                    Log.d("AAAA",b.text());
+                    String name2 = b.text();
+                    String an = name2.replaceAll("Welcome", "");
+                    String name = an.replaceAll("[Logout]", "");
+                    name = name.trim();
+                    Log.d("name",name);
+                    nam2 = name2.substring(8, name2.length()-9);
+                    name2 = nam2.trim();
+                    Log.d("name",nam2);
+
                     dialog.dismiss();
                 //    Log.d("#","BLAH" + doc.toString());
                    String responseData = response.toString();
@@ -204,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                          * If true then wrong SNU Net ID.
                          * Else wrong password.
                          */
-                        if (responseData.contains("You are not a valid user of the system")) {
+                        if (responseData.contains("Please Enter SNU Net ID")) {
                             Message message = handler.obtainMessage(1);
                             message.sendToTarget();
                         } else {
@@ -219,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
                         editor = prefs.edit();
                         editor.putString("username", NetId);
                         editor.putString("password", password);
+                        editor.putString("name",nam2);
                         editor.apply();
                         Intent startFirst = new Intent(MainActivity.this, firstActivity.class);
                         startActivity(startFirst);

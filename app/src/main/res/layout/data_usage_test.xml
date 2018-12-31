@@ -9,8 +9,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background8"
-        android:layout_marginBottom="75dp"
+        android:background="#6f7c85"
+        android:layout_marginBottom="60dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
@@ -38,7 +38,6 @@
                     android:drawableLeft="@drawable/ic_data_usage"
                     android:gravity="center|right|center_vertical"
                     android:id="@+id/heading"
-                    android:drawableTint="@color/white"
                     android:text="Data Usage"
                     android:drawablePadding="10dp"
                     android:textColor="@color/black"
