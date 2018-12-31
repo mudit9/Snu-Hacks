@@ -28,6 +28,7 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
     public interface NewsletterAdapterInterface {
         void onEdit(firstActivity.NewsletterData newsletter);
         void onDelete(firstActivity.NewsletterData newsletter);
+        void sendNotification(firstActivity.NewsletterData newsletter);
     }
 
     @NonNull
@@ -87,6 +88,7 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         private TextView content;
         private ImageButton editButton;
         private ImageButton deleteButton;
+        private ImageButton sendNotificationButton;
         private CardView card;
 
         public ViewHolder(View view){
@@ -98,8 +100,10 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
             if(newsletterAdapterInterface != null){
                 editButton = (ImageButton) view.findViewById(R.id.edit_image_button);
                 deleteButton = (ImageButton) view.findViewById(R.id.delete_image_button);
+                sendNotificationButton = (ImageButton) view.findViewById(R.id.send_notification_image_button);
                 editButton.setVisibility(View.VISIBLE);
                 deleteButton.setVisibility(View.VISIBLE);
+                sendNotificationButton.setVisibility(View.VISIBLE);
             }
         }
 
@@ -119,6 +123,12 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
                     @Override
                     public void onClick(View v) {
                         newsletterAdapterInterface.onDelete(data);
+                    }
+                });
+                sendNotificationButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        newsletterAdapterInterface.sendNotification(data);
                     }
                 });
             }

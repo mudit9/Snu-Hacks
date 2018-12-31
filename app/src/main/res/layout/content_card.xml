@@ -43,11 +43,20 @@
                     android:id="@+id/edit_image_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:background="@null"
                     android:src="@drawable/baseline_edit_black_24"
                     android:layout_alignParentLeft="true"
                     android:visibility="gone"/>
+
+                <ImageButton
+                    android:id="@+id/send_notification_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_send_black_24"
+                    android:background="@null"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    />
 
                 <ImageButton
                     android:id="@+id/delete_image_button"

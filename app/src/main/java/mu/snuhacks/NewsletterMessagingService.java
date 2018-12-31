@@ -33,6 +33,7 @@ public class NewsletterMessagingService extends FirebaseMessagingService {
     private void sendNotification(Map<String,String> data){
         Bundle bundle = new Bundle();
         for(Map.Entry<String,String> entry : data.entrySet()){
+            Log.e(TAG,entry.getValue());
             bundle.putString(entry.getKey(),entry.getValue());
         }
         Intent startAppIntent = new Intent(this,MainActivity.class);

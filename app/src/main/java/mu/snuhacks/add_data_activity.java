@@ -2,6 +2,7 @@ package mu.snuhacks;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +23,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import mu.snuhacks.Adapters.NewsletterAdapter;
 
@@ -209,5 +221,57 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
         });
         AlertDialog deleteDialog = builder.create();
         deleteDialog.show();
+    }
+
+    @Override
+    public void sendNotification(final firstActivity.NewsletterData newsletter) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(add_data_activity.this);
+        builder.setTitle("Send Notification?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                OkHttpClient client = new OkHttpClient();
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("heading", newsletter.getHeading());
+                    object.put("content", newsletter.getContent());
+                    object.put("api_key", getString(R.string.firebase_cf_api_key));
+                    Request request = new Request.Builder()
+                            .url("https://us-central1-snuhacks.cloudfunctions.net/sendMessage")
+                            .addHeader("Content-Type","application/x-www-form-urlencoded")
+                            .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),object.toString()))
+                            .build();
+                    client.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            Log.d(TAG,"Failure");
+                        }
+
+                        @Override
+                        public void onResponse(final Response response){
+                            Handler handler = new Handler(getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(add_data_activity.this,response.toString(),Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    });
+                } catch(Exception exception){
+                    Log.d(TAG,"Exception:- " + exception.getMessage());
+                }
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG,"Send notification cancelled");
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
