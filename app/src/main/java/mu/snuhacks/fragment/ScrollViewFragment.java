@@ -1,12 +1,13 @@
 package mu.snuhacks.fragment;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -25,20 +26,21 @@ import mu.snuhacks.R;
 public class ScrollViewFragment extends Fragment {
 
     private TextView meal1,meal2,meal3;
+    private static Context mContext;
 
-
-    public static ScrollViewFragment newInstance(String title, ArrayList<String> menu_full){
+    public static ScrollViewFragment newInstance(String title, ArrayList<String> menu_full, Context context){
         Bundle args = new Bundle();
         args.putString("title",title);
         args.putStringArrayList("menu",menu_full);
         ScrollViewFragment fragment = new ScrollViewFragment();
         fragment.setArguments(args);
+        mContext = context;
         return fragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         return inflater.inflate(R.layout.fragment_scroll, container, false);
     }
 
@@ -58,7 +60,7 @@ public class ScrollViewFragment extends Fragment {
             String textToHighlight2 = "Paneer";
             // Construct the formatted text
             String replacedWith = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
-            String replacedWith2 = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
+            String replacedWith2 = "<b><font color= #13c000>" + textToHighlight2 + "</font></b>";
 
             // Get the text from TextView
             String originalString = Menu_full.get(j);
@@ -84,10 +86,26 @@ public class ScrollViewFragment extends Fragment {
         TextView menu2 = cardView2.findViewById(R.id.menu);
         TextView menu3 = cardView3.findViewById(R.id.menu);
 
+        Typeface custom_font2 = Typeface.createFromAsset(mContext.getAssets(), "fonts/RegencieLight.ttf");
+
 
         meal1.setText("Breakfast");
         meal2.setText("Lunch");
         meal3.setText("Dinner");
+
+        meal1.setTypeface(custom_font2);
+        meal2.setTypeface(custom_font2);
+        meal3.setTypeface(custom_font2);
+        menu1.setTextSize(15);
+        menu2.setTextSize(15);
+        menu3.setTextSize(15);
+
+
+        Typeface custom_font = Typeface.createFromAsset(mContext.getAssets(), "fonts/Junction-regular.otf");
+        menu1.setTypeface(custom_font);
+        menu2.setTypeface(custom_font);
+        menu3.setTypeface(custom_font);
+
         menu1.setText(Html.fromHtml(Menu_full.get(0)));
         menu2.setText(Html.fromHtml(Menu_full.get(1)));
         menu3.setText(Html.fromHtml(Menu_full.get(2)));

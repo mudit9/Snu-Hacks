@@ -1,5 +1,7 @@
 package mu.snuhacks.Adapters;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -22,8 +24,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     protected static final int TYPE_HEADER = 0;
     protected static final int TYPE_CELL = 1;
     public ArrayList<String> Menu_full;
-    public RecyclerAdapter(ArrayList<String> menu_full){
+    private Context mContext;
+    public RecyclerAdapter(ArrayList<String> menu_full, Context context){
         Menu_full = menu_full;
+        mContext = context;
     }
 
     @Override
@@ -61,12 +65,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         Log.d("afa",""+i);
+        Typeface custom_font = Typeface.createFromAsset(mContext.getAssets(), "fonts/Junction-regular.otf");
+        Typeface custom_font2 = Typeface.createFromAsset(mContext.getAssets(), "fonts/RegencieLight.ttf");
+
         for(int j = 0; j<3; j++){
             String textToHighlight = "Chicken";
             String textToHighlight2 = "Paneer";
             // Construct the formatted text
-            String replacedWith = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
-            String replacedWith2 = "<b><font color= #13c000>" + textToHighlight + "</font></b>";
+            String replacedWith = "<b><font color= #13c000>"+textToHighlight+"</font></b>";
+            String replacedWith2 = "<b><font color= #13c000>"+textToHighlight2+"</font></b>";
 
             // Get the text from TextView
             String originalString = Menu_full.get(j);
@@ -77,17 +84,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             Log.d("Tag",modifiedString);
             Menu_full.set(j,modifiedString);
+
         }
         if (i == 1){
+
+            holder.menu.setTypeface(custom_font);
+            holder.meal.setTypeface(custom_font2);
+            holder.menu.setTextSize(15);
             holder.meal.setText("Breakfast");
             holder.menu.setText(Html.fromHtml(Menu_full.get(i-1)));
         }
         if (i == 2){
+            holder.menu.setTypeface(custom_font);
+            holder.meal.setTypeface(custom_font2);
+            holder.menu.setTextSize(15);
             holder.meal.setText("Lunch");
             holder.menu.setText(Html.fromHtml(Menu_full.get(i-1)));
 
         }
         if (i == 3){
+            holder.menu.setTypeface(custom_font);
+            holder.meal.setTypeface(custom_font2);
+            holder.menu.setTextSize(15);
             holder.meal.setText("Dinner");
             holder.menu.setText(Html.fromHtml(Menu_full.get(i-1)));
 

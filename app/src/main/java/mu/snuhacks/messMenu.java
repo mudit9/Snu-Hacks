@@ -1,4 +1,5 @@
 package mu.snuhacks;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -6,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,7 +62,7 @@ public class messMenu extends AppCompatActivity {
         //toolbar.setTitleTextColor(0xFFFFFFFF);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mProgressbar = findViewById(R.id.ProgressBar);
-        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/ADAM.CG PRO.otf");
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/RegencieLight.ttf");
         head.setTypeface(custom_font2);
         avi3= (AVLoadingIndicatorView) findViewById(R.id.avielement3);
         JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
@@ -124,6 +126,7 @@ public class messMenu extends AppCompatActivity {
                 try {
                     Document document2 = response.parse();
                     Element elementsByTag = document2.getElementsByClass("table table-striped table-bordered table-hover").get(1);
+                    Log.e("aaaAAAA",elementsByTag.toString());
                     Element elementsByTags = elementsByTag.getElementsByTag("tbody").get(0);
                     Element elementsByTags1 = elementsByTags.getElementsByTag("tr").get(0);
                     Elements elementByTags2 = elementsByTags1.getElementsByTag("td");
@@ -140,13 +143,18 @@ public class messMenu extends AppCompatActivity {
                     }
 
                     Element elementsByTag1 = document2.getElementsByClass("table table-striped table-bordered table-hover").get(0);
+                    Log.e("aaa",elementsByTag1.toString());
                     Element elementsByTags2 = elementsByTag1.getElementsByTag("tbody").get(0);
                     Element elementsByTags3 = elementsByTags2.getElementsByTag("tr").get(0);
+                    Log.e("aaaaa",elementsByTags3.toString());
+
                     Elements elementByTags4 = elementsByTags3.getElementsByTag("td");
+                    Log.e("aaaaaaaa",elementByTags4.toString());
+
                     try{
-                        breakfast2 = elementByTags4.get(1).text();
-                        lunch2 = elementByTags4.get(2).text();
-                        dinner2 = elementByTags4.get(3).text(); }
+                        breakfast1 = elementByTags4.get(1).text();
+                        lunch1 = elementByTags4.get(2).text();
+                        dinner1 = elementByTags4.get(3).text(); }
                     catch (Exception e)
                     {
                         e.printStackTrace();
@@ -158,6 +166,9 @@ public class messMenu extends AppCompatActivity {
                     dh1_menu = new ArrayList<>(Arrays.asList(breakfast1, lunch1, dinner1));
 
                     dh2_menu = new ArrayList<>(Arrays.asList(breakfast2, lunch2, dinner2));
+                    Log.d("tag",dh1_menu.toString());
+                    Log.d("tag",dh2_menu.toString());
+
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -189,11 +200,15 @@ public class messMenu extends AppCompatActivity {
                         Fragment fragment = new RecyclerViewFragment();
                         Bundle bundle = new Bundle();
                         bundle.putStringArrayList("dh1_menu", dh1_menu);
+                        Log.d("aax",dh1_menu.toString());
                         fragment.setArguments(bundle);
                         return fragment;
                     }
-                    else
-                        return ScrollViewFragment.newInstance((String) getPageTitle(position),dh2_menu);
+                    else {
+                        Log.d("aaxs",dh2_menu.toString());
+
+                        return ScrollViewFragment.newInstance((String) getPageTitle(position), dh2_menu, getApplicationContext());
+                    }
                 }
 
                 @Override
