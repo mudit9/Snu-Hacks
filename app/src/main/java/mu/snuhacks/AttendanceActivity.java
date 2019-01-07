@@ -59,7 +59,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
     public void changeFragment(final Fragment oldFragment) {
         final Fragment newFragment = Fragment1.newInstance();
-                animateOnTop(oldFragment, newFragment);
+                animateDefault(oldFragment, newFragment);
         }
 
     private void animateDefault(final Fragment oldFragment, final Fragment newFragment){
