@@ -11,6 +11,7 @@ import com.github.florent37.depth.Depth;
 import com.github.florent37.depth.DepthProvider;
 
 public class Fragment1 extends Fragment {
+    private Depth depth;
 
     public static Fragment newInstance() {
         Log.d("tag","fragment1 created");
@@ -23,8 +24,12 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("tag","fragment1 created here ");
+        View view = inflater.inflate(R.layout.depth_fragment_1,container,false);
+        Log.d("tag",view.toString());
+     //   this.depth = DepthProvider.getDepth(getActivity().getApplicationContext());
+     //   depth.onFragmentReady(this);
 
-        return inflater.inflate(R.layout.depth_fragment_1, container, false);
+        return view;
     }
 
     @Override
@@ -34,6 +39,8 @@ public class Fragment1 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final Depth depth = DepthProvider.getDepth(view.getContext());
         depth.onFragmentReady(this);
+    //    final Depth depth = DepthProvider.getDepth(view.getContext());
+     //   depth.onFragmentReady(this);
     }
 
 }
