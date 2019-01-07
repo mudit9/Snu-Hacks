@@ -8,9 +8,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
 
 import com.github.florent37.depth.Depth;
 import com.github.florent37.depth.DepthProvider;
+import com.github.florent37.depth.animations.EnterConfiguration;
+import com.github.florent37.depth.animations.ExitConfiguration;
 import com.github.florent37.depth.animations.ReduceConfiguration;
 
 import java.util.ArrayList;
@@ -21,13 +24,16 @@ public class AttendanceActivity extends AppCompatActivity {
     private Toolbar toolbar3;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    final Depth depth = DepthProvider.getDepth(this);
+    private Depth depth;
+    private FrameLayout frame;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance_layout_test);
+        //frame = findViewById(R.id.framelayout);
+        depth = DepthProvider.getDepth(this);
  /*      depth
                 .animate()
                 .reduce(MarkAttendanceF)
@@ -47,13 +53,13 @@ public class AttendanceActivity extends AppCompatActivity {
 
         tabLayout =  findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        //depth.setFragmentContainer(R.id.fragment_container);
+        depth.setFragmentContainer(R.id.framelayout);
 
     }
 
     public void changeFragment(final Fragment oldFragment) {
         final Fragment newFragment = Fragment1.newInstance();
-                animateDefault(oldFragment, newFragment);
+                animateOnTop(oldFragment, newFragment);
         }
 
     private void animateDefault(final Fragment oldFragment, final Fragment newFragment){
@@ -64,7 +70,26 @@ public class AttendanceActivity extends AppCompatActivity {
                 .enter(newFragment)
                 .start();
     }
+    private void animateOnTop(final Fragment oldFragment, final Fragment newFragment){
+        depth
+                .animate()
+                .reduce(oldFragment, new ReduceConfiguration()
+                        .setRotationZ(0f)
+                        .setRotationX(30f)
+                )
 
+                .exit(oldFragment, new ExitConfiguration()
+                        .setFinalXPercent(0f)
+                        .setFinalYPercent(-1f)
+                )
+                .enter(newFragment, new EnterConfiguration()
+                        .setInitialXPercent(0f)
+                        .setInitialYPercent(1f)
+                        .setInitialRotationZ(0f)
+                        .setInitialRotationX(30f)
+                )
+                .start();
+    }
     public void openResetFragment(final Fragment fragment) {
         depth
                 .animate()

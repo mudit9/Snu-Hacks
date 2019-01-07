@@ -1,33 +1,51 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/red"
+    android:id="@+id/parent_layout1">
 
-    <ImageView
-        android:id="@+id/water_scene"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@color/red" />
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        android:id="@+id/swipe_to_refresh1">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <View
-            android:id="@+id/next"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/ic_data_usage" />
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/attendance_recycler_view1"
+                android:visibility="gone"/>
 
-        <View
-            android:id="@+id/open_reset"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/ic_data_usage" />
-    </LinearLayout>
-</RelativeLayout>
+            <View
+                android:id="@+id/buttonView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="216dp"
+                android:background="@drawable/ic_data_usage"
+                android:gravity="center">
+            </View>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/empty_text_view1"
+                android:text="No attendance data available"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+
+                />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</android.support.constraint.ConstraintLayout>
