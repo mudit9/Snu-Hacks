@@ -45,6 +45,9 @@
             android:name=".DataUsage"
             android:label="SnuHacks" />
         <activity
+            android:name=".AttendanceActivity"
+            android:label="SnuHacks" />
+        <activity
             android:name=".firstActivity"
             android:label="SnuHacks" />
         <activity

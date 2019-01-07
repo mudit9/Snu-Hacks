@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parent_layout">
+    android:background="@color/green"
+    android:id="@+id/parent_layout_here">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
@@ -27,9 +28,7 @@
             android:id="@+id/empty_text_view"
             android:text="No attendance data available"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"
-            />
+            android:layout_centerHorizontal="true" />
 
         </RelativeLayout>
 

@@ -36,6 +36,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
+    implementation 'com.github.florent37:depth:1.0.0'
     implementation 'com.github.florent37:diagonallayout:1.0.9'
     implementation 'junit:junit:4.12'
     implementation 'com.android.support.constraint:constraint-layout:1.0.0'
