@@ -16,24 +16,20 @@
         android:paddingBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTint="@color/true_white"
-            android:drawableLeft="@drawable/ic_arrow"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="MESS MENU"
+            android:text="Mess Menu"
             android:drawablePadding="12sp"
             android:textStyle="bold"
             android:textColor="@color/true_white"
             android:textSize="25sp"
             android:id="@+id/heading"
-            android:paddingLeft="20dp"
+            android:paddingLeft="5dp"
             android:drawableTint="@color/true_white"
-            android:drawableRight="@drawable/ic_mess_menu"
+            android:drawableLeft="@drawable/ic_mess_menu"
             />
         </android.support.v7.widget.Toolbar>
     <ProgressBar

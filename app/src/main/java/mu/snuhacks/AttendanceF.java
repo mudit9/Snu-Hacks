@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.florent37.depth.Depth;
+import com.github.florent37.depth.DepthProvider;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,7 +55,8 @@ public class AttendanceF extends Fragment {
     private ArrayList<AttendanceData> attendanceData;
     private String netId;
     private String password;
-    private boolean isConnected = false;
+    private Depth depth;
+    private boolean isConnected = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -67,6 +71,11 @@ public class AttendanceF extends Fragment {
             startActivity(loginIntent);
         }
         attendanceData = new ArrayList<AttendanceData>();
+    }
+
+    public static Fragment newInstance() {
+        final Fragment fragment1 = new AttendanceF();
+        return fragment1;
     }
 
     @Override
@@ -84,25 +93,31 @@ public class AttendanceF extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent,Bundle savedInstanceState){
-        View view = layoutInflater.inflate(R.layout.attendance_fragment,parent,false);
-        constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout);
+        this.depth = DepthProvider.getDepth(parent);
+        Log.d("tag","creating AttendanceF");
+        View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment, parent, false));
+        constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here);
+
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
         attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
         emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
+        FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
+      //  fetchAttendanceTask3.execute(new String[]{netId,password});
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.d(TAG,"onRefresh() called");
-                FetchAttendanceTask fetchAttendanceTask = new FetchAttendanceTask();
-                fetchAttendanceTask.execute(new String[]{netId,password});
+
             }
         };
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
             emptyTextView.setVisibility(View.VISIBLE);
             attendanceView.setVisibility(View.GONE);
+            Log.d(TAG,"Executing hereaa");
+
         } else{
             try {
                 attendanceData = (ArrayList<AttendanceData>) ObjectSerializer.deserialize(attendace);
@@ -110,9 +125,17 @@ public class AttendanceF extends Fragment {
                 Log.d(TAG,"Exception:- " + exception.getMessage());
             }
             emptyTextView.setVisibility(View.GONE);
+            Log.d(TAG,"Executing here2aaws");
+
             attendanceView.setVisibility(View.VISIBLE);
+            Log.d(TAG,"Executing here2aaewew");
+
             adapter = new AttendanceAdapter(attendanceData);
+            Log.d(TAG,"Executing here2aaewew");
+
             attendanceView.setAdapter(adapter);
+            Log.d(TAG,"Executing here2aaqeqe");
+
         }
         return view;
     }
@@ -146,6 +169,7 @@ public class AttendanceF extends Fragment {
         @Override
         public void onPreExecute(){
             Log.d(TAG,"onPreExecute() executing");
+            Log.d(TAG, "aafafa");
             if(!swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(true);
             }
@@ -176,6 +200,7 @@ public class AttendanceF extends Fragment {
                     } catch (Exception e) {
                         throw   new RuntimeException(e);
                     }
+                    Log.d(TAG,"Executing here");
                     Connection.Response login = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
                             .data("login_user_name", credentials[0])
                             .data("login_password", credentials[1])
@@ -183,11 +208,15 @@ public class AttendanceF extends Fragment {
                             .header("X-Requested-With", "XMLHttpRequest")
                             .method(Connection.Method.POST)
                             .execute();
+                    Log.d(TAG,"Executing here2");
+
                     Document loginDoc = login.parse();
                     Elements errorElements = loginDoc.getElementsByClass("alert-warning");
                     if(errorElements.size() != 0){
                         return new AttendanceResponse(null,"Invalid Credentials");
                     } else {
+                        Log.d(TAG,"Executing here3");
+
                         Connection.Response checkAttendance = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/summary")
                                 .userAgent("Mozilla")
                                 .header("X-Requested-With", "XMLHttpRequest")
