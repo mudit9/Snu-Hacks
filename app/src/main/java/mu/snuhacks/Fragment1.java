@@ -24,11 +24,11 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("tag","fragment1 created here ");
-        View view = inflater.inflate(R.layout.depth_fragment_1,container,false);
+        this.depth = DepthProvider.getDepth(getContext());
+        View view = depth.setupFragment(10f, 10f, inflater.inflate(R.layout.mark_attendance_f, container, false));
         Log.d("tag",view.toString());
      //   this.depth = DepthProvider.getDepth(getActivity().getApplicationContext());
      //   depth.onFragmentReady(this);
-
         return view;
     }
 
