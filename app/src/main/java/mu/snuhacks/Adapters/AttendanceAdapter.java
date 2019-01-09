@@ -60,6 +60,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         public ViewHolder(View view){
             super(view);
             expansionLayout = (ExpansionLayout) view.findViewById(R.id.expansion_layout);
+            expansionLayoutCollection.openOnlyOne(false);
+           // expansionLayout.setEnable(false);
             courseName = (TextView) view.findViewById(R.id.course_name);
             courseAttendance = (TextView) view.findViewById(R.id.course_attendance);
         }
@@ -71,14 +73,15 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 attendance = Float.parseFloat(data.getCourseAttendance());
             } catch(Exception exception){
                 Log.d(TAG,"Exception:- " + exception.getMessage());
+                attendance = 0.0f;
             }
-            if(attendance > 75){
+            if(attendance <75){
                  courseAttendance.setTextColor(Color.parseColor("#ff0000"));
             } else{
                 courseAttendance.setTextColor(Color.parseColor("#13c000"));
             }
             courseAttendance.setText(data.getCourseAttendance());
-            expansionLayout.collapse(false);
+            expansionLayout.collapse(true);
         }
 
         public ExpansionLayout getExpansionLayout(){

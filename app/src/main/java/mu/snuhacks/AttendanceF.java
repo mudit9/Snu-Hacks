@@ -61,6 +61,7 @@ public class AttendanceF extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreateCalled");
         mWifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
         netId = sharedPreferences.getString("username","");
@@ -81,6 +82,7 @@ public class AttendanceF extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Log.d(TAG,"onResume() called");
         checkAndModifyWifiState();
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -97,19 +99,17 @@ public class AttendanceF extends Fragment {
         Log.d("tag","creating AttendanceF");
         View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment, parent, false));
         constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here);
-
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
         attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
         emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
-        FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-      //  fetchAttendanceTask3.execute(new String[]{netId,password});
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
-
             }
         };
         String attendace = sharedPreferences.getString("attendance","");
@@ -141,8 +141,10 @@ public class AttendanceF extends Fragment {
     }
 
     private void checkAndModifyWifiState(){
+        Log.d(TAG,"checkModifyState() executing");
         if(mWifiManager != null && !isConnected){
             if(!mWifiManager.isWifiEnabled()){
+                Log.d(TAG,"Wifi enabled");
                 mWifiManager.setWifiEnabled(true);
             }
             if(mWifiManager.getConnectionInfo().getSSID().equals("Student")){
@@ -153,10 +155,13 @@ public class AttendanceF extends Fragment {
                     if (configuration.SSID.equals("Student")) {
                         mWifiManager.disconnect();
                         mWifiManager.enableNetwork(configuration.networkId,true);
+                        Log.d(TAG,"Trying");
                         isConnected = mWifiManager.reconnect();
                     }
                 }
             }
+        } else{
+            Log.d(TAG,"mWifiManager null");
         }
     }
 
@@ -265,7 +270,7 @@ public class AttendanceF extends Fragment {
                         editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
                         editor.apply();
                     } catch (IOException exception) {
-                        Log.d(TAG, "Exception:- " + exception.getMessage());
+                        Log.d(TAG, "IOException:- " + exception.getMessage());
                     }
                     emptyTextView.setVisibility(View.GONE);
                     attendanceView.setVisibility(View.VISIBLE);

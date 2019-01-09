@@ -31,13 +31,6 @@
         <activity
             android:name=".About"
             android:label="SnuHacks" />
-        <service
-            android:name=".NewsletterMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
         <activity
             android:name=".Attendance"
             android:label="SnuHacks" />
@@ -58,6 +51,15 @@
             android:label="SnuHacks" />
         <activity android:name=".add_data_activity"
             android:label="SnuHacks"/>
+        <service
+            android:name=".NewsletterMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 
