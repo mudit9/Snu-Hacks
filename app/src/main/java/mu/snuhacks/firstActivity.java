@@ -110,24 +110,23 @@ public class firstActivity extends AppCompatActivity {
         //  FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         scrollview_news = findViewById(R.id.scrollView_news);
-        Typeface custom_font9 = Typeface.createFromAsset(getAssets(), "fonts/Biko_Regular.otf");
-
+        Typeface custom_font9 = Typeface.createFromAsset(getAssets(), "fonts/Oregon LDO.ttf");
 
         // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Junction-regular.otf");
         head.setPadding(10,5,0,0);
         head.setTypeface(custom_font2);
-        Typeface custom_font7 = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
+        Typeface custom_font7 = Typeface.createFromAsset(getAssets(), "fonts/Animales Fantastic.otf");
         parsedHtmlNode.setTypeface(custom_font7);
         name = name.split(" ")[0];
-        String htext = "<font size = 35 color=#d11141>Welcome </font>" + "<font size=20 color=#22222>" + name + "!</font>";
-        parsedHtmlNode.setTextSize(34);
-        parsedHtmlNode.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
+        String htext = "<font size = 35 color=#FFFFFF>Welcome </font>" + "<font size=20 color=#FFFFFF>" + name + "!</font>";
+        parsedHtmlNode.setTextSize(31);
+       // parsedHtmlNode.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
         parsedHtmlNode.setText(Html.fromHtml(htext));
         parsedHtmlNode.setPadding(0,10,0,0);
 
         Superheading = findViewById(R.id.newsletter_text);
-        String text = "<font color=#222222>News</font><font color=#d11141>letter</font>";
+        String text = "<font color=#FFFFFF>News</font><font color=#d11141>letter</font>";
         Superheading.setShadowLayer(3,0,4,Color.parseColor("#8595a1"));
 
         Superheading.setText(Html.fromHtml(text));
@@ -139,60 +138,64 @@ public class firstActivity extends AppCompatActivity {
         data_layout = findViewById(R.id.data_layout);
         card1 = data_layout.findViewById(R.id.card1);
         card2 = data_layout.findViewById(R.id.card2);
-        card3 = data_layout.findViewById(R.id.card3);
-        card4 = data_layout.findViewById(R.id.card4);
+      //  card3 = data_layout.findViewById(R.id.card3);
+      //  card4 = data_layout.findViewById(R.id.card4);
 
         card_card1 = card1.findViewById(R.id.card);
         card_card2 = card2.findViewById(R.id.card);
-        card_card3 = card3.findViewById(R.id.card);
-        card_card4 = card4.findViewById(R.id.card);
+     //   card_card3 = card3.findViewById(R.id.card);
+     //   card_card4 = card4.findViewById(R.id.card);
 
-        card_card1.setCardBackgroundColor(Color.parseColor("#fff4e6"));
-        card_card2.setCardBackgroundColor(Color.parseColor("#fff4e6"));
-        card_card3.setCardBackgroundColor(Color.parseColor("#fff4e6"));
-        card_card4.setCardBackgroundColor(Color.parseColor("#fff4e6"));
+        card_card1.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+        card_card2.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+   //     card_card3.setCardBackgroundColor(Color.parseColor("#fff4e6"));
+     //   card_card4.setCardBackgroundColor(Color.parseColor("#fff4e6"));
 
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
         card1.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
         card2.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
-        card3.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
-        card4.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
+      //  card3.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
+      //  card4.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
 
         card1.setPadding(20,5,5,5);
         card2.setPadding(5,5,20,5);
-        card3.setPadding(20,5,5,5);
-        card4.setPadding(5,5,20,5);
+      //  card3.setPadding(20,5,5,5);
+      //  card4.setPadding(5,5,20,5);
 
         heading1 = card1.findViewById(R.id.meal);
         heading2 = card2.findViewById(R.id.meal);
-        heading3 = card3.findViewById(R.id.meal);
-        heading4 = card4.findViewById(R.id.meal);
+     //   heading3 = card3.findViewById(R.id.meal);
+     //   heading4 = card4.findViewById(R.id.meal);
+
+      //  card3.setVisibility(View.GONE);
+      //  card4.setVisibility(View.GONE);
+
 
         String xtext = "<font color=#00b159 size =19>Total</font><font size =19 color=#3b5998> attendance</font>";
         heading1.setText(Html.fromHtml(xtext));
         xtext = "<font color=#00b159 size =19>Data</font><font size =19 color=#3b5998> Used</font>";
         heading2.setText(Html.fromHtml(xtext));
         xtext = "<font color=#00b159 size =19>Dh1</font><font size =19 color=#3b5998> Menu</font>";
-        heading3.setText(Html.fromHtml(xtext));
+//        heading3.setText(Html.fromHtml(xtext));
         xtext = "<font color=#00b159 size =19>Dh2</font><font size =19 color=#3b5998> Menu</font>";
-        heading4.setText(Html.fromHtml(xtext));
+     //   heading4.setText(Html.fromHtml(xtext));
 
 
-        int TextSize = 17;
+        int TextSize = 18;
 
         heading1.setTextSize(TextSize);
         heading2.setTextSize(TextSize);
-        heading3.setTextSize(TextSize);
-        heading4.setTextSize(TextSize);
+       // heading3.setTextSize(TextSize);
+       // heading4.setTextSize(TextSize);
 
 
 
         heading1.setTypeface(custom_font9);
         heading2.setTypeface(custom_font9);
-        heading3.setTypeface(custom_font9);
-        heading4.setTypeface(custom_font9);
-        aboutButton = findViewById(R.id.aboutButton);
+       // heading3.setTypeface(custom_font9);
+       // heading4.setTypeface(custom_font9);
+     /*   aboutButton = findViewById(R.id.aboutButton);
         aboutButton.setVisibility(View.GONE);
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +203,7 @@ public class firstActivity extends AppCompatActivity {
                 Intent intent = new Intent(firstActivity.this,About.class);
                 startActivity(intent);
             }
-        });
+        }); */
         setScrollview_news();
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,13 +287,12 @@ public class firstActivity extends AppCompatActivity {
         Superheading.setTextColor(Color.parseColor("#B73038"));
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/SF_Speakeasy.ttf");
         Superheading.setTypeface(custom_font);
-        LinearLayout linearLayout = new LinearLayout(this);
+        LinearLayout linearLayout = findViewById(R.id.linearlayout_news);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-       // linearLayout.addView(Superheading);
         newsletterView = new RecyclerView(this);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         newsletterView.setLayoutManager(manager);
-        linearLayout.setBackgroundColor(Color.parseColor("#f6cd61"));
+       // linearLayout.setBackgroundColor(Color.parseColor("#f6cd61"));
         linearLayout.addView(newsletterView);
         Button configButton = new Button(this);
         configButton.setText("Change data");
@@ -313,7 +315,7 @@ public class firstActivity extends AppCompatActivity {
             frameLayout.setPadding(0,5,0,0);
             linearLayout.addView(frameLayout);
         }*/
-        scrollview_news.addView(linearLayout);
+        //scrollview_news.addView(linearLayout);
     }
 
     public void logout() {

@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:diagonal="http://schemas.android.com/apk/res-auto"
     xmlns:fancy="http://schemas.android.com/tools">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,7 +9,7 @@
      xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f6cd61"
+        android:background="@color/true_white"
         android:layout_marginBottom="60dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
@@ -17,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/viewpager_margin"
-            android:background="@drawable/black_border_bottom"
+            android:background="@color/true_white"
             android:paddingBottom="5dp">
 
             <RelativeLayout
@@ -46,54 +47,80 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/black"
-                    fancy:fb_defaultColor="#cfd9df"
+                    fancy:fb_defaultColor="@color/true_white"
                     fancy:fb_focusColor="#B5BFC0"
                     fancy:fb_text="Log Out"
                     fancy:fb_textColor="@color/text_color" />
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000"
+            android:orientation="vertical">
 
         <TextView
             android:id="@+id/welcome5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:text="@string/parse_html"
+            android:layout_marginTop="3dp"
             android:textAlignment="center"
             android:textSize="60sp" />
-
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/aboutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="132dp"
-            android:layout_marginLeft="132dp"
-            fancy:fb_defaultColor="@color/black"
-            fancy:fb_focusColor="#B5BFC0"
-            fancy:fb_text="Developers"
-            fancy:fb_textColor="@color/white" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:background="@color/true_white"
+            android:layout_marginBottom="3dp"/>
+   </LinearLayout>
 
         <include layout="@layout/first_screen_data"
             android:id="@+id/data_layout" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/newsletter_text"
-            android:paddingBottom="5dp"
-            android:textSize="50dp"
-            android:textAlignment="center"
-            android:paddingTop="5dp"/>
+
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView_news">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/linearlayout_news"
+                android:layout_height="match_parent">
+            <com.github.florent37.diagonallayout.DiagonalLayout
+                android:id="@+id/diagonalLayout"
+                android:layout_width="match_parent"
+                android:layout_height="178dp"
+                android:elevation="0dp"
+                android:paddingBottom="2dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                >
+
+                <com.flaviofaria.kenburnsview.KenBurnsView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hari"
+
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newsletter_text"
+                    android:paddingBottom="5dp"
+                    android:textSize="50dp"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="30dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="50dp"
+                    android:paddingTop="5dp"/>
+            </com.github.florent37.diagonallayout.DiagonalLayout>
+            </LinearLayout>
         </ScrollView>
 
     </LinearLayout>

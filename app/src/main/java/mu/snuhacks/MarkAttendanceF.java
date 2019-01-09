@@ -52,6 +52,7 @@ public class MarkAttendanceF extends Fragment {
 
     private ArrayList<AttendanceData> attendanceData;
     private String netId;
+    private boolean flag;
     private String password;
     private View view1;
     private Depth depth;
@@ -200,9 +201,12 @@ public class MarkAttendanceF extends Fragment {
                     Element alert = doc.getElementsByClass("alert alert-warning alert-dismissible").first();
                     Element success = doc.getElementsByClass("alert alert-success alert-dismissible").first();
                     if(alert!=null)
-                        htmlContentInStringFormat ="<br> <br> <font color = #ff0000>" + alert.text() + "</font>";
-                    else if(success!=null)
-                        htmlContentInStringFormat ="<br> <br> <font color = #13c000>" + success.text() + "</font>";
+                    {flag = true;
+                        htmlContentInStringFormat ="<br> <br> <font color = #ff0000>" + alert.text() + "</font>";}
+                    else if(success!=null) {
+                        flag = false;
+                        htmlContentInStringFormat = "<br> <br> <font color = #13c000>" + success.text() + "</font>";
+                    }
                     else
                         htmlContentInStringFormat = "Failed.";
                 }
@@ -259,7 +263,12 @@ public class MarkAttendanceF extends Fragment {
                 swipeRefreshLayout1.setRefreshing(false);}
             emptyTextView1.setVisibility(View.VISIBLE);
             emptyTextView1.setText(htmlContentInStringFormat);
-            ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
+            if(flag == true)
+            ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+            else
+                ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
+
+
 
 
             //    ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);

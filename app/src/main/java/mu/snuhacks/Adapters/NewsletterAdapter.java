@@ -99,6 +99,7 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
             heading = (TextView) view.findViewById(R.id.meal);
             heading.setPadding(0,0,0,5);
             content = (TextView) view.findViewById(R.id.menu);
+
             card = (CardView) view.findViewById(R.id.card);
             if(newsletterAdapterInterface != null){
                 editButton = (ImageButton) view.findViewById(R.id.edit_image_button);

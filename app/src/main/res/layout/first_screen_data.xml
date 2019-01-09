@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -11,36 +12,28 @@
         android:orientation="horizontal">
 
         <include layout="@layout/content_card"
+            card_view:cardCornerRadius="2dp"
             android:id="@+id/card1">
 
         </include>
 
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:paddingBottom="4dp"
+            android:layout_margin="4dp"
+            android:background="@color/colorPrimaryDark" />
+
         <include layout="@layout/content_card"
             android:id="@+id/card2"
->
-
-        </include>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <include layout="@layout/content_card"
-            android:id="@+id/card3"
+            card_view:cardCornerRadius="2dp"
             >
 
         </include>
 
-        <include layout="@layout/content_card"
-            android:id="@+id/card4"
-
-       >
-
-        </include>
-
     </LinearLayout>
+
+
 
 </LinearLayout>

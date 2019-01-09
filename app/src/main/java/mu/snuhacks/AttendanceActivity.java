@@ -1,6 +1,8 @@
 package mu.snuhacks;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.github.florent37.depth.Depth;
@@ -15,16 +20,19 @@ import com.github.florent37.depth.DepthProvider;
 import com.github.florent37.depth.animations.EnterConfiguration;
 import com.github.florent37.depth.animations.ExitConfiguration;
 import com.github.florent37.depth.animations.ReduceConfiguration;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AttendanceActivity extends AppCompatActivity {
 
+    private int ACTIVITY_NUM = 0;
     private Toolbar toolbar3;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Depth depth;
+    private Context mContext;
     private FrameLayout frame;
 
 
@@ -45,17 +53,28 @@ public class AttendanceActivity extends AppCompatActivity {
 */
         toolbar3 = findViewById(R.id.toolbar_here);
         setSupportActionBar(toolbar3);
-
+        mContext = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-
+        BottomNavigationView bottomNavigationView;
         tabLayout =  findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         depth.setFragmentContainer(R.id.framelayout);
+        setupBottomNavigationView();
 
     }
+    private void setupBottomNavigationView() {
+        Log.d("tag", "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx,getApplicationContext());
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
+
 
     public void changeFragment(final Fragment oldFragment) {
         final Fragment newFragment = Fragment1.newInstance();
