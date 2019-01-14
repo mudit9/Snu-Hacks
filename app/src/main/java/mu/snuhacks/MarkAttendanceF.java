@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.florent37.depth.Depth;
@@ -56,6 +57,7 @@ public class MarkAttendanceF extends Fragment {
     private String password;
     private View view1;
     private Depth depth;
+    private ProgressBar mprogressBar;
 
     private boolean isConnected = true;
 
@@ -100,7 +102,7 @@ public class MarkAttendanceF extends Fragment {
                 ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
             }
         });
-
+      //  mprogressBar = view.findViewById(R.id.ProgressBar);
         constraintLayout1 = (ConstraintLayout) view.findViewById(R.id.parent_layout1);
         swipeRefreshLayout1 = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh1);
         attendanceView1 = (RecyclerView) view.findViewById(R.id.attendance_recycler_view1);
@@ -108,10 +110,10 @@ public class MarkAttendanceF extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView1.setLayoutManager(manager);
         MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
-       // fetchAttendanceTask4.execute(netId,password);
+        fetchAttendanceTask4.execute(netId,password);
 
 
-        //  ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
+        // ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
 
 
         onRefreshListener1 = new SwipeRefreshLayout.OnRefreshListener() {
@@ -132,7 +134,7 @@ public class MarkAttendanceF extends Fragment {
             }
             emptyTextView1.setVisibility(View.GONE);
             attendanceView1.setVisibility(View.VISIBLE);
-            adapter = new AttendanceAdapter(attendanceData);
+            adapter = new AttendanceAdapter(attendanceData,getActivity().getApplicationContext());
             attendanceView1.setAdapter(adapter);
         }
        /* view.findViewById(R.id.open_reset).setOnClickListener(new View.OnClickListener() {
@@ -150,6 +152,7 @@ public class MarkAttendanceF extends Fragment {
         public void onPreExecute(){
             Log.d(TAG,"onPreExecute() executing");
             Log.d("tag","adada");
+//            mprogressBar.setIndeterminate(true);
             if(!swipeRefreshLayout1.isRefreshing()) {
                 swipeRefreshLayout1.setRefreshing(true);
             }
@@ -259,6 +262,8 @@ public class MarkAttendanceF extends Fragment {
                 }
             }
             */
+            //mprogressBar.setIndeterminate(false);
+
             if(swipeRefreshLayout1.isRefreshing()) {
                 swipeRefreshLayout1.setRefreshing(false);}
             emptyTextView1.setVisibility(View.VISIBLE);

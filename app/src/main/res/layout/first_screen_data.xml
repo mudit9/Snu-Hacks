@@ -18,12 +18,13 @@
         </include>
 
         <View
-            android:layout_width="3dp"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:paddingBottom="4dp"
-            android:layout_margin="4dp"
-            android:background="@color/colorPrimaryDark" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#FFFFFF" />
 
         <include layout="@layout/content_card"
             android:id="@+id/card2"

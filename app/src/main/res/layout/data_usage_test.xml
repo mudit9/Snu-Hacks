@@ -9,7 +9,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#6f7c85"
+        android:background="#FFFFFF"
         android:layout_marginBottom="60dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
@@ -80,15 +80,16 @@
             android:layout_height="230dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            fancy:circle_finished_color="#13547a"
-            fancy:circle_unfinished_color="#80d0c7" />
+            fancy:circle_text_size="20dp"
+            fancy:circle_finished_color="#5DD9C1"
+            fancy:circle_unfinished_color="#ACFCD9" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Make sure you're connected to the student Wifi"
             android:id="@+id/welcome"
             android:layout_gravity="center"
-            android:textColor="@color/true_white"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginTop="35dp"
             android:textAlignment="center"

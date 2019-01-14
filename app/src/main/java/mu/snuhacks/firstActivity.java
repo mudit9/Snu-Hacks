@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.github.florent37.diagonallayout.DiagonalLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.ChildEventListener;
@@ -68,6 +69,8 @@ public class firstActivity extends AppCompatActivity {
     public int ACTIVITY_NUM = 2;
     ScrollView scrollview_news;
     private InterstitialAd mInterstitialAd;
+    DiagonalLayout diaongal;
+    LinearLayout linear_news;
     FrameLayout card1;
     FrameLayout card2;
     FrameLayout card3;
@@ -84,6 +87,8 @@ public class firstActivity extends AppCompatActivity {
     FancyButton logoutButton;
     FancyButton aboutButton;
     TextView heading4;
+    TextView menu1;
+    TextView menu2;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -106,18 +111,22 @@ public class firstActivity extends AppCompatActivity {
         //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
         head = findViewById(R.id.heading);
         logoutButton = findViewById(R.id.logout_button);
+        diaongal = findViewById(R.id.diagonalLayout);
 
         //  FancyButton data_btn = (FancyButton) findViewById(R.id.data_button);
         parsedHtmlNode = (TextView) findViewById(R.id.welcome5);
         scrollview_news = findViewById(R.id.scrollView_news);
-        Typeface custom_font9 = Typeface.createFromAsset(getAssets(), "fonts/Oregon LDO.ttf");
+        linear_news = findViewById(R.id.linearlayout_news);
+        Typeface custom_font9 = Typeface.createFromAsset(getAssets(), "fonts/Biko_Regular.otf");
 
         // FancyButton LaundryButton = (FancyButton) findViewById(R.id.laundryButton);
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Junction-regular.otf");
         head.setPadding(10,5,0,0);
         head.setTypeface(custom_font2);
-        Typeface custom_font7 = Typeface.createFromAsset(getAssets(), "fonts/Animales Fantastic.otf");
-        parsedHtmlNode.setTypeface(custom_font7);
+        Typeface custom_font7 = Typeface.createFromAsset(getAssets(), "fonts/Westmeath.ttf");
+        Typeface custom_font8= Typeface.createFromAsset(getAssets(), "fonts/Geovana.ttf");
+
+        parsedHtmlNode.setTypeface(custom_font8);
         name = name.split(" ")[0];
         String htext = "<font size = 35 color=#FFFFFF>Welcome </font>" + "<font size=20 color=#FFFFFF>" + name + "!</font>";
         parsedHtmlNode.setTextSize(31);
@@ -146,8 +155,8 @@ public class firstActivity extends AppCompatActivity {
      //   card_card3 = card3.findViewById(R.id.card);
      //   card_card4 = card4.findViewById(R.id.card);
 
-        card_card1.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-        card_card2.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+        card_card1.setCardBackgroundColor(Color.parseColor("#46B1C9"));
+        card_card2.setCardBackgroundColor(Color.parseColor("#46B1C9"));
    //     card_card3.setCardBackgroundColor(Color.parseColor("#fff4e6"));
      //   card_card4.setCardBackgroundColor(Color.parseColor("#fff4e6"));
 
@@ -155,6 +164,7 @@ public class firstActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         card1.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
         card2.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
+        diaongal.setLayoutParams(new LinearLayout.LayoutParams(width, (height*5)/20));
       //  card3.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
       //  card4.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
 
@@ -165,6 +175,11 @@ public class firstActivity extends AppCompatActivity {
 
         heading1 = card1.findViewById(R.id.meal);
         heading2 = card2.findViewById(R.id.meal);
+        menu1 = card1.findViewById(R.id.menu);
+        menu2 = card2.findViewById(R.id.menu);
+
+        menu1.setTextColor(Color.parseColor("#f7f7f7"));
+        menu2.setTextColor(Color.parseColor("#f7f7f7"));
      //   heading3 = card3.findViewById(R.id.meal);
      //   heading4 = card4.findViewById(R.id.meal);
 
@@ -172,9 +187,9 @@ public class firstActivity extends AppCompatActivity {
       //  card4.setVisibility(View.GONE);
 
 
-        String xtext = "<font color=#00b159 size =19>Total</font><font size =19 color=#3b5998> attendance</font>";
+        String xtext = "<font color=#f7f7f7 size =19>Total</font><font size =19 color=#f7f7f7> attendance</font>";
         heading1.setText(Html.fromHtml(xtext));
-        xtext = "<font color=#00b159 size =19>Data</font><font size =19 color=#3b5998> Used</font>";
+        xtext = "<font color=#f7f7f7 size =19>Data</font><font size =19 color=#f7f7f7> Used</font>";
         heading2.setText(Html.fromHtml(xtext));
         xtext = "<font color=#00b159 size =19>Dh1</font><font size =19 color=#3b5998> Menu</font>";
 //        heading3.setText(Html.fromHtml(xtext));
@@ -221,7 +236,7 @@ public class firstActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(adapter == null){
-                    adapter = new NewsletterAdapter(null);
+                    adapter = new NewsletterAdapter(null, getApplicationContext());
                     newsletterView.setAdapter(adapter);
                 }
                 NewsletterData data = dataSnapshot.getValue(NewsletterData.class);

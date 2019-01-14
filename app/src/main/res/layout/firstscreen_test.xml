@@ -9,7 +9,7 @@
      xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/true_white"
+        android:background="#70C4C8"
         android:layout_marginBottom="60dp"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
@@ -57,7 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000"
+            android:background="#051e3e"
             android:orientation="vertical">
 
         <TextView
@@ -73,7 +73,7 @@
             android:layout_height="2dp"
             android:layout_gravity="center"
             android:background="@color/true_white"
-            android:layout_marginBottom="3dp"/>
+            />
    </LinearLayout>
 
         <include layout="@layout/first_screen_data"

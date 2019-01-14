@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.florent37.depth.Depth;
@@ -57,6 +58,7 @@ public class AttendanceF extends Fragment {
     private String password;
     private Depth depth;
     private boolean isConnected = true;
+    private ProgressBar mprogress;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -102,6 +104,7 @@ public class AttendanceF extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
         attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
         emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
+       // mprogress = view.findViewById(R.id.ProgressBar);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
@@ -130,7 +133,7 @@ public class AttendanceF extends Fragment {
             attendanceView.setVisibility(View.VISIBLE);
             Log.d(TAG,"Executing here2aaewew");
 
-            adapter = new AttendanceAdapter(attendanceData);
+            adapter = new AttendanceAdapter(attendanceData, getActivity().getApplicationContext());
             Log.d(TAG,"Executing here2aaewew");
 
             attendanceView.setAdapter(adapter);
@@ -175,6 +178,7 @@ public class AttendanceF extends Fragment {
         public void onPreExecute(){
             Log.d(TAG,"onPreExecute() executing");
             Log.d(TAG, "aafafa");
+
             if(!swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(true);
             }
@@ -276,10 +280,11 @@ public class AttendanceF extends Fragment {
                     attendanceView.setVisibility(View.VISIBLE);
                     attendanceData.clear();
                     attendanceData.addAll(response.getAttendanceData());
+
                     if (adapter != null) {
                         adapter.setAttendanceData(attendanceData);
                     } else {
-                        adapter = new AttendanceAdapter(attendanceData);
+                        adapter = new AttendanceAdapter(attendanceData,getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
                     }
                 } else{

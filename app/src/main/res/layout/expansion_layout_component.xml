@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.github.florent37.expansionpanel.ExpansionHeader
@@ -21,12 +22,16 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="#3E3E3E"
                 android:id="@+id/course_name"/>
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@id/course_name"
+                android:layout_centerVertical="true"
+                android:textColor="#AAA"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:id="@+id/course_attendance"/>
@@ -40,10 +45,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_width="wrap_content"
                 app:srcCompat="@drawable/ic_arrow" />
-
-
-
-
         </RelativeLayout>
 
     </com.github.florent37.expansionpanel.ExpansionHeader>
@@ -54,17 +55,41 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/container"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_width="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="Hello"/>
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/firstDropDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:paddingRight="15dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="2dp"
+                fancy:fb_defaultColor="#3b414f"
+                fancy:fb_focusColor="#8cc9f8"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="Download the file"
+                fancy:fb_textColor="#FFFFFF">
 
-        </RelativeLayout>
+
+            </mehdi.sakout.fancybuttons.FancyButton>
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#f00"
+                android:dividerHeight="1dp"
+
+                />
+
+        </LinearLayout>
 
     </com.github.florent37.expansionpanel.ExpansionLayout>
 

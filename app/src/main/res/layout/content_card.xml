@@ -25,6 +25,7 @@
                 android:id="@+id/meal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Headline"
                 android:text="meal"
                 android:paddingBottom="7sp"
                 android:textSize="30sp" />
@@ -67,6 +68,10 @@
                     android:src="@drawable/baseline_delete_black_24"
                     android:layout_alignParentRight="true"
                     android:visibility="gone"/>
+                
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 

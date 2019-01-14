@@ -119,7 +119,7 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (adapter == null) {
-                    adapter = new NewsletterAdapter(add_data_activity.this);
+                    adapter = new NewsletterAdapter(add_data_activity.this, getApplicationContext());
                     newsletterModView.setAdapter(adapter);
                 }
                 firstActivity.NewsletterData data = dataSnapshot.getValue(firstActivity.NewsletterData.class);

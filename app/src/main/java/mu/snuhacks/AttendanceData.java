@@ -3,6 +3,8 @@ package mu.snuhacks;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class AttendanceData implements Parcelable {
     private String courseName;
     private String courseCode;
@@ -87,6 +89,15 @@ public class AttendanceData implements Parcelable {
 
     public void setCourseCredits(String courseCredits){
         this.courseCredits = courseCredits;
+    }
+    public ArrayList getAllDetails(){
+        ArrayList<String> details = new ArrayList<>();
+        details.add(courseCode);
+        details.add(courseCredits);
+        details.add(courseAttendance);
+        details.add(courseAttendanceCC);
+        details.add(courseName);
+        return details;
     }
 
     public void setCourseAttendance(String courseAttendance){

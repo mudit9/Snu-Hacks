@@ -1,5 +1,8 @@
 package mu.snuhacks.Adapters;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +21,13 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
     private final String TAG = NewsletterAdapter.class.getSimpleName();
 
     private NewsletterAdapterInterface newsletterAdapterInterface;
+    private Context mContext;
 
     private ArrayList<firstActivity.NewsletterData> newsletterData = new ArrayList<firstActivity.NewsletterData>();
 
-    public NewsletterAdapter(NewsletterAdapterInterface newsletterAdapterInterface){
+    public NewsletterAdapter(NewsletterAdapterInterface newsletterAdapterInterface, Context context){
         this.newsletterAdapterInterface = newsletterAdapterInterface;
+        this.mContext = context;
     }
 
     public interface NewsletterAdapterInterface {
@@ -99,8 +104,8 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
             heading = (TextView) view.findViewById(R.id.meal);
             heading.setPadding(0,0,0,5);
             content = (TextView) view.findViewById(R.id.menu);
-
             card = (CardView) view.findViewById(R.id.card);
+            card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
             if(newsletterAdapterInterface != null){
                 editButton = (ImageButton) view.findViewById(R.id.edit_image_button);
                 deleteButton = (ImageButton) view.findViewById(R.id.delete_image_button);
@@ -114,8 +119,13 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         public void bind(final firstActivity.NewsletterData data){
             heading.setText(data.getHeading());
             content.setText(data.getContent());
-            //card.setCardBackgroundColor(Color.parseColor("#fff4e6"));
-
+            content.setTextSize(17);
+            heading.setTextSize(24);
+            Typeface custom_font7 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Geovana.ttf");
+            heading.setTypeface(custom_font7);
+            content.setTypeface(custom_font7);
+            card.setCardBackgroundColor(Color.parseColor("#E8FAEF"));
+           // card.setCardBackgroundColor(R.drawable.card_background);
             if(newsletterAdapterInterface != null){
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
