@@ -50,7 +50,7 @@ public class CreditAttendanceF extends Fragment {
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
     private AttendanceAdapter adapter;
 
-    private ArrayList<AttendanceData> attendanceData;
+    private ArrayList<Object> attendanceData;
     private String netId;
     private String password;
     private Depth depth;
@@ -69,7 +69,7 @@ public class CreditAttendanceF extends Fragment {
             loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(loginIntent);
         }
-        attendanceData = new ArrayList<AttendanceData>();
+        attendanceData = new ArrayList<Object>();
     }
 
     @Override
@@ -113,7 +113,7 @@ public class CreditAttendanceF extends Fragment {
 
         } else{
             try {
-                attendanceData = (ArrayList<AttendanceData>) ObjectSerializer.deserialize(attendace);
+                attendanceData = (ArrayList<Object>) ObjectSerializer.deserialize(attendace);
             } catch(Exception exception){
                 Log.d(TAG,"Exception:- " + exception.getMessage());
             }
@@ -154,7 +154,7 @@ public class CreditAttendanceF extends Fragment {
         protected AttendanceF.AttendanceResponse doInBackground(String... credentials) {
             if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
-                ArrayList<AttendanceData> attendanceData = new ArrayList<AttendanceData>();
+                ArrayList<Object> attendanceData = new ArrayList<Object>();
                 try{
                     TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
                         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -204,7 +204,14 @@ public class CreditAttendanceF extends Fragment {
                             for (int i = 0; i < trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i + 1);
                                 Elements tdElements = trElement.select("td");
-                                attendanceData.add(new AttendanceData(tdElements.get(1).text(), tdElements.get(0).text(), tdElements.get(6).text()));
+                                attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
+                                        tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
+                                        (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
+                                        tdElements.get(7).text(),
+                                        tdElements.get(8).text(),
+                                        tdElements.get(9).text(),
+                                        tdElements.get(14).text()
+                                ));
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());

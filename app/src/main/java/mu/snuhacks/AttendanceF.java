@@ -53,7 +53,7 @@ public class AttendanceF extends Fragment {
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
     private AttendanceAdapter adapter;
 
-    private ArrayList<AttendanceData> attendanceData;
+    private ArrayList<Object> attendanceData;
     private String netId;
     private String password;
     private Depth depth;
@@ -73,7 +73,7 @@ public class AttendanceF extends Fragment {
             loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(loginIntent);
         }
-        attendanceData = new ArrayList<AttendanceData>();
+        attendanceData = new ArrayList<Object>();
     }
 
     public static Fragment newInstance() {
@@ -123,7 +123,7 @@ public class AttendanceF extends Fragment {
 
         } else{
             try {
-                attendanceData = (ArrayList<AttendanceData>) ObjectSerializer.deserialize(attendace);
+                attendanceData = (ArrayList<Object>) ObjectSerializer.deserialize(attendace);
             } catch(Exception exception){
                 Log.d(TAG,"Exception:- " + exception.getMessage());
             }
@@ -189,7 +189,7 @@ public class AttendanceF extends Fragment {
         protected AttendanceResponse doInBackground(String... credentials) {
             if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
-                ArrayList<AttendanceData> attendanceData = new ArrayList<AttendanceData>();
+                ArrayList<Object> attendanceData = new ArrayList<Object>();
                 try{
                     TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
                         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -296,15 +296,15 @@ public class AttendanceF extends Fragment {
     }
 
     public static class AttendanceResponse{
-        private ArrayList<AttendanceData> attendanceData;
+        private ArrayList<Object> attendanceData;
         private String errorMessage;
 
-        public AttendanceResponse(ArrayList<AttendanceData> attendanceData,String errorMessage){
+        public AttendanceResponse(ArrayList<Object> attendanceData,String errorMessage){
             this.attendanceData = attendanceData;
             this.errorMessage = errorMessage;
         }
 
-        public ArrayList<AttendanceData> getAttendanceData(){
+        public ArrayList<Object> getAttendanceData(){
             return attendanceData;
         }
 

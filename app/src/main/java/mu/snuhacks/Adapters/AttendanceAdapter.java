@@ -18,18 +18,20 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 import java.util.ArrayList;
 
 import mehdi.sakout.fancybuttons.FancyButton;
+import mu.snuhacks.Attendance;
 import mu.snuhacks.AttendanceData;
+import mu.snuhacks.AttendanceDataCC;
 import mu.snuhacks.R;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
     private final String TAG = AttendanceAdapter.class.getSimpleName();
 
-    private ArrayList<AttendanceData> attendanceData;
+    private ArrayList<Object> attendanceData;
     private Context Context;
 
     private ExpansionLayoutCollection expansionLayoutCollection = new ExpansionLayoutCollection();
 
-    public AttendanceAdapter(ArrayList<AttendanceData>attendanceData, Context context){
+    public AttendanceAdapter(ArrayList<Object>attendanceData, Context context){
         this.attendanceData = attendanceData;
         this.Context = context;
     }
@@ -51,7 +53,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         return attendanceData.size();
     }
 
-    public void setAttendanceData(ArrayList<AttendanceData> attendanceData){
+    public void setAttendanceData(ArrayList<Object> attendanceData){
         this.attendanceData = attendanceData;
         notifyDataSetChanged();
     }
@@ -78,29 +80,46 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
         }
 
-        public void bind(AttendanceData data){
-            courseName.setText(data.getCourseName());
-            courseName.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/Biko_Regular.otf"));
+        public void bind(Object data){
             float attendance = 0.0f;
-            try{
-                attendance = Float.parseFloat(data.getCourseAttendance());
-            } catch(Exception exception){
-                Log.d(TAG,"Exception:- " + exception.getMessage());
-                attendance = 0.0f;
+            ArrayList<String> details_here;
+            if(data instanceof AttendanceData){
+                courseName.setText(((AttendanceData) data).getCourseName());
+                try{
+                    attendance = Float.parseFloat(((AttendanceData) data).getCourseAttendance());
+                } catch(Exception exception){
+                    Log.d(TAG,"Exception:- " + exception.getMessage());
+                    attendance = 0.0f;
+                }
+                courseAttendance.setText(((AttendanceData) data).getCourseAttendance());
+                details_here = ((AttendanceData) data).getAllDetails();
+                firstButton.setText(((AttendanceData) data).getCourseName() + "  -  " + ((AttendanceData) data).getCourseAttendance());
+            } else{
+                courseName.setText(((AttendanceDataCC) data).getCourseName());
+                try{
+                    attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
+                } catch(Exception exception){
+                    Log.d(TAG,"Exception:- " + exception.getMessage());
+                    attendance = 0.0f;
+                }
+                courseAttendance.setText(((AttendanceDataCC) data).getAttendance());
+                details_here = ((AttendanceDataCC) data).getAllDetails();
+                firstButton.setText(((AttendanceDataCC) data).getCourseName() + "  -  " + ((AttendanceDataCC) data).getAttendance());
             }
+            courseName.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/Biko_Regular.otf"));
+
             if(attendance <75){
                  courseAttendance.setTextColor(Color.parseColor("#ff0000"));
                  courseAttendance.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/RegencieLight.ttf"));
             } else{
                 courseAttendance.setTextColor(Color.parseColor("#13c000"));
             }
-            courseAttendance.setText(data.getCourseAttendance());
-            ArrayList<String> details_here = data.getAllDetails();
+
 
           //  ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(Context, R.layout.listview_component,R.id.text41, details_here);
             ListViewAdapter adapter3 = new ListViewAdapter(Context,details_here);
             listView.setAdapter(adapter3);
-            firstButton.setText(data.getCourseName() + "  -  " + data.getCourseAttendance());
+
             expansionLayout.collapse(true);
         }
 
