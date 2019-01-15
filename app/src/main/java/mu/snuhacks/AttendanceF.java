@@ -76,11 +76,6 @@ public class AttendanceF extends Fragment {
         attendanceData = new ArrayList<Object>();
     }
 
-    public static Fragment newInstance() {
-        final Fragment fragment1 = new AttendanceF();
-        return fragment1;
-    }
-
     @Override
     public void onResume(){
         super.onResume();
@@ -292,24 +287,6 @@ public class AttendanceF extends Fragment {
                     emptyTextView.setVisibility(View.VISIBLE);
                 }
             }
-        }
-    }
-
-    public static class AttendanceResponse{
-        private ArrayList<Object> attendanceData;
-        private String errorMessage;
-
-        public AttendanceResponse(ArrayList<Object> attendanceData,String errorMessage){
-            this.attendanceData = attendanceData;
-            this.errorMessage = errorMessage;
-        }
-
-        public ArrayList<Object> getAttendanceData(){
-            return attendanceData;
-        }
-
-        public String getErrorMessage(){
-            return errorMessage;
         }
     }
 }

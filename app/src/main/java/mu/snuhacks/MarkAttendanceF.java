@@ -51,7 +51,7 @@ public class MarkAttendanceF extends Fragment {
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener1;
     private AttendanceAdapter adapter;
 
-    private ArrayList<AttendanceData> attendanceData;
+    private ArrayList<Object> attendanceData;
     private String netId;
     private boolean flag;
     private String password;
@@ -128,7 +128,7 @@ public class MarkAttendanceF extends Fragment {
             attendanceView1.setVisibility(View.GONE);
         } else{
             try {
-                attendanceData = (ArrayList<AttendanceData>) ObjectSerializer.deserialize(attendace);
+                attendanceData = (ArrayList<Object>) ObjectSerializer.deserialize(attendace);
             } catch(Exception exception){
                 Log.d(TAG,"Exception:- " + exception.getMessage());
             }
@@ -145,7 +145,7 @@ public class MarkAttendanceF extends Fragment {
         }); */
     }
 
-    private class FetchAttendanceTask2 extends AsyncTask<String,Void,AttendanceF.AttendanceResponse> {
+    private class FetchAttendanceTask2 extends AsyncTask<String,Void,AttendanceResponse> {
         private final String TAG = MarkAttendanceF.FetchAttendanceTask2.class.getSimpleName();
 
         @Override
@@ -160,7 +160,7 @@ public class MarkAttendanceF extends Fragment {
 
 
         @Override
-        protected AttendanceF.AttendanceResponse doInBackground(String... credentials) {
+        protected AttendanceResponse doInBackground(String... credentials) {
                 Log.d(TAG, "doInBackground() executing");
                 //ArrayList<AttendanceData> attendanceData = new ArrayList<AttendanceData>();
                 try {
@@ -222,7 +222,7 @@ public class MarkAttendanceF extends Fragment {
         }
 
         @Override
-        public void onPostExecute(AttendanceF.AttendanceResponse response){
+        public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
             Log.d(TAG,"EEEExecuting");
 

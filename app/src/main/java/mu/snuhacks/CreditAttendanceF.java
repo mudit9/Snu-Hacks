@@ -76,6 +76,8 @@ public class CreditAttendanceF extends Fragment {
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume() called");
+        FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
+        fetchAttendanceTask3.execute(new String[]{netId,password});
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -100,8 +102,7 @@ public class CreditAttendanceF extends Fragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{netId,password});
+
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -133,8 +134,8 @@ public class CreditAttendanceF extends Fragment {
         return view;
     }
 
-    private class FetchAttendanceTask extends AsyncTask<String,Void,AttendanceF.AttendanceResponse> {
-        private final String TAG = FetchAttendanceTask.class.getSimpleName();
+    private class FetchCCAttendanceTask extends AsyncTask<String,Void,AttendanceResponse> {
+        private final String TAG = FetchCCAttendanceTask.class.getSimpleName();
 
         private SharedPreferences prefs;
         private SharedPreferences.Editor editor;
@@ -151,7 +152,7 @@ public class CreditAttendanceF extends Fragment {
 
 
         @Override
-        protected AttendanceF.AttendanceResponse doInBackground(String... credentials) {
+        protected AttendanceResponse doInBackground(String... credentials) {
             if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
                 ArrayList<Object> attendanceData = new ArrayList<Object>();
@@ -172,7 +173,7 @@ public class CreditAttendanceF extends Fragment {
                         sc.init(null, trustAllCerts, new java.security.SecureRandom());
                         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                     } catch (Exception e) {
-                        throw   new RuntimeException(e);
+                        throw new RuntimeException(e);
                     }
                     Log.d(TAG,"Executing here");
                     Connection.Response login = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
@@ -187,7 +188,7 @@ public class CreditAttendanceF extends Fragment {
                     Document loginDoc = login.parse();
                     Elements errorElements = loginDoc.getElementsByClass("alert-warning");
                     if(errorElements.size() != 0){
-                        return new AttendanceF.AttendanceResponse(null,"Invalid Credentials");
+                        return new AttendanceResponse(null,"Invalid Credentials");
                     } else {
                         Log.d(TAG,"Executing here3");
 
@@ -220,13 +221,13 @@ public class CreditAttendanceF extends Fragment {
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                 }
-                return new AttendanceF.AttendanceResponse(attendanceData,"");
+                return new AttendanceResponse(attendanceData,"");
             }
-            return new AttendanceF.AttendanceResponse(null,"Not connected to Student Wifi");
+            return new AttendanceResponse(null,"Not connected to Student Wifi");
         }
 
         @Override
-        public void onPostExecute(AttendanceF.AttendanceResponse response){
+        public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
             if(swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
