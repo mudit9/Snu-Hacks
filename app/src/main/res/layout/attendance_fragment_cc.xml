@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent_layout_here2">
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_to_refresh2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/attendance_recycler_view2"
+                android:visibility="gone"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/empty_text_view2"
+                android:text="No attendance data available"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</android.support.constraint.ConstraintLayout>

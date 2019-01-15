@@ -1,10 +1,7 @@
 package mu.snuhacks;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -31,19 +28,17 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import mu.snuhacks.Adapters.AttendanceAdapter;
+import mu.snuhacks.Adapters.AttendanceAdapterCC;
 
-public class AttendanceF extends Fragment {
-    private final String TAG = AttendanceF.class.getSimpleName();
+public class CreditAttendanceF extends Fragment {
+    private final String TAG = CreditAttendanceF.class.getSimpleName();
 
-    private WifiManager mWifiManager;
     private SharedPreferences sharedPreferences;
 
     private ConstraintLayout constraintLayout;
@@ -51,7 +46,7 @@ public class AttendanceF extends Fragment {
     private RecyclerView attendanceView;
     private TextView emptyTextView;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
-    private AttendanceAdapter adapter;
+    private AttendanceAdapterCC adapter;
 
     private ArrayList<Object> attendanceData;
     private String netId;
@@ -64,7 +59,6 @@ public class AttendanceF extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreateCalled");
-        mWifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
         netId = sharedPreferences.getString("username","");
         password = sharedPreferences.getString("password","");
@@ -80,7 +74,8 @@ public class AttendanceF extends Fragment {
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume() called");
-        checkAndModifyWifiState();
+        FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
+        fetchAttendanceTask3.execute(new String[]{netId,password});
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -91,22 +86,21 @@ public class AttendanceF extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent,Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState){
         this.depth = DepthProvider.getDepth(parent);
         Log.d("tag","creating AttendanceF");
-        View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment, parent, false));
-        constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
-        attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
-        emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
-       // mprogress = view.findViewById(R.id.ProgressBar);
+        View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment_cc, parent, false));
+        constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here2);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh2);
+        attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view2);
+        emptyTextView = (TextView) view.findViewById(R.id.empty_text_view2);
+        // mprogress = view.findViewById(R.id.ProgressBar);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-             //   fetchAttendanceTask3.execute(new String[]{netId,password});
+
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -123,48 +117,16 @@ public class AttendanceF extends Fragment {
                 Log.d(TAG,"Exception:- " + exception.getMessage());
             }
             emptyTextView.setVisibility(View.GONE);
-            Log.d(TAG,"Executing here2aaws");
-
             attendanceView.setVisibility(View.VISIBLE);
-            Log.d(TAG,"Executing here2aaewew");
-
-            adapter = new AttendanceAdapter(attendanceData, getActivity().getApplicationContext());
-            Log.d(TAG,"Executing here2aaewew");
-
+            adapter = new AttendanceAdapterCC(attendanceData, getActivity().getApplicationContext());
             attendanceView.setAdapter(adapter);
-            Log.d(TAG,"Executing here2aaqeqe");
 
         }
         return view;
     }
 
-    private void checkAndModifyWifiState(){
-        Log.d(TAG,"checkModifyState() executing");
-        if(mWifiManager != null && !isConnected){
-            if(!mWifiManager.isWifiEnabled()){
-                Log.d(TAG,"Wifi enabled");
-                mWifiManager.setWifiEnabled(true);
-            }
-            if(mWifiManager.getConnectionInfo().getSSID().equals("Student")){
-                isConnected = true;
-            } else {
-                List<WifiConfiguration> wifiConfigurations = mWifiManager.getConfiguredNetworks();
-                for (WifiConfiguration configuration : wifiConfigurations) {
-                    if (configuration.SSID.equals("Student")) {
-                        mWifiManager.disconnect();
-                        mWifiManager.enableNetwork(configuration.networkId,true);
-                        Log.d(TAG,"Trying");
-                        isConnected = mWifiManager.reconnect();
-                    }
-                }
-            }
-        } else{
-            Log.d(TAG,"mWifiManager null");
-        }
-    }
-
-    private class FetchAttendanceTask extends AsyncTask<String,Void,AttendanceResponse> {
-        private final String TAG = FetchAttendanceTask.class.getSimpleName();
+    private class FetchCCAttendanceTask extends AsyncTask<String,Void,AttendanceResponse> {
+        private final String TAG = FetchCCAttendanceTask.class.getSimpleName();
 
         private SharedPreferences prefs;
         private SharedPreferences.Editor editor;
@@ -182,7 +144,6 @@ public class AttendanceF extends Fragment {
 
         @Override
         protected AttendanceResponse doInBackground(String... credentials) {
-            if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
                 ArrayList<Object> attendanceData = new ArrayList<Object>();
                 try{
@@ -202,9 +163,9 @@ public class AttendanceF extends Fragment {
                         sc.init(null, trustAllCerts, new java.security.SecureRandom());
                         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                     } catch (Exception e) {
-                        throw   new RuntimeException(e);
+                        throw new RuntimeException(e);
                     }
-                    Log.d(TAG,"Executing here");
+                    Log.d(TAG,"Executing here wrwrw");
                     Connection.Response login = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
                             .data("login_user_name", credentials[0])
                             .data("login_password", credentials[1])
@@ -221,21 +182,31 @@ public class AttendanceF extends Fragment {
                     } else {
                         Log.d(TAG,"Executing here3");
 
-                        Connection.Response checkAttendance = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/summary")
+                        Connection.Response checkAttendance = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/crs_wise_att_ch")
                                 .userAgent("Mozilla")
                                 .header("X-Requested-With", "XMLHttpRequest")
                                 .method(Connection.Method.POST)
                                 .cookies(login.cookies())
                                 .execute();
                         Document checkAttendanceDoc = checkAttendance.parse();
+                        Log.d(TAG,checkAttendanceDoc.toString());
                         try {
+                            Log.d(TAG,"yaha bhi aa gaya");
                             Elements panelElements = checkAttendanceDoc.getElementsByClass("panel panel-primary");
                             Elements trElements = panelElements.select("tr");
                             for (int i = 0; i < trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i + 1);
                                 Elements tdElements = trElement.select("td");
-                                attendanceData.add(new AttendanceData(tdElements.get(1).text(), tdElements.get(0).text(), tdElements.get(2).text(),tdElements.get(3).text(),tdElements.get(4).text(),tdElements.get(5).text(), tdElements.get(6).text()));
-
+                                Log.d(TAG,"tdelements  " + tdElements.toString());
+                                attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
+                                        tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
+                                        (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
+                                        tdElements.get(7).text(),
+                                        tdElements.get(8).text(),
+                                        tdElements.get(9).text(),
+                                        tdElements.get(14).text()
+                                ));
+                                Log.d(TAG + "hi",attendanceData.toString());
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
@@ -244,14 +215,17 @@ public class AttendanceF extends Fragment {
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                 }
-                return new AttendanceResponse(attendanceData,"");
-            }
+
             return new AttendanceResponse(null,"Not connected to Student Wifi");
         }
 
         @Override
         public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
+            Log.d(TAG,"onPostExecute() EXECUTING");
+            //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
+            emptyTextView.setVisibility(View.GONE);
+            Log.d(TAG,emptyTextView.toString());
             if(swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -280,14 +254,15 @@ public class AttendanceF extends Fragment {
                     if (adapter != null) {
                         adapter.setAttendanceData(attendanceData);
                     } else {
-                        adapter = new AttendanceAdapter(attendanceData,getActivity().getApplicationContext());
+                        adapter = new AttendanceAdapterCC(attendanceData,getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
                     }
                 } else{
                     attendanceView.setVisibility(View.GONE);
-                    emptyTextView.setVisibility(View.VISIBLE);
+                   // emptyTextView.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
+
 }

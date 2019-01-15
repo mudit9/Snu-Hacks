@@ -17,12 +17,10 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import java.util.ArrayList;
 
-
-import mu.snuhacks.AttendanceData;
 import mu.snuhacks.AttendanceDataCC;
 import mu.snuhacks.R;
 
-public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
+public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterCC.ViewHolder> {
     private final String TAG = AttendanceAdapter.class.getSimpleName();
 
     private ArrayList<Object> attendanceData;
@@ -30,7 +28,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
     private ExpansionLayoutCollection expansionLayoutCollection = new ExpansionLayoutCollection();
 
-    public AttendanceAdapter(ArrayList<Object>attendanceData, Context context){
+    public AttendanceAdapterCC(ArrayList<Object>attendanceData, Context context){
         this.attendanceData = attendanceData;
         this.Context = context;
     }
@@ -38,7 +36,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.expansion_layout_component,parent,false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.expansion_layout_component2,parent,false));
     }
 
     @Override
@@ -70,7 +68,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             super(view);
             expansionLayout = (ExpansionLayout) view.findViewById(R.id.expansion_layout);
             expansionLayoutCollection.openOnlyOne(false);
-           // expansionLayout.setEnable(false);
+            // expansionLayout.setEnable(false);
             courseName = (TextView) view.findViewById(R.id.course_name);
             courseAttendance = (TextView) view.findViewById(R.id.course_attendance);
             listView = view.findViewById(R.id.listView);
@@ -79,18 +77,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
         public void bind(Object data){
             float attendance = 0.0f;
+            Log.d(TAG,"binding");
             ArrayList<String> details_here;
-            if(data instanceof AttendanceData){
-                courseName.setText(((AttendanceData) data).getCourseName());
-                try{
-                    attendance = Float.parseFloat(((AttendanceData) data).getCourseAttendance());
-                } catch(Exception exception){
-                    Log.d(TAG,"Exception:- " + exception.getMessage());
-                    attendance = 0.0f;
-                }
-                courseAttendance.setText(((AttendanceData) data).getCourseAttendance());
-                details_here = ((AttendanceData) data).getAllDetails();
-            } else{
                 courseName.setText(((AttendanceDataCC) data).getCourseName());
                 try{
                     attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
@@ -100,18 +88,18 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 }
                 courseAttendance.setText(((AttendanceDataCC) data).getAttendance());
                 details_here = ((AttendanceDataCC) data).getAllDetails();
-            }
+
             courseName.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/Biko_Regular.otf"));
 
             if(attendance <75){
-                 courseAttendance.setTextColor(Color.parseColor("#ff0000"));
-                 courseAttendance.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/RegencieLight.ttf"));
+                courseAttendance.setTextColor(Color.parseColor("#ff0000"));
+                courseAttendance.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/RegencieLight.ttf"));
             } else{
                 courseAttendance.setTextColor(Color.parseColor("#13c000"));
             }
 
 
-          //  ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(Context, R.layout.listview_component,R.id.text41, details_here);
+            //ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(Context, R.layout.listview_component,R.id.text41, details_here);
             ListViewAdapter adapter3 = new ListViewAdapter(Context,details_here);
             listView.setAdapter(adapter3);
 
