@@ -17,7 +17,6 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import java.util.ArrayList;
 
-import mehdi.sakout.fancybuttons.FancyButton;
 import mu.snuhacks.AttendanceData;
 import mu.snuhacks.R;
 
@@ -62,7 +61,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         private ExpansionLayout expansionLayout;
         private TextView courseName;
         private TextView courseAttendance;
-        private FancyButton firstButton;
         private ListView listView;
         private TextView text;
 
@@ -73,7 +71,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
            // expansionLayout.setEnable(false);
             courseName = (TextView) view.findViewById(R.id.course_name);
             courseAttendance = (TextView) view.findViewById(R.id.course_attendance);
-            firstButton = view.findViewById(R.id.firstDropDown);
             listView = view.findViewById(R.id.listView);
 
         }
@@ -100,7 +97,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
           //  ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(Context, R.layout.listview_component,R.id.text41, details_here);
             ListViewAdapter adapter3 = new ListViewAdapter(Context,details_here);
             listView.setAdapter(adapter3);
-            firstButton.setText(data.getCourseName() + "  -  " + data.getCourseAttendance());
             expansionLayout.collapse(true);
         }
 

@@ -10,22 +10,31 @@ public class AttendanceData implements Parcelable {
     private String courseCode;
     private String courseCredits;
     private String courseAttendance;
-    private String courseAttendanceCC;
+    private String enRollmentDate;
+    private String classesConducted;
+    private String classesAttended;
+    private String officialLeave;
 
     private AttendanceData(Parcel in){
         courseName = in.readString();
         courseCode = in.readString();
         courseCredits = in.readString();
         courseAttendance = in.readString();
-        courseAttendanceCC = in.readString();
+        enRollmentDate = in.readString();
+        classesAttended = in.readString();
+        classesConducted = in.readString();
+        officialLeave = in.readString();
     }
 
-    public AttendanceData(String courseName,String courseCode,String courseCredits,String courseAttendance,String courseAttendanceCC){
+    public AttendanceData(String courseName,String courseCode,String enRollmentDate,String classesConducted,String classesAttended,String officialLeave,String courseAttendance){
         this.courseName = courseName;
         this.courseCode = courseCode;
         this.courseCredits = courseCredits;
         this.courseAttendance = courseAttendance;
-        this.courseAttendanceCC = courseAttendanceCC;
+        this.enRollmentDate = enRollmentDate;
+        this.classesConducted = classesConducted;
+        this.classesAttended = classesAttended;
+        this.officialLeave = officialLeave;
     }
 
     @Override
@@ -56,7 +65,10 @@ public class AttendanceData implements Parcelable {
         out.writeString(courseCode);
         out.writeString(courseCredits);
         out.writeString(courseAttendance);
-        out.writeString(courseAttendanceCC);
+        out.writeString(enRollmentDate);
+        out.writeString(classesAttended);
+        out.writeString(classesConducted);
+        out.writeString(officialLeave);
     }
 
     public String getCourseName(){
@@ -75,8 +87,8 @@ public class AttendanceData implements Parcelable {
         return courseAttendance;
     }
 
-    public String getCourseAttendanceCC(){
-        return courseAttendanceCC;
+    public String getEnRollmentDate(){
+        return enRollmentDate;
     }
 
     public void setCourseName(String courseName){
@@ -90,13 +102,16 @@ public class AttendanceData implements Parcelable {
     public void setCourseCredits(String courseCredits){
         this.courseCredits = courseCredits;
     }
+
     public ArrayList getAllDetails(){
         ArrayList<String> details = new ArrayList<>();
-        details.add(courseCode);
-        details.add(courseCredits);
-        details.add(courseAttendance);
-        details.add(courseAttendanceCC);
-        details.add(courseName);
+        details.add("Course code \t-\t " + courseCode);
+        details.add("Course name \t-\t " + courseName);
+        details.add("Enrollment Date \t-\t " +enRollmentDate);
+        details.add("Classes Attended \t-\t " + classesAttended);
+        details.add("Classes Conducted  \t-\t " + classesConducted);
+        details.add("Official Leave \t-\t " +officialLeave);
+        details.add("Course attendance \t-\t " + courseAttendance);
         return details;
     }
 
@@ -104,7 +119,7 @@ public class AttendanceData implements Parcelable {
         this.courseAttendance = courseAttendance;
     }
 
-    public void setCourseAttendanceCC(String courseAttendanceCC){
-        this.courseAttendanceCC = courseAttendanceCC;
+    public void setEnRollmentDate(String courseAttendanceCC){
+        this.enRollmentDate = enRollmentDate;
     }
 }

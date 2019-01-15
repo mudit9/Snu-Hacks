@@ -52,40 +52,23 @@
     <com.github.florent37.expansionpanel.ExpansionLayout
         android:id="@+id/expansion_layout"
         app:expansion_expanded="false"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_width="match_parent">
 
         <LinearLayout
             android:id="@+id/container"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_width="match_parent">
 
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/firstDropDown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:padding="10dp"
-                android:paddingRight="15dp"
-                fancy:fb_borderColor="#FFFFFF"
-                fancy:fb_borderWidth="2dp"
-                fancy:fb_defaultColor="#3b414f"
-                fancy:fb_focusColor="#8cc9f8"
-                fancy:fb_radius="10dp"
-                fancy:fb_text="Download the file"
-                fancy:fb_textColor="#FFFFFF">
-
-
-            </mehdi.sakout.fancybuttons.FancyButton>
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="#f00"
-                android:dividerHeight="1dp"
+                android:layout_height="130dp"
+                android:divider="#000"
+                android:dividerHeight="2px"
 
                 />
 
