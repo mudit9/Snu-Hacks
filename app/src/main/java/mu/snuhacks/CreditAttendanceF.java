@@ -192,8 +192,7 @@ public class CreditAttendanceF extends Fragment {
                         Log.d(TAG,checkAttendanceDoc.toString());
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
-                            Elements panelElements = checkAttendanceDoc.getElementsByClass("panel panel-primary");
-                            Elements trElements = panelElements.select("tr");
+                            Elements trElements = checkAttendanceDoc.select("tr");
                             for (int i = 0; i < trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i + 1);
                                 Elements tdElements = trElement.select("td");
@@ -222,7 +221,6 @@ public class CreditAttendanceF extends Fragment {
         @Override
         public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
-            Log.d(TAG,"onPostExecute() EXECUTING");
             //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
             emptyTextView.setVisibility(View.GONE);
             Log.d(TAG,emptyTextView.toString());
