@@ -34,7 +34,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import mu.snuhacks.Adapters.AttendanceAdapter;
+import mu.snuhacks.Adapters.AttendanceAdapterCC;
 
 public class CreditAttendanceF extends Fragment {
     private final String TAG = CreditAttendanceF.class.getSimpleName();
@@ -46,7 +46,7 @@ public class CreditAttendanceF extends Fragment {
     private RecyclerView attendanceView;
     private TextView emptyTextView;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
-    private AttendanceAdapter adapter;
+    private AttendanceAdapterCC adapter;
 
     private ArrayList<Object> attendanceData;
     private String netId;
@@ -89,11 +89,11 @@ public class CreditAttendanceF extends Fragment {
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState){
         this.depth = DepthProvider.getDepth(parent);
         Log.d("tag","creating AttendanceF");
-        View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment, parent, false));
-        constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
-        attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
-        emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
+        View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment_cc, parent, false));
+        constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here2);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh2);
+        attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view2);
+        emptyTextView = (TextView) view.findViewById(R.id.empty_text_view2);
         // mprogress = view.findViewById(R.id.ProgressBar);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
@@ -117,16 +117,9 @@ public class CreditAttendanceF extends Fragment {
                 Log.d(TAG,"Exception:- " + exception.getMessage());
             }
             emptyTextView.setVisibility(View.GONE);
-            Log.d(TAG,"Executing here2aaws");
-
             attendanceView.setVisibility(View.VISIBLE);
-            Log.d(TAG,"Executing here2aaewew");
-
-            adapter = new AttendanceAdapter(attendanceData, getActivity().getApplicationContext());
-            Log.d(TAG,"Executing here2aaewew");
-
+            adapter = new AttendanceAdapterCC(attendanceData, getActivity().getApplicationContext());
             attendanceView.setAdapter(adapter);
-            Log.d(TAG,"Executing here2aaqeqe");
 
         }
         return view;
@@ -151,7 +144,6 @@ public class CreditAttendanceF extends Fragment {
 
         @Override
         protected AttendanceResponse doInBackground(String... credentials) {
-            if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
                 ArrayList<Object> attendanceData = new ArrayList<Object>();
                 try{
@@ -173,7 +165,7 @@ public class CreditAttendanceF extends Fragment {
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                    Log.d(TAG,"Executing here");
+                    Log.d(TAG,"Executing here wrwrw");
                     Connection.Response login = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/login/loginAuthSubmit")
                             .data("login_user_name", credentials[0])
                             .data("login_password", credentials[1])
@@ -197,12 +189,15 @@ public class CreditAttendanceF extends Fragment {
                                 .cookies(login.cookies())
                                 .execute();
                         Document checkAttendanceDoc = checkAttendance.parse();
+                        Log.d(TAG,checkAttendanceDoc.toString());
                         try {
+                            Log.d(TAG,"yaha bhi aa gaya");
                             Elements panelElements = checkAttendanceDoc.getElementsByClass("panel panel-primary");
                             Elements trElements = panelElements.select("tr");
                             for (int i = 0; i < trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i + 1);
                                 Elements tdElements = trElement.select("td");
+                                Log.d(TAG,"tdelements  " + tdElements.toString());
                                 attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
                                         tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
                                         (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
@@ -211,6 +206,7 @@ public class CreditAttendanceF extends Fragment {
                                         tdElements.get(9).text(),
                                         tdElements.get(14).text()
                                 ));
+                                Log.d(TAG + "hi",attendanceData.toString());
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
@@ -219,14 +215,17 @@ public class CreditAttendanceF extends Fragment {
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                 }
-                return new AttendanceResponse(attendanceData,"");
-            }
+
             return new AttendanceResponse(null,"Not connected to Student Wifi");
         }
 
         @Override
         public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
+            Log.d(TAG,"onPostExecute() EXECUTING");
+            //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
+            emptyTextView.setVisibility(View.GONE);
+            Log.d(TAG,emptyTextView.toString());
             if(swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -255,12 +254,12 @@ public class CreditAttendanceF extends Fragment {
                     if (adapter != null) {
                         adapter.setAttendanceData(attendanceData);
                     } else {
-                        adapter = new AttendanceAdapter(attendanceData,getActivity().getApplicationContext());
+                        adapter = new AttendanceAdapterCC(attendanceData,getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
                     }
                 } else{
                     attendanceView.setVisibility(View.GONE);
-                    emptyTextView.setVisibility(View.VISIBLE);
+                   // emptyTextView.setVisibility(View.VISIBLE);
                 }
             }
         }

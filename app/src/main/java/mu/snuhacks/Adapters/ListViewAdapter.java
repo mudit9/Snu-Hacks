@@ -1,6 +1,7 @@
 package mu.snuhacks.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,9 @@ public class ListViewAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_component, parent, false);
         }
-
+        Typeface custom_font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Junction-regular.otf");
         TextView details = (TextView) convertView.findViewById(R.id.text41);
+        details.setTypeface(custom_font);
         Log.d("listview",convertView.toString()) ;
         details.setText(user);
         return convertView;

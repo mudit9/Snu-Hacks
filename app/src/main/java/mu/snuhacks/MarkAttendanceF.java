@@ -110,7 +110,7 @@ public class MarkAttendanceF extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView1.setLayoutManager(manager);
         MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
-        fetchAttendanceTask4.execute(netId,password);
+        //fetchAttendanceTask4.execute(netId,password);
 
 
         // ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);

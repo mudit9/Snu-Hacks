@@ -106,7 +106,7 @@ public class AttendanceF extends Fragment {
             @Override
             public void onRefresh() {
                 FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{netId,password});
+             //   fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -234,7 +234,8 @@ public class AttendanceF extends Fragment {
                             for (int i = 0; i < trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i + 1);
                                 Elements tdElements = trElement.select("td");
-                                attendanceData.add(new AttendanceData(tdElements.get(1).text(), tdElements.get(0).text(), tdElements.get(6).text()));
+                                attendanceData.add(new AttendanceData(tdElements.get(1).text(), tdElements.get(0).text(), tdElements.get(2).text(),tdElements.get(3).text(),tdElements.get(4).text(),tdElements.get(5).text(), tdElements.get(6).text()));
+
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());

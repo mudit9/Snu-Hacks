@@ -51,10 +51,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 .enter(newFragment)
                 .start();
 */
-        toolbar3 = findViewById(R.id.toolbar_here);
-        setSupportActionBar(toolbar3);
         mContext = this;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);

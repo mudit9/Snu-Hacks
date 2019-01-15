@@ -44,6 +44,7 @@ public class DataUsage extends AppCompatActivity {
     AVLoadingIndicatorView avi1;
     CircleProgress Circleprogress;
     //Bundle extras = getIntent().getExtras();
+    private SharedPreferences prefs;
     Button data_button;
     String password;
     private final String TAG = "HomeActivity";
@@ -57,6 +58,8 @@ public class DataUsage extends AppCompatActivity {
     ProgressBar mProgress;
     Button data;
     private InterstitialAd mInterstitialAd;
+    SharedPreferences.Editor editor;
+
 
 
 
@@ -70,7 +73,7 @@ public class DataUsage extends AppCompatActivity {
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         data = findViewById(R.id.data_button);
         head = findViewById(R.id.heading);
-        SharedPreferences prefs = getSharedPreferences("MyPref", 0);
+        prefs = getSharedPreferences("MyPref", 0);
         netId = prefs.getString("username", "");
         password = prefs.getString("password", "");
         System.out.println(netId + " f " + password);
@@ -192,6 +195,9 @@ public class DataUsage extends AppCompatActivity {
             parsedHtmlNode.setMovementMethod(new ScrollingMovementMethod());
             mProgress.setIndeterminate(false);
             mProgress.setVisibility(View.GONE);
+            editor = prefs.edit();
+            editor.putString("data_usage",htmlContentInStringFormat);
+            editor.apply();
 
         }
     }
