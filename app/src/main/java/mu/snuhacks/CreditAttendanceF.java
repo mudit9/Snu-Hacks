@@ -3,7 +3,6 @@ package mu.snuhacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -40,10 +38,9 @@ import javax.net.ssl.X509TrustManager;
 
 import mu.snuhacks.Adapters.AttendanceAdapter;
 
-public class AttendanceF extends Fragment {
-    private final String TAG = AttendanceF.class.getSimpleName();
+public class CreditAttendanceF extends Fragment {
+    private final String TAG = CreditAttendanceF.class.getSimpleName();
 
-    private WifiManager mWifiManager;
     private SharedPreferences sharedPreferences;
 
     private ConstraintLayout constraintLayout;
@@ -64,7 +61,6 @@ public class AttendanceF extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreateCalled");
-        mWifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
         netId = sharedPreferences.getString("username","");
         password = sharedPreferences.getString("password","");
@@ -76,16 +72,10 @@ public class AttendanceF extends Fragment {
         attendanceData = new ArrayList<AttendanceData>();
     }
 
-    public static Fragment newInstance() {
-        final Fragment fragment1 = new AttendanceF();
-        return fragment1;
-    }
-
     @Override
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume() called");
-        checkAndModifyWifiState();
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -96,7 +86,7 @@ public class AttendanceF extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent,Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState){
         this.depth = DepthProvider.getDepth(parent);
         Log.d("tag","creating AttendanceF");
         View view = depth.setupFragment(10f, 10f, layoutInflater.inflate(R.layout.attendance_fragment, parent, false));
@@ -104,7 +94,7 @@ public class AttendanceF extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
         attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view);
         emptyTextView = (TextView) view.findViewById(R.id.empty_text_view);
-       // mprogress = view.findViewById(R.id.ProgressBar);
+        // mprogress = view.findViewById(R.id.ProgressBar);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
@@ -143,32 +133,7 @@ public class AttendanceF extends Fragment {
         return view;
     }
 
-    private void checkAndModifyWifiState(){
-        Log.d(TAG,"checkModifyState() executing");
-        if(mWifiManager != null && !isConnected){
-            if(!mWifiManager.isWifiEnabled()){
-                Log.d(TAG,"Wifi enabled");
-                mWifiManager.setWifiEnabled(true);
-            }
-            if(mWifiManager.getConnectionInfo().getSSID().equals("Student")){
-                isConnected = true;
-            } else {
-                List<WifiConfiguration> wifiConfigurations = mWifiManager.getConfiguredNetworks();
-                for (WifiConfiguration configuration : wifiConfigurations) {
-                    if (configuration.SSID.equals("Student")) {
-                        mWifiManager.disconnect();
-                        mWifiManager.enableNetwork(configuration.networkId,true);
-                        Log.d(TAG,"Trying");
-                        isConnected = mWifiManager.reconnect();
-                    }
-                }
-            }
-        } else{
-            Log.d(TAG,"mWifiManager null");
-        }
-    }
-
-    private class FetchAttendanceTask extends AsyncTask<String,Void,AttendanceResponse> {
+    private class FetchAttendanceTask extends AsyncTask<String,Void,AttendanceF.AttendanceResponse> {
         private final String TAG = FetchAttendanceTask.class.getSimpleName();
 
         private SharedPreferences prefs;
@@ -186,7 +151,7 @@ public class AttendanceF extends Fragment {
 
 
         @Override
-        protected AttendanceResponse doInBackground(String... credentials) {
+        protected AttendanceF.AttendanceResponse doInBackground(String... credentials) {
             if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
                 ArrayList<AttendanceData> attendanceData = new ArrayList<AttendanceData>();
@@ -222,11 +187,11 @@ public class AttendanceF extends Fragment {
                     Document loginDoc = login.parse();
                     Elements errorElements = loginDoc.getElementsByClass("alert-warning");
                     if(errorElements.size() != 0){
-                        return new AttendanceResponse(null,"Invalid Credentials");
+                        return new AttendanceF.AttendanceResponse(null,"Invalid Credentials");
                     } else {
                         Log.d(TAG,"Executing here3");
 
-                        Connection.Response checkAttendance = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/summary")
+                        Connection.Response checkAttendance = Jsoup.connect("https://markattendance.webapps.snu.edu.in/public/application/index/crs_wise_att_ch")
                                 .userAgent("Mozilla")
                                 .header("X-Requested-With", "XMLHttpRequest")
                                 .method(Connection.Method.POST)
@@ -248,13 +213,13 @@ public class AttendanceF extends Fragment {
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                 }
-                return new AttendanceResponse(attendanceData,"");
+                return new AttendanceF.AttendanceResponse(attendanceData,"");
             }
-            return new AttendanceResponse(null,"Not connected to Student Wifi");
+            return new AttendanceF.AttendanceResponse(null,"Not connected to Student Wifi");
         }
 
         @Override
-        public void onPostExecute(AttendanceResponse response){
+        public void onPostExecute(AttendanceF.AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
             if(swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -295,21 +260,4 @@ public class AttendanceF extends Fragment {
         }
     }
 
-    public static class AttendanceResponse{
-        private ArrayList<AttendanceData> attendanceData;
-        private String errorMessage;
-
-        public AttendanceResponse(ArrayList<AttendanceData> attendanceData,String errorMessage){
-            this.attendanceData = attendanceData;
-            this.errorMessage = errorMessage;
-        }
-
-        public ArrayList<AttendanceData> getAttendanceData(){
-            return attendanceData;
-        }
-
-        public String getErrorMessage(){
-            return errorMessage;
-        }
-    }
 }
