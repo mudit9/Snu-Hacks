@@ -106,7 +106,7 @@ public class AttendanceF extends Fragment {
             @Override
             public void onRefresh() {
                 FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-             //   fetchAttendanceTask3.execute(new String[]{netId,password});
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
             }
         };

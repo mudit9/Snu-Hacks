@@ -74,8 +74,6 @@ public class CreditAttendanceF extends Fragment {
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume() called");
-        FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
-        fetchAttendanceTask3.execute(new String[]{netId,password});
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -100,7 +98,8 @@ public class CreditAttendanceF extends Fragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -192,7 +191,7 @@ public class CreditAttendanceF extends Fragment {
                         Log.d(TAG,checkAttendanceDoc.toString());
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
-                            Elements panelElements = checkAttendanceDoc.getElementsByClass("panel panel-primary");
+                            Elements panelElements = checkAttendanceDoc.getElementsByTag("tbody");
                             Elements trElements = panelElements.select("tr");
                             for (int i = 0; i < trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i + 1);
@@ -206,11 +205,12 @@ public class CreditAttendanceF extends Fragment {
                                         tdElements.get(9).text(),
                                         tdElements.get(14).text()
                                 ));
-                                Log.d(TAG + "hi",attendanceData.toString());
+                                Log.d(TAG,attendanceData.get(attendanceData.size()-1).toString());
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
                         }
+                        return new AttendanceResponse(attendanceData,"");
                     }
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
