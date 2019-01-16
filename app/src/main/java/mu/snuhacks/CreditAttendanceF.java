@@ -99,7 +99,7 @@ public class CreditAttendanceF extends Fragment {
             @Override
             public void onRefresh() {
                 FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{netId,password});
+                fetchAttendanceTask3.execute(new String[]{"ms418","Rakhi@17"});
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -205,7 +205,6 @@ public class CreditAttendanceF extends Fragment {
                                         tdElements.get(9).text(),
                                         tdElements.get(14).text()
                                 ));
-                                Log.d(TAG,attendanceData.get(attendanceData.size()-1).toString());
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
