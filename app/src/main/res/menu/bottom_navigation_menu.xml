@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <item
+        android:id="@+id/ic_help"
+        android:icon="@drawable/ic_help"
+        android:title="About" />
     <item
         android:id="@+id/ic_mark_attendance"
         android:icon="@drawable/ic_mark_attendance"
-        android:title="Mark" />
+        android:title="Attendance" />
 
-    <item
-        android:id="@+id/ic_attendance"
-        android:icon="@drawable/ic_attendance"
-        android:title="Check" />
+
     <item
         android:id="@+id/ic_house"
         android:icon="@drawable/ic_home"
