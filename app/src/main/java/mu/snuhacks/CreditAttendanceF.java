@@ -100,7 +100,7 @@ public class CreditAttendanceF extends Fragment {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
                 FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{netId,password});
+                fetchAttendanceTask3.execute(new String[]{"ms418","Rakhi@17"});
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -190,7 +190,6 @@ public class CreditAttendanceF extends Fragment {
                                 .cookies(login.cookies())
                                 .execute();
                         Document checkAttendanceDoc = checkAttendance.parse();
-                        Log.d(TAG,checkAttendanceDoc.toString());
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
 
@@ -200,6 +199,7 @@ public class CreditAttendanceF extends Fragment {
                             for (int i = 0; i <= trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i);
                                 Elements tdElements = trElement.select("td");
+                                Log.d(TAG,tdElements.toString());
                                 attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
                                         tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
                                         (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
@@ -208,8 +208,8 @@ public class CreditAttendanceF extends Fragment {
                                         tdElements.get(9).text(),
                                         tdElements.get(14).text().replace("%","")
                                 ));
-                                Log.d(TAG, String.valueOf(attendanceData.size()));
-                                Log.d(TAG,attendanceData.get(attendanceData.size()-1).toString());
+                                Log.d("data",attendanceData.toString());
+
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
@@ -255,14 +255,11 @@ public class CreditAttendanceF extends Fragment {
                     attendanceData.clear();
                     Log.d("response",response.getAttendanceData().toString());
                     attendanceData.addAll(response.getAttendanceData());
-
-
                     if (adapter != null) {
                         Log.d("ad",attendanceData.toString());
                         adapter.setAttendanceData(attendanceData);
                     } else {
                         Log.d("aad",attendanceData.toString());
-
                         adapter = new AttendanceAdapterCC(attendanceData,getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
                     }

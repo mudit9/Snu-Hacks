@@ -15,7 +15,9 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:background="@color/true_white"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:tabMode="fixed"
             app:tabGravity="fill"/>
     </android.support.design.widget.AppBarLayout>
@@ -31,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginBottom="5dp"
         android:layout_below="@id/tabs"/>
 </android.support.design.widget.CoordinatorLayout>
     <include layout="@layout/layout_bottom_navigation"/>

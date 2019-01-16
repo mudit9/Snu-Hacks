@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.github.florent37.expansionpanel.ExpansionHeader
@@ -23,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
-                android:textColor="#3E3E3E"
+                android:textColor="#FFF"
                 android:id="@+id/course_name"/>
 
             <TextView
@@ -44,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_width="wrap_content"
+                android:rotation="180"
                 app:srcCompat="@drawable/ic_arrow" />
         </RelativeLayout>
 
@@ -66,7 +66,7 @@
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="140dp"
                 android:divider="#000"
                 android:dividerHeight="2px"
                 />

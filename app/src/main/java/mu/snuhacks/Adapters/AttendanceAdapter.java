@@ -44,6 +44,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(attendanceData.get(position));
+//        Log.e(TAG,((AttendanceDataCC) attendanceData.get(position)).getAttendance().trim().substring(0,((AttendanceDataCC) attendanceData.get(position)).getAttendance().indexOf('%')));
         expansionLayoutCollection.add(holder.getExpansionLayout());
     }
 
@@ -94,7 +95,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             } else{
                 courseName.setText(((AttendanceDataCC) data).getCourseName());
                 try{
-                    attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
+                    String subs = ((AttendanceDataCC) data).getAttendance().trim().substring(0,((AttendanceDataCC) data).getAttendance().indexOf('%'));
+                    attendance = Float.parseFloat(subs);
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                     attendance = 0.0f;

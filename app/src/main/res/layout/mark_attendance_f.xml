@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red"
+    android:background="#082873"
     android:id="@+id/parent_layout1">
 
 
@@ -11,7 +11,6 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/red"
         android:id="@+id/swipe_to_refresh1">
 
         <RelativeLayout
@@ -24,22 +23,24 @@
                 android:id="@+id/attendance_recycler_view1"
                 android:visibility="gone"/>
 
-            <View
+            <TextView
                 android:id="@+id/buttonView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="216dp"
-                android:background="@drawable/ic_data_usage"
+                android:background="@drawable/ic_tick"
+                android:layout_marginTop="125dp"
                 android:gravity="center">
-            </View>
+            </TextView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/empty_text_view1"
-                android:text="No attendance data available"
+                android:textColor="@color/true_white"
+                android:text="Pull to mark!"
+                android:gravity="center"
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
 

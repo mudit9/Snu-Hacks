@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,19 +110,17 @@ public class MarkAttendanceF extends Fragment {
         emptyTextView1 = (TextView) view.findViewById(R.id.empty_text_view1);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView1.setLayoutManager(manager);
-        MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
+        final MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
         fetchAttendanceTask4.execute(netId,password);
-
-
-        // ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
-
 
         onRefreshListener1 = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.d(TAG,"onRefresh() called");
+                fetchAttendanceTask4.execute(netId,password);
             }
         };
+        swipeRefreshLayout1.setOnRefreshListener(onRefreshListener1);
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
             if(emptyTextView1.getVisibility()==View.GONE)
@@ -268,11 +267,11 @@ public class MarkAttendanceF extends Fragment {
             if(swipeRefreshLayout1.isRefreshing()) {
                 swipeRefreshLayout1.setRefreshing(false);}
             emptyTextView1.setVisibility(View.VISIBLE);
-            emptyTextView1.setText(htmlContentInStringFormat);
+            emptyTextView1.setText(Html.fromHtml(htmlContentInStringFormat));
             if(flag == true)
-                ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
 
-            //((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+             ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+
             else
                 ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
 

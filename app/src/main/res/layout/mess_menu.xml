@@ -14,6 +14,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:paddingBottom="5dp"
+        android:background="@color/true_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -24,11 +25,10 @@
             android:text="Mess Menu"
             android:drawablePadding="12sp"
             android:textStyle="bold"
-            android:textColor="@color/true_white"
+            android:textColor="@color/black"
             android:textSize="25sp"
             android:id="@+id/heading"
             android:paddingLeft="5dp"
-            android:drawableTint="@color/true_white"
             android:drawableLeft="@drawable/ic_mess_menu"
             />
         </android.support.v7.widget.Toolbar>

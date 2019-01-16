@@ -143,13 +143,10 @@ public class messMenu extends AppCompatActivity {
                     }
 
                     Element elementsByTag1 = document2.getElementsByClass("table table-striped table-bordered table-hover").get(0);
-                    Log.e("aaa",elementsByTag1.toString());
                     Element elementsByTags2 = elementsByTag1.getElementsByTag("tbody").get(0);
                     Element elementsByTags3 = elementsByTags2.getElementsByTag("tr").get(0);
-                    Log.e("aaaaa",elementsByTags3.toString());
 
                     Elements elementByTags4 = elementsByTags3.getElementsByTag("td");
-                    Log.e("aaaaaaaa",elementByTags4.toString());
 
                     try{
                         breakfast1 = elementByTags4.get(1).text();
@@ -166,8 +163,7 @@ public class messMenu extends AppCompatActivity {
                     dh1_menu = new ArrayList<>(Arrays.asList(breakfast1, lunch1, dinner1));
 
                     dh2_menu = new ArrayList<>(Arrays.asList(breakfast2, lunch2, dinner2));
-                    Log.d("tag",dh1_menu.toString());
-                    Log.d("tag",dh2_menu.toString());
+
 
                 }
                 catch (Exception e){
