@@ -146,7 +146,7 @@ public class CreditAttendanceF extends Fragment {
         @Override
         protected AttendanceResponse doInBackground(String... credentials) {
                 Log.d(TAG, "doInBackground() executing");
-                ArrayList<Object> attendanceData = new ArrayList<Object>();
+                ArrayList<Object> ccattendanceData = new ArrayList<Object>();
                 try{
                     TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
                         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -240,6 +240,7 @@ public class CreditAttendanceF extends Fragment {
                     startActivity(loginIntent);
                 }
             } else {
+                Log.d("size",String.valueOf(response.getAttendanceData().size()));
                 if(response.getAttendanceData().size() > 0) {
                     try {
                         prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
@@ -252,11 +253,16 @@ public class CreditAttendanceF extends Fragment {
                     emptyTextView.setVisibility(View.GONE);
                     attendanceView.setVisibility(View.VISIBLE);
                     attendanceData.clear();
+                    Log.d("response",response.getAttendanceData().toString());
                     attendanceData.addAll(response.getAttendanceData());
 
+
                     if (adapter != null) {
+                        Log.d("ad",attendanceData.toString());
                         adapter.setAttendanceData(attendanceData);
                     } else {
+                        Log.d("aad",attendanceData.toString());
+
                         adapter = new AttendanceAdapterCC(attendanceData,getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
                     }

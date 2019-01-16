@@ -110,7 +110,7 @@ public class MarkAttendanceF extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView1.setLayoutManager(manager);
         MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
-        //fetchAttendanceTask4.execute(netId,password);
+        fetchAttendanceTask4.execute(netId,password);
 
 
         // ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
@@ -124,6 +124,7 @@ public class MarkAttendanceF extends Fragment {
         };
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
+            if(emptyTextView1.getVisibility()==View.GONE)
             emptyTextView1.setVisibility(View.VISIBLE);
             attendanceView1.setVisibility(View.GONE);
         } else{
@@ -269,7 +270,9 @@ public class MarkAttendanceF extends Fragment {
             emptyTextView1.setVisibility(View.VISIBLE);
             emptyTextView1.setText(htmlContentInStringFormat);
             if(flag == true)
-            ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+                ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
+
+            //((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
             else
                 ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
 

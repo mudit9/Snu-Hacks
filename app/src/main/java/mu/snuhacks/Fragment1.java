@@ -6,12 +6,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.florent37.depth.Depth;
 import com.github.florent37.depth.DepthProvider;
 
+
 public class Fragment1 extends Fragment {
     private Depth depth;
+    private TextView text;
 
     public static Fragment newInstance() {
         Log.d("tag","fragment1 created");
@@ -24,10 +27,14 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("tag","fragment1 created here ");
+//        text = getView().findViewById(R.id.empty_text_view1);
         this.depth = DepthProvider.getDepth(getContext());
         View view = depth.setupFragment(10f, 10f, inflater.inflate(R.layout.mark_attendance_f, container, false));
         Log.d("tag",view.toString());
-     //   this.depth = DepthProvider.getDepth(getActivity().getApplicationContext());
+     //   text.setText("Attendance Marked Succesfully!");
+       // Toasty.success(getContext(), "Marked!", Toast.LENGTH_SHORT, true).show();
+
+        //   this.depth = DepthProvider.getDepth(getActivity().getApplicationContext());
      //   depth.onFragmentReady(this);
         return view;
     }

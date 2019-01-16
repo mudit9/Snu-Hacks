@@ -91,6 +91,7 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
                 }
                 courseAttendance.setText(((AttendanceDataCC) data).getAttendance());
                 details_here = ((AttendanceDataCC) data).getAllDetails();
+                Log.d(TAG,details_here.toString());
 
             courseName.setTypeface(Typeface.createFromAsset(Context.getAssets(),  "fonts/Biko_Regular.otf"));
 

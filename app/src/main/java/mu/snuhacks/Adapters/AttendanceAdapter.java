@@ -82,6 +82,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             ArrayList<String> details_here;
             if(data instanceof AttendanceData){
                 courseName.setText(((AttendanceData) data).getCourseName());
+                courseName.setTextSize(18);
                 try{
                     attendance = Float.parseFloat(((AttendanceData) data).getCourseAttendance());
                 } catch(Exception exception){

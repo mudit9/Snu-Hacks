@@ -1,40 +1,18 @@
 package mu.snuhacks;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.wang.avi.AVLoadingIndicatorView;
-
-import org.jsoup.Connection;
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
-
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Iterator;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -46,6 +24,8 @@ public class About extends AppCompatActivity {
     TextView four;
     TextView about_main;
     ListView List;
+    private Context mContext;
+    private int ACTIVITY_NUM = 0;
     FancyButton muditbutton;
     FancyButton shashvatbutton;
     FancyButton tarinibutton;
@@ -54,6 +34,7 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_test);
+        mContext = getApplicationContext();
      /*   one = (TextView) findViewById(R.id.Developer);
         two = (TextView) findViewById(R.id.Mudit);
         three = (TextView) findViewById(R.id.Design);
@@ -61,6 +42,7 @@ public class About extends AppCompatActivity {
         about_main = (TextView) findViewById(R.id.ABOUT);
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ChiselMark.ttf");
         about_main.setTypeface(custom_font); */
+     setupBottomNavigationView();
        muditbutton = findViewById(R.id.mudit_text);
        muditbutton.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -69,5 +51,14 @@ public class About extends AppCompatActivity {
                getApplicationContext().startActivity(intent);
            }
        });
+    }
+    private void setupBottomNavigationView() {
+        Log.d("tag", "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_viewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx,getApplicationContext());
+        BottomNavigationViewHelper.enableNavigation(mContext,this , bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 }
