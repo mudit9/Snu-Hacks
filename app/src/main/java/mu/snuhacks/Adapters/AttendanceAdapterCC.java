@@ -42,6 +42,7 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(attendanceData.get(position));
+        Log.d(TAG,"Component inflated");
         expansionLayoutCollection.add(holder.getExpansionLayout());
     }
 
@@ -77,11 +78,13 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
 
         public void bind(Object data){
             float attendance = 0.0f;
-            Log.d(TAG,"binding");
+            Log.d(TAG,"happing");
             ArrayList<String> details_here;
                 courseName.setText(((AttendanceDataCC) data).getCourseName());
                 try{
+                    Log.d("tag21",((AttendanceDataCC) data).getAttendance());
                     attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
+                    Log.d("tag", String.valueOf(attendance));
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                     attendance = 0.0f;

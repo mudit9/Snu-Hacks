@@ -64,8 +64,8 @@ public class BottomNavigationViewHelper {
                         break;
 
 
-                    case R.id.ic_attendance:
-                        Intent intent5 = new Intent(context, Attendance.class);//ACTIVITY_NUM = 4
+                    case R.id.ic_help:
+                        Intent intent5 = new Intent(context, About.class);//ACTIVITY_NUM = 4
                         context.startActivity(intent5);
                         callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

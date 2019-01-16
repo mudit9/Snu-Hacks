@@ -98,11 +98,13 @@ public class CreditAttendanceF extends Fragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
                 FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
                 fetchAttendanceTask3.execute(new String[]{"ms418","Rakhi@17"});
                 Log.d(TAG,"onRefresh() called");
             }
         };
+        swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
             emptyTextView.setVisibility(View.VISIBLE);
@@ -191,19 +193,20 @@ public class CreditAttendanceF extends Fragment {
                         Log.d(TAG,checkAttendanceDoc.toString());
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
+
                             Elements panelElements = checkAttendanceDoc.getElementsByTag("tbody");
                             Elements trElements = panelElements.select("tr");
-                            for (int i = 0; i < trElements.size() - 1; i++) {
-                                Element trElement = trElements.get(i + 1);
+                            Log.d(TAG+"@@", String.valueOf(trElements.size()));
+                            for (int i = 0; i <= trElements.size() - 1; i++) {
+                                Element trElement = trElements.get(i);
                                 Elements tdElements = trElement.select("td");
-                                Log.d(TAG,"tdelements  " + tdElements.toString());
                                 attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
                                         tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
                                         (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
                                         tdElements.get(7).text(),
                                         tdElements.get(8).text(),
                                         tdElements.get(9).text(),
-                                        tdElements.get(14).text()
+                                        tdElements.get(14).text().replace("%","")
                                 ));
                             }
                         } catch (Exception exception) {
@@ -221,7 +224,6 @@ public class CreditAttendanceF extends Fragment {
         @Override
         public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
-            Log.d(TAG,"onPostExecute() EXECUTING");
             //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
             emptyTextView.setVisibility(View.GONE);
             Log.d(TAG,emptyTextView.toString());
