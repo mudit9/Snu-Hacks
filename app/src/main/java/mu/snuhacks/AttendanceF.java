@@ -105,11 +105,13 @@ public class AttendanceF extends Fragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
                 FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-             //   fetchAttendanceTask3.execute(new String[]{netId,password});
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
             }
         };
+        swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
             emptyTextView.setVisibility(View.VISIBLE);

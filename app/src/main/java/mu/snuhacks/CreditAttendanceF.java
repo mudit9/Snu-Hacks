@@ -74,8 +74,6 @@ public class CreditAttendanceF extends Fragment {
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume() called");
-        FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
-        fetchAttendanceTask3.execute(new String[]{netId,password});
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -100,10 +98,13 @@ public class CreditAttendanceF extends Fragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                swipeRefreshLayout.setRefreshing(true);
+                FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
             }
         };
+        swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
             emptyTextView.setVisibility(View.VISIBLE);
@@ -192,24 +193,28 @@ public class CreditAttendanceF extends Fragment {
                         Log.d(TAG,checkAttendanceDoc.toString());
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
-                            Elements trElements = checkAttendanceDoc.select("tr");
-                            for (int i = 0; i < trElements.size() - 1; i++) {
-                                Element trElement = trElements.get(i + 1);
+
+                            Elements panelElements = checkAttendanceDoc.getElementsByTag("tbody");
+                            Elements trElements = panelElements.select("tr");
+                            Log.d(TAG+"@@", String.valueOf(trElements.size()));
+                            for (int i = 0; i <= trElements.size() - 1; i++) {
+                                Element trElement = trElements.get(i);
                                 Elements tdElements = trElement.select("td");
-                                Log.d(TAG,"tdelements  " + tdElements.toString());
                                 attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
                                         tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
                                         (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
                                         tdElements.get(7).text(),
                                         tdElements.get(8).text(),
                                         tdElements.get(9).text(),
-                                        tdElements.get(14).text()
+                                        tdElements.get(14).text().replace("%","")
                                 ));
-                                Log.d(TAG + "hi",attendanceData.toString());
+                                Log.d(TAG, String.valueOf(attendanceData.size()));
+                                Log.d(TAG,attendanceData.get(attendanceData.size()-1).toString());
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
                         }
+                        return new AttendanceResponse(attendanceData,"");
                     }
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
