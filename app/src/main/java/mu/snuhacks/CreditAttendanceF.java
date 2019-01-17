@@ -194,6 +194,7 @@ public class CreditAttendanceF extends Fragment {
                             Elements panelElements = checkAttendanceDoc.getElementsByTag("tbody");
                             Elements trElements = panelElements.select("tr");
                             Log.d(TAG+"@@", String.valueOf(trElements.size()));
+                            attendanceData.clear();
                             for (int i = 0; i <= trElements.size() - 1; i++) {
                                 Element trElement = trElements.get(i);
                                 Elements tdElements = trElement.select("td");
@@ -212,9 +213,7 @@ public class CreditAttendanceF extends Fragment {
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
                         }
-                        ArrayList<Object> temp = new ArrayList<Object>();
-                        temp.addAll(attendanceData);
-                        return new AttendanceResponse(temp,"");
+                        return new AttendanceResponse(attendanceData,"");
                     }
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
@@ -227,7 +226,6 @@ public class CreditAttendanceF extends Fragment {
         public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
             //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
-            Log.e(TAG,response.getAttendanceData().toString());
             try{
             emptyTextView.setVisibility(View.GONE);
             Log.d(TAG,emptyTextView.toString());}
@@ -258,16 +256,13 @@ public class CreditAttendanceF extends Fragment {
                     }
                     emptyTextView.setVisibility(View.GONE);
                     attendanceView.setVisibility(View.VISIBLE);
-                    attendanceData.clear();
-                    Log.d("response",response.getAttendanceData().toString());
-                    attendanceData.addAll(response.getAttendanceData());
                     Log.e(TAG,attendanceData.toString());
                     if (adapter != null) {
                         Log.d("ad",attendanceData.toString());
-                        adapter.setAttendanceData(attendanceData);
+                        adapter.setAttendanceData(response.getAttendanceData());
                     } else {
                         Log.d("aad",attendanceData.toString());
-                        adapter = new AttendanceAdapterCC(attendanceData,getActivity().getApplicationContext());
+                        adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
                     }
                 } else{
