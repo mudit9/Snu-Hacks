@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -197,6 +202,17 @@ public class MainActivity extends AppCompatActivity {
                     String name = an.replaceAll("[Logout]", "");
                     name = name.trim();
                     Log.d("name",name);
+                    SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference nameReference = database.getReference("/data/fcm_tokens_name/" + preferences.getString("fcm_key",""));
+                    nameReference.setValue(preferences.getString("name","no_name")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG,"Name corresponding to FCM token saved");
+                            }
+                        }
+                    });
                     nam2 = name2.substring(8, name2.length()-9);
                     name2 = nam2.trim();
                     Log.d("name",nam2);
