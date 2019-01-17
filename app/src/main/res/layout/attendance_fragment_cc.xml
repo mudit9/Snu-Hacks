@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:gravity="center"
+                android:layout_marginTop="3dp"
                 android:layout_marginBottom="7dp"
                 android:id="@+id/totalAttendance"
                 android:textSize="18sp"/>
@@ -48,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/empty_text_view2"
-                android:text="No attendance data available"
+                android:text=""
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true" />
 

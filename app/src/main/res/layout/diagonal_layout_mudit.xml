@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:diagonal="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#AAA"
+    android:background="#FFF"
     >
 
     <com.github.florent37.diagonallayout.DiagonalLayout
@@ -90,8 +89,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="190dp"
         android:elevation="15dp"
@@ -127,12 +126,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/website"
                 android:text="Website"
-                android:textColor="#3E3E3E"
+                android:textColor="#000"
                 android:fontFamily="sans-serif-condensed"
                 android:layout_marginLeft="10dp"
                 android:shadowColor="@color/black"
-                android:textSize="26sp"/>
+                android:textSize="22dp"/>
 
 
         </LinearLayout>
@@ -147,6 +147,7 @@
         android:layout_marginRight="30dp"
         android:textColor="@color/black"
         android:textSize="30sp"
+        android:visibility="gone"
         android:text="hi my name is mudit saxena :) "/>
 
 

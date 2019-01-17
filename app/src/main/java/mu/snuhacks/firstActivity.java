@@ -170,6 +170,7 @@ public class firstActivity extends AppCompatActivity {
         card1.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
         card2.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
         diaongal.setLayoutParams(new LinearLayout.LayoutParams(width, (height*5)/20));
+        Log.d("dimensions","'height - " + height/9 + " width - " + width/9);
       //  card3.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
       //  card4.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
 
@@ -185,7 +186,7 @@ public class firstActivity extends AppCompatActivity {
         menu2.setText(DataUsageLast);
 
         menu1.setText(Html.fromHtml(totalAttendance));
-   //     menu1.setTextColor(Color.parseColor("#f7f7f7"));
+        menu1.setTextColor(Color.parseColor("#f7f7f7"));
         menu2.setTextColor(Color.parseColor("#f7f7f7"));
      //   heading3 = card3.findViewById(R.id.meal);
      //   heading4 = card4.findViewById(R.id.meal);

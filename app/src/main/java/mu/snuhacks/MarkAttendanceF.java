@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -49,9 +50,10 @@ public class MarkAttendanceF extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout1;
     private RecyclerView attendanceView1;
     private TextView emptyTextView1;
+    private ImageView buttonview;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener1;
     private AttendanceAdapter adapter;
-    private   MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4;
+    private MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4;
 
     private ArrayList<Object> attendanceData;
     private String netId;
@@ -136,6 +138,7 @@ public class MarkAttendanceF extends Fragment {
         emptyTextView1 = (TextView) view.findViewById(R.id.empty_text_view1);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView1.setLayoutManager(manager);
+        buttonview = view.findViewById(R.id.buttonView);
 
         onRefreshListener1 = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -247,63 +250,24 @@ public class MarkAttendanceF extends Fragment {
         }
 
         @Override
-        public void onPostExecute(AttendanceResponse response){
-            Log.d(TAG,"onPostExecute() executing");
-            Log.d(TAG,"EEEExecuting");
+        public void onPostExecute(AttendanceResponse response) {
+            Log.d(TAG, "onPostExecute() executing");
+            Log.d(TAG, "EEEExecuting");
 
-        /*    if(swipeRefreshLayout.isRefreshing()) {
-                swipeRefreshLayout.setRefreshing(false);
+            if (swipeRefreshLayout1.isRefreshing()) {
+                swipeRefreshLayout1.setRefreshing(false);
             }
-            if(response.getErrorMessage().length() != 0){
-                Snackbar.make(constraintLayout,response.getErrorMessage(),Snackbar.LENGTH_SHORT);
-                if(response.getErrorMessage().equals("Invalid Credentials")){
-                    Intent loginIntent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-                    loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(loginIntent);
-                }
-            } else {
-                if(response.getAttendanceData().size() > 0) {
-                    try {
-                        prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
-                        editor = prefs.edit();
-                        editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
-                        editor.apply();
-                    } catch (IOException exception) {
-                        Log.d(TAG, "Exception:- " + exception.getMessage());
-                    }
-                    emptyTextView.setVisibility(View.GONE);
-                    attendanceView.setVisibility(View.VISIBLE);
-                    attendanceData.clear();
-                    attendanceData.addAll(response.getAttendanceData());
-                    if (adapter != null) {
-                        adapter.setAttendanceData(attendanceData);
-                    } else {
-                        adapter = new AttendanceAdapter(attendanceData);
-                        attendanceView.setAdapter(adapter);
-                    }
-                } else{
-                    attendanceView.setVisibility(View.GONE);
-
-                }
-            }
-            */
-            //mprogressBar.setIndeterminate(false);
-
-            if(swipeRefreshLayout1.isRefreshing()) {
-                swipeRefreshLayout1.setRefreshing(false);}
             emptyTextView1.setVisibility(View.VISIBLE);
             emptyTextView1.setText(Html.fromHtml(htmlContentInStringFormat));
-            if(flag == true)
-
-             ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+            if (flag == true) {
+                ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+                buttonview.setColorFilter(getContext().getResources().getColor(R.color.red));
+                buttonview.setVisibility(View.VISIBLE);
+            }
 
             else
                 ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
 
-
-
-
-            //    ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
 
         }
     }

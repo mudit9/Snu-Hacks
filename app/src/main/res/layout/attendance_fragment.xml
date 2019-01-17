@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/empty_text_view"
-            android:text="No attendance data available"
+            android:text=""
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true" />
 
