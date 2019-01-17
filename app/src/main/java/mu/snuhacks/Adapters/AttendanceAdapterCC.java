@@ -63,13 +63,14 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
         private TextView courseName;
         private TextView courseAttendance;
         private ListView listView;
-        private TextView text;
+        private TextView totalAttendance;
 
         public ViewHolder(View view){
             super(view);
             expansionLayout = (ExpansionLayout) view.findViewById(R.id.expansion_layout);
             expansionLayoutCollection.openOnlyOne(false);
             // expansionLayout.setEnable(false);
+            totalAttendance = view.findViewById(R.id.totalAttendance);
             courseName = (TextView) view.findViewById(R.id.course_name);
             courseAttendance = (TextView) view.findViewById(R.id.course_attendance);
             listView = view.findViewById(R.id.listView);

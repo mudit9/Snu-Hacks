@@ -1,78 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:orientation="vertical">
+<com.github.florent37.expansionpanel.ExpansionHeader
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fancy="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    app:expansion_headerIndicator="@id/headerIndicator"
+    app:expansion_layout="@id/expansion_layout"
+    app:expansion_toggleOnClick="true">
 
-    <com.github.florent37.expansionpanel.ExpansionHeader
-        android:layout_width="match_parent"
+    <RelativeLayout
         android:layout_height="wrap_content"
-        app:expansion_headerIndicator="@id/headerIndicator"
-        app:expansion_layout="@id/expansion_layout"
-        app:expansion_toggleOnClick="true">
+        android:layout_width="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <RelativeLayout
+        <TextView
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/true_white"
+            android:id="@+id/course_name"/>
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:textColor="@color/true_white"
-                android:id="@+id/course_name"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/course_name"
+            android:layout_centerVertical="true"
+            android:textColor="#AAA"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/course_attendance"/>
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_toRightOf="@id/course_name"
-                android:layout_centerVertical="true"
-                android:textColor="#AAA"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:id="@+id/course_attendance"/>
+        <ImageView
+            android:adjustViewBounds="true"
+            android:id="@+id/headerIndicator"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:rotation="180"
+            app:srcCompat="@drawable/ic_arrow" />
+    </RelativeLayout>
 
-            <ImageView
-                android:adjustViewBounds="true"
-                android:id="@+id/headerIndicator"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                app:srcCompat="@drawable/ic_arrow" />
-        </RelativeLayout>
+</com.github.florent37.expansionpanel.ExpansionHeader>
 
-    </com.github.florent37.expansionpanel.ExpansionHeader>
+<com.github.florent37.expansionpanel.ExpansionLayout
+    android:id="@+id/expansion_layout"
+    app:expansion_expanded="false"
+    android:layout_height="100dp"
+    android:layout_width="match_parent">
 
-    <com.github.florent37.expansionpanel.ExpansionLayout
-        android:id="@+id/expansion_layout"
-        app:expansion_expanded="false"
-        android:layout_height="100dp"
+    <LinearLayout
+        android:id="@+id/container"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_width="match_parent">
 
-        <LinearLayout
-            android:id="@+id/container"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_width="match_parent">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:divider="#000"
+            android:dividerHeight="2px"
+            />
 
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:divider="#000"
-                android:dividerHeight="1px"
-                />
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </com.github.florent37.expansionpanel.ExpansionLayout>
+</com.github.florent37.expansionpanel.ExpansionLayout>
 
 </LinearLayout>
