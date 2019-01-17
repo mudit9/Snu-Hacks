@@ -72,8 +72,8 @@ public class AttendanceDataCC implements Parcelable {
         ArrayList<String> details = new ArrayList<>();
         details.add("Course Code - " + courseCode);
         details.add("Course Name - " +courseName);
-        details.add("Lecture Attendance - " +lecAtt);
-        details.add("Practical Attendance - " +pracAtt);
+        details.add("Lecture Attendance - " +pracAtt);
+        details.add("Practical Attendance - " +lecAtt);
         details.add("Tutorial Attendance - " +tutAtt);
         details.add("Course Credits - " +credits);
         details.add("Course Attendance - " + attendance);

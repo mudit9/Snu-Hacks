@@ -90,6 +90,7 @@ public class firstActivity extends AppCompatActivity {
     TextView menu1;
     TextView menu2;
     String DataUsageLast;
+    String totalAttendance;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -101,6 +102,7 @@ public class firstActivity extends AppCompatActivity {
         password = prefs.getString("password","");
         name = prefs.getString("name","");
         DataUsageLast = prefs.getString("data_usage","-");
+        totalAttendance = prefs.getString("total","");
         setContentView(R.layout.firstscreen_test);
         //   if (extras != null) {
         //      username = extras.getString("username");
@@ -180,6 +182,7 @@ public class firstActivity extends AppCompatActivity {
         menu1 = card1.findViewById(R.id.menu);
         menu2 = card2.findViewById(R.id.menu);
         menu2.setText(DataUsageLast);
+        menu2.setText(totalAttendance);
         menu1.setTextColor(Color.parseColor("#f7f7f7"));
         menu2.setTextColor(Color.parseColor("#f7f7f7"));
      //   heading3 = card3.findViewById(R.id.meal);

@@ -55,6 +55,11 @@ public class CreditAttendanceF extends Fragment {
     private boolean isConnected = true;
     private ProgressBar mprogress;
 
+    Double course_credit;
+    Double total_credit =0.0;
+    Double total = 0.0;
+    Double displayed = 0.0;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -190,7 +195,6 @@ public class CreditAttendanceF extends Fragment {
                         Document checkAttendanceDoc = checkAttendance.parse();
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
-
                             Elements panelElements = checkAttendanceDoc.getElementsByTag("tbody");
                             Elements trElements = panelElements.select("tr");
                             Log.d(TAG+"@@", String.valueOf(trElements.size()));
@@ -199,6 +203,12 @@ public class CreditAttendanceF extends Fragment {
                                 Element trElement = trElements.get(i);
                                 Elements tdElements = trElement.select("td");
                                 Log.d(TAG,tdElements.toString());
+
+                                course_credit = (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text()));
+                                total_credit = total_credit + course_credit;
+                                int number1 = Integer.parseInt(tdElements.get(14).text());
+                                total = total + (course_credit*number1);
+
                                 attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
                                         tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
                                         (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
@@ -247,10 +257,14 @@ public class CreditAttendanceF extends Fragment {
                 Log.d("size",String.valueOf(response.getAttendanceData().size()));
                 if(response.getAttendanceData().size() > 0) {
                     try {
+
                         prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
                         editor = prefs.edit();
                         editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
+                        displayed = total/total_credit;
+                        editor.putString("total",displayed.toString());
                         editor.apply();
+
                     } catch (IOException exception) {
                         Log.d(TAG, "IOException:- " + exception.getMessage());
                     }
@@ -261,6 +275,7 @@ public class CreditAttendanceF extends Fragment {
                         Log.d("ad",attendanceData.toString());
                         adapter.setAttendanceData(response.getAttendanceData());
                     } else {
+
                         Log.d("aad",attendanceData.toString());
                         adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);
