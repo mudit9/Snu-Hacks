@@ -208,13 +208,15 @@ public class CreditAttendanceF extends Fragment {
                                         tdElements.get(9).text(),
                                         tdElements.get(14).text().replace("%","")
                                 ));
-                                Log.d("data",attendanceData.toString());
+                                Log.e("data",attendanceData.toString());
 
                             }
                         } catch (Exception exception) {
                             Log.d(TAG, "Exception:- " + exception.getMessage());
                         }
-                        return new AttendanceResponse(attendanceData,"");
+                        ArrayList<Object> temp = new ArrayList<Object>();
+                        temp.addAll(attendanceData);
+                        return new AttendanceResponse(temp,"");
                     }
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
@@ -227,6 +229,7 @@ public class CreditAttendanceF extends Fragment {
         public void onPostExecute(AttendanceResponse response){
             Log.d(TAG,"onPostExecute() executing");
             //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
+            Log.e(TAG,response.getAttendanceData().toString());
             emptyTextView.setVisibility(View.GONE);
             Log.d(TAG,emptyTextView.toString());
             if(swipeRefreshLayout.isRefreshing()) {
@@ -255,6 +258,7 @@ public class CreditAttendanceF extends Fragment {
                     attendanceData.clear();
                     Log.d("response",response.getAttendanceData().toString());
                     attendanceData.addAll(response.getAttendanceData());
+                    Log.e(TAG,attendanceData.toString());
                     if (adapter != null) {
                         Log.d("ad",attendanceData.toString());
                         adapter.setAttendanceData(attendanceData);
