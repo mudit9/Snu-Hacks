@@ -100,7 +100,7 @@ public class CreditAttendanceF extends Fragment {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
                 FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{"ms418","Rakhi@17"});
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
             }
         };
@@ -135,8 +135,6 @@ public class CreditAttendanceF extends Fragment {
         @Override
         public void onPreExecute(){
             Log.d(TAG,"onPreExecute() executing");
-            Log.d(TAG, "aafafa");
-
             if(!swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(true);
             }
@@ -230,8 +228,13 @@ public class CreditAttendanceF extends Fragment {
             Log.d(TAG,"onPostExecute() executing");
             //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
             Log.e(TAG,response.getAttendanceData().toString());
+            try{
             emptyTextView.setVisibility(View.GONE);
-            Log.d(TAG,emptyTextView.toString());
+            Log.d(TAG,emptyTextView.toString());}
+            catch (Exception e)
+            {
+                Log.d(TAG, String.valueOf(e.getStackTrace()));
+            }
             if(swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }

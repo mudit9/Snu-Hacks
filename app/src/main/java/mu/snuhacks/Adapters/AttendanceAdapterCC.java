@@ -80,8 +80,9 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
             float attendance = 0.0f;
             Log.d(TAG,"happing");
             ArrayList<String> details_here;
-                courseName.setText(((AttendanceDataCC) data).getCourseName());
-                try{
+            courseName.setText(((AttendanceDataCC) data).getCourseName());
+            courseName.setTextSize(18);
+            try{
                     Log.d("tag21",((AttendanceDataCC) data).getAttendance());
                     attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
                     Log.d("tag", String.valueOf(attendance));
