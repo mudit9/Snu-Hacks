@@ -98,12 +98,22 @@ public class NewsletterMessagingService extends FirebaseMessagingService {
             key = reference.getKey();
         }
         editor.apply();
-        DatabaseReference reference = database.getReference("/data/fcm_tokens/" + key);
-        reference.setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DatabaseReference tokenReference = database.getReference("/data/fcm_tokens/" + key);
+        DatabaseReference nameReference = database.getReference("/data/fcm_tokens_name/" + key);
+        tokenReference.setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Log.d(TAG,"FCM token pushed to DB");
+                }
+            }
+        });
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
+        nameReference.setValue(preferences.getString("name","no_name")).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG,"Name corresponding to FCM token saved");
                 }
             }
         });
