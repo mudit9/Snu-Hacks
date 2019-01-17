@@ -90,6 +90,21 @@ public class MarkAttendanceF extends Fragment {
         return view;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isFragmentVisible){
+        super.setUserVisibleHint(true);
+        if(this.isVisible()){
+            if(isFragmentVisible){
+                swipeRefreshLayout1.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout1.setRefreshing(true);
+                        onRefreshListener1.onRefresh();
+                    }
+                });
+            }
+        }
+    }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
@@ -110,13 +125,12 @@ public class MarkAttendanceF extends Fragment {
         emptyTextView1 = (TextView) view.findViewById(R.id.empty_text_view1);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView1.setLayoutManager(manager);
-        final MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
-        fetchAttendanceTask4.execute(netId,password);
 
         onRefreshListener1 = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.d(TAG,"onRefresh() called");
+                MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
                 fetchAttendanceTask4.execute(netId,password);
             }
         };
