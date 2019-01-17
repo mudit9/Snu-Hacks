@@ -51,6 +51,7 @@ public class MarkAttendanceF extends Fragment {
     private TextView emptyTextView1;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener1;
     private AttendanceAdapter adapter;
+    private   MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4;
 
     private ArrayList<Object> attendanceData;
     private String netId;
@@ -103,6 +104,16 @@ public class MarkAttendanceF extends Fragment {
                     }
                 });
             }
+            else{
+                if(fetchAttendanceTask4 != null){
+                    try{
+                        fetchAttendanceTask4.cancel(true);
+                    }
+                    catch(Exception exception){
+                        Log.e(TAG,"Exception:- " + exception.getMessage());
+                    }
+                }
+            }
         }
     }
 
@@ -130,7 +141,7 @@ public class MarkAttendanceF extends Fragment {
             @Override
             public void onRefresh() {
                 Log.d(TAG,"onRefresh() called");
-                MarkAttendanceF.FetchAttendanceTask2 fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
+                fetchAttendanceTask4 = new MarkAttendanceF.FetchAttendanceTask2();
                 fetchAttendanceTask4.execute(netId,password);
             }
         };
