@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             ArrayList<String> details_here;
             if(data instanceof AttendanceData){
                 courseName.setText(((AttendanceData) data).getCourseName());
-                courseName.setTextSize(18);
+                DisplayMetrics displayMetrics =Context.getResources().getDisplayMetrics();
+                int height = displayMetrics.heightPixels;
+                int width = displayMetrics.widthPixels;
+                courseName.setTextSize(height/119);
                 try{
                     attendance = Float.parseFloat(((AttendanceData) data).getCourseAttendance());
                 } catch(Exception exception){

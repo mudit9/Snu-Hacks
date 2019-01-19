@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,13 +64,14 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
         private TextView courseName;
         private TextView courseAttendance;
         private ListView listView;
-        private TextView text;
+        private TextView totalAttendance;
 
         public ViewHolder(View view){
             super(view);
             expansionLayout = (ExpansionLayout) view.findViewById(R.id.expansion_layout);
             expansionLayoutCollection.openOnlyOne(false);
             // expansionLayout.setEnable(false);
+            totalAttendance = view.findViewById(R.id.totalAttendance);
             courseName = (TextView) view.findViewById(R.id.course_name);
             courseAttendance = (TextView) view.findViewById(R.id.course_attendance);
             listView = view.findViewById(R.id.listView);
@@ -81,11 +83,12 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
             Log.d(TAG,"happing");
             ArrayList<String> details_here;
             courseName.setText(((AttendanceDataCC) data).getCourseName());
-            courseName.setTextSize(18);
+            DisplayMetrics displayMetrics =Context.getResources().getDisplayMetrics();
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            courseName.setTextSize(height/119);
             try{
-                    Log.d("tag21",((AttendanceDataCC) data).getAttendance());
                     attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
-                    Log.d("tag", String.valueOf(attendance));
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
                     attendance = 0.0f;

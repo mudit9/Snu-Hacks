@@ -25,13 +25,12 @@
 
             <ImageView
                 android:id="@+id/buttonView"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_alert"
+                android:src="@drawable/ic_tick"
                 android:layout_marginTop="125dp"
-                android:visibility="gone"
                 android:gravity="center">
             </ImageView>
 
@@ -40,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/empty_text_view1"
                 android:textColor="@color/true_white"
-                android:text="Swipe down to mark!"
+                android:text="Pull to mark!"
                 android:textSize="23dp"
                 android:gravity="center"
                 android:layout_centerInParent="true"

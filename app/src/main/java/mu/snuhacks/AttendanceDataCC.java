@@ -15,7 +15,7 @@ public class AttendanceDataCC implements Parcelable {
     private String tutAtt;
     private String attendance;
 
-    public AttendanceDataCC(String courseName,String courseCode,String credits,String lecAtt,String pracAtt,String tutAtt,String attendance){
+    public AttendanceDataCC(String courseName,String courseCode,String credits,String lecAtt,String tutAtt,String pracAtt,String attendance){
         this.courseName = courseName;
         this.courseCode = courseCode;
         this.credits = credits;

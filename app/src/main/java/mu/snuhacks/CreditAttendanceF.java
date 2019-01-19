@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -43,8 +44,11 @@ public class CreditAttendanceF extends Fragment {
 
     private ConstraintLayout constraintLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
+    String totalAttendance;
+
     private RecyclerView attendanceView;
     private TextView emptyTextView;
+    private TextView totalAttendanceTextView;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
     private AttendanceAdapterCC adapter;
 
@@ -54,6 +58,11 @@ public class CreditAttendanceF extends Fragment {
     private Depth depth;
     private boolean isConnected = true;
     private ProgressBar mprogress;
+    private View lineview;
+    Double course_credit;
+    Double total_credit =0.0;
+    Double total = 0.0;
+    Double displayed = 0.0;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -82,7 +91,14 @@ public class CreditAttendanceF extends Fragment {
             }
         });
     }
-
+    private static BigDecimal truncateDecimal(double x, int numberofDecimals)
+    {
+        if ( x > 0) {
+            return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_FLOOR);
+        } else {
+            return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState){
         this.depth = DepthProvider.getDepth(parent);
@@ -92,6 +108,8 @@ public class CreditAttendanceF extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh2);
         attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view2);
         emptyTextView = (TextView) view.findViewById(R.id.empty_text_view2);
+        lineview = view.findViewById(R.id.line);
+        totalAttendanceTextView = view.findViewById(R.id.totalAttendance);
         // mprogress = view.findViewById(R.id.ProgressBar);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         attendanceView.setLayoutManager(manager);
@@ -190,7 +208,6 @@ public class CreditAttendanceF extends Fragment {
                         Document checkAttendanceDoc = checkAttendance.parse();
                         try {
                             Log.d(TAG,"yaha bhi aa gaya");
-
                             Elements panelElements = checkAttendanceDoc.getElementsByTag("tbody");
                             Elements trElements = panelElements.select("tr");
                             Log.d(TAG+"@@", String.valueOf(trElements.size()));
@@ -199,6 +216,15 @@ public class CreditAttendanceF extends Fragment {
                                 Element trElement = trElements.get(i);
                                 Elements tdElements = trElement.select("td");
                                 Log.d(TAG,tdElements.toString());
+
+                                course_credit = (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text()));
+                                total_credit = total_credit + course_credit;
+                                Log.d("total",total_credit.toString());
+
+                                Double number1 = Double.parseDouble(tdElements.get(14).text().replace("%",""));
+                                total = total + (course_credit* number1);
+                                Log.d("total",total.toString());
+
                                 attendanceData.add(new AttendanceDataCC(tdElements.get(0).text().substring(tdElements.get(0).text().indexOf('-')+1,tdElements.get(0).text().length()),
                                         tdElements.get(0).text().substring(0,tdElements.get(0).text().indexOf('-')),
                                         (Double.parseDouble(tdElements.get(1).text()) + Double.parseDouble(tdElements.get(2).text()) + Double.parseDouble(tdElements.get(3).text())) + "",
@@ -249,9 +275,23 @@ public class CreditAttendanceF extends Fragment {
                     try {
                         prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
                         editor = prefs.edit();
-                        editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
+                        displayed = total/total_credit;
+                        //to truncate to 2 decimal places
+                        BigDecimal d = truncateDecimal(displayed,2);
+                        Log.d("displated",d.toString());
+                        if(displayed<75.0)
+                            totalAttendance =  "<font color=#ff0000>" + d.toString()+"%</font>";
+                        else
+                            totalAttendance =  "<font color=#13c000>" + d.toString()+"%</font>";
+                        String textviewText = "<font color=#FFFFFF> Total Attendance -  </font>" +  totalAttendance;
+                        lineview.setVisibility(View.VISIBLE);
+                        totalAttendanceTextView.setText(Html.fromHtml(textviewText));
+                        editor.putString("total",totalAttendance);
                         editor.apply();
-                    } catch (IOException exception) {
+                       // editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
+
+
+                    } catch (Exception exception) {
                         Log.d(TAG, "IOException:- " + exception.getMessage());
                     }
                     emptyTextView.setVisibility(View.GONE);
@@ -261,6 +301,7 @@ public class CreditAttendanceF extends Fragment {
                         Log.d("ad",attendanceData.toString());
                         adapter.setAttendanceData(response.getAttendanceData());
                     } else {
+
                         Log.d("aad",attendanceData.toString());
                         adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
                         attendanceView.setAdapter(adapter);

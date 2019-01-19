@@ -3,6 +3,7 @@ package mu.snuhacks;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +28,8 @@ public class About extends AppCompatActivity {
     private Context mContext;
     private int ACTIVITY_NUM = 0;
     FancyButton muditbutton;
+    FancyButton haributton;
+
     FancyButton shashvatbutton;
     FancyButton tarinibutton;
 
@@ -44,6 +47,7 @@ public class About extends AppCompatActivity {
         about_main.setTypeface(custom_font); */
      setupBottomNavigationView();
        muditbutton = findViewById(R.id.mudit_text);
+       haributton = findViewById(R.id.hari_text);
        muditbutton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -51,6 +55,17 @@ public class About extends AppCompatActivity {
                getApplicationContext().startActivity(intent);
            }
        });
+        haributton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://www.facebook.com/HaridharRengasamyPhotography/?ref=br_rs\n";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+
+            }
+        });
+
     }
     private void setupBottomNavigationView() {
         Log.d("tag", "setupBottomNavigationView: setting up BottomNavigationView");

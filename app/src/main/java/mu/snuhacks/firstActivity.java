@@ -3,6 +3,7 @@ package mu.snuhacks;
 <color name="white">#DBFCFF</color>
     <color name="black">#788A8C</color>
     */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -96,6 +97,7 @@ public class firstActivity extends AppCompatActivity {
     TextView menu1;
     TextView menu2;
     String DataUsageLast;
+    String totalAttendance;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -107,6 +109,7 @@ public class firstActivity extends AppCompatActivity {
         password = prefs.getString("password","");
         name = prefs.getString("name","");
         DataUsageLast = prefs.getString("data_usage","-");
+        totalAttendance = prefs.getString("total","-");
         setContentView(R.layout.firstscreen_test);
         //   if (extras != null) {
         //      username = extras.getString("username");
@@ -173,6 +176,7 @@ public class firstActivity extends AppCompatActivity {
         card1.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
         card2.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
         diaongal.setLayoutParams(new LinearLayout.LayoutParams(width, (height*5)/20));
+        Log.d("dimensions","'height - " + height/9 + " width - " + width/9);
       //  card3.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
       //  card4.setLayoutParams(new LinearLayout.LayoutParams(width/2,height/9));
 
@@ -186,6 +190,8 @@ public class firstActivity extends AppCompatActivity {
         menu1 = card1.findViewById(R.id.menu);
         menu2 = card2.findViewById(R.id.menu);
         menu2.setText(DataUsageLast);
+
+        menu1.setText(Html.fromHtml(totalAttendance));
         menu1.setTextColor(Color.parseColor("#f7f7f7"));
         menu2.setTextColor(Color.parseColor("#f7f7f7"));
      //   heading3 = card3.findViewById(R.id.meal);
