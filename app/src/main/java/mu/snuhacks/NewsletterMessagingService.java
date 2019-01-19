@@ -79,6 +79,8 @@ public class NewsletterMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent); */
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"fcm_channel")
                 .setSmallIcon(R.drawable.ic_notification)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .setContent(contentView);
 
         mNotificationManager.notify(0,builder.build());

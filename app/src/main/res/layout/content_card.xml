@@ -27,14 +27,34 @@
                 android:layout_height="wrap_content"
                 style="@style/Base.TextAppearance.AppCompat.Headline"
                 android:text="meal"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:paddingBottom="7sp"
                 android:textSize="30sp" />
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="menu" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:src="@drawable/baseline_delete_black_24"
+                android:layout_alignParentRight="true"
+                android:text="   (last checked)"
+                android:gravity="end"
+                android:textColor="@color/true_white"
+                android:textSize="10sp"
+                android:layout_toRightOf="@id/menu"
+                android:id="@+id/lastcheckedText"
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -68,6 +88,7 @@
                     android:src="@drawable/baseline_delete_black_24"
                     android:layout_alignParentRight="true"
                     android:visibility="gone"/>
+
                 
                 <ImageView
                     android:layout_width="wrap_content"

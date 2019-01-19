@@ -121,7 +121,7 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
             content.setText(data.getContent());
             content.setTextSize(17);
             heading.setTextSize(24);
-            Typeface custom_font7 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Geovana.ttf");
+            Typeface custom_font7 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Biko_Regular.otf");
             heading.setTypeface(custom_font7);
             content.setTypeface(custom_font7);
             card.setCardBackgroundColor(Color.parseColor("#E8FAEF"));

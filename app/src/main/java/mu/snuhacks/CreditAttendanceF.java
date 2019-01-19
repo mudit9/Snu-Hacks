@@ -1,7 +1,10 @@
 package mu.snuhacks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -17,9 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.florent37.depth.Depth;
 import com.github.florent37.depth.DepthProvider;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -29,6 +36,7 @@ import org.jsoup.select.Elements;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -56,18 +64,25 @@ public class CreditAttendanceF extends Fragment {
     private String netId;
     private String password;
     private Depth depth;
-    private boolean isConnected = true;
+    private boolean isConnected;
     private ProgressBar mprogress;
     private View lineview;
     Double course_credit;
     Double total_credit =0.0;
     Double total = 0.0;
     Double displayed = 0.0;
+    WifiManager mWifiManager;
+    private InterstitialAd mInterstitialAd;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreateCalled");
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mWifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
         netId = sharedPreferences.getString("username","");
         password = sharedPreferences.getString("password","");
@@ -91,6 +106,40 @@ public class CreditAttendanceF extends Fragment {
             }
         });
     }
+    private void checkAndModifyWifiState(){
+        Log.d(TAG,"checkModifyState() executing");
+        mWifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
+        Log.d(TAG,mWifiManager.toString());
+        Log.d(TAG, String.valueOf(isConnected));
+        if(mWifiManager != null && !isConnected){
+            Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
+            if(!mWifiManager.isWifiEnabled()){
+                Log.d(TAG,"Wifi enabled");
+                mWifiManager.setWifiEnabled(true);
+            }
+            if(mWifiManager.getConnectionInfo().getSSID().equals("\"Student\"")){
+                Log.d("Wifi name here: ",mWifiManager.getConnectionInfo().getSSID());
+                isConnected = true;
+            } else {
+                List<WifiConfiguration> wifiConfigurations = mWifiManager.getConfiguredNetworks();
+                for (WifiConfiguration configuration : wifiConfigurations) {
+                    if (configuration.SSID.equals("Student")) {
+                        mWifiManager.disconnect();
+                        mWifiManager.enableNetwork(configuration.networkId,true);
+                        Log.d(TAG,"Trying");
+                        isConnected = mWifiManager.reconnect();
+                    }
+                }
+            }
+        } else{
+            if(isConnected == true)
+                isConnected = true;
+            else{
+            isConnected = false;
+            Log.d(TAG,"mWifiManager null");}
+        }
+    }
     private static BigDecimal truncateDecimal(double x, int numberofDecimals)
     {
         if ( x > 0) {
@@ -107,6 +156,7 @@ public class CreditAttendanceF extends Fragment {
         constraintLayout = (ConstraintLayout) view.findViewById(R.id.parent_layout_here2);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh2);
         attendanceView = (RecyclerView) view.findViewById(R.id.attendance_recycler_view2);
+
         emptyTextView = (TextView) view.findViewById(R.id.empty_text_view2);
         lineview = view.findViewById(R.id.line);
         totalAttendanceTextView = view.findViewById(R.id.totalAttendance);
@@ -118,8 +168,18 @@ public class CreditAttendanceF extends Fragment {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
                 FetchCCAttendanceTask fetchAttendanceTask3 = new FetchCCAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{netId,password});
+
                 Log.d(TAG,"onRefresh() called");
+                checkAndModifyWifiState();
+                if(isConnected == true){
+                    if(emptyTextView.getVisibility()==View.VISIBLE)
+                        emptyTextView.setVisibility(View.GONE);
+                    fetchAttendanceTask3.execute(new String[]{netId,password});
+                }
+                else {emptyTextView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
             }
         };
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
@@ -243,75 +303,163 @@ public class CreditAttendanceF extends Fragment {
                     }
                 } catch(Exception exception){
                     Log.d(TAG,"Exception:- " + exception.getMessage());
+
                 }
 
             return new AttendanceResponse(null,"Not connected to Student Wifi");
         }
 
         @Override
-        public void onPostExecute(AttendanceResponse response){
-            Log.d(TAG,"onPostExecute() executing");
-            //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
-            try{
-            emptyTextView.setVisibility(View.GONE);
-            Log.d(TAG,emptyTextView.toString());}
-            catch (Exception e)
-            {
-                Log.d(TAG, String.valueOf(e.getStackTrace()));
-            }
-            if(swipeRefreshLayout.isRefreshing()) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-            if(response.getErrorMessage().length() != 0){
-                Snackbar.make(constraintLayout,response.getErrorMessage(),Snackbar.LENGTH_SHORT);
-                if(response.getErrorMessage().equals("Invalid Credentials")){
-                    Intent loginIntent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-                    loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(loginIntent);
-                }
+        public void onPostExecute(final AttendanceResponse response){
+            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        Log.d(TAG,"onPostExecute() executing");
+                        //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
+                        try{
+                            emptyTextView.setVisibility(View.GONE);
+                            Log.d(TAG,emptyTextView.toString());}
+                        catch (Exception e)
+                        {
+                            Log.d(TAG, String.valueOf(e.getStackTrace()));
+                        }
+                        if(swipeRefreshLayout.isRefreshing()) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                        if(response.getErrorMessage().length() != 0){
+                            Snackbar.make(constraintLayout,response.getErrorMessage(),Snackbar.LENGTH_SHORT);
+                            try{
+                                emptyTextView.setVisibility(View.VISIBLE);
+                            }
+                            catch (Exception e){
+                                Log.d(TAG,e.getMessage());
+                            }
+                            if(response.getErrorMessage().equals("Invalid Credentials")){
+                                Intent loginIntent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+                                loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(loginIntent);
+                            }
+                        } else {
+                            Log.d("size",String.valueOf(response.getAttendanceData().size()));
+                            if(response.getAttendanceData().size() > 0) {
+                                try {
+                                    prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+                                    editor = prefs.edit();
+                                    displayed = total/total_credit;
+                                    //to truncate to 2 decimal places
+                                    BigDecimal d = truncateDecimal(displayed,2);
+                                    Log.d("displated",d.toString());
+                                    if(displayed<75.0)
+                                        totalAttendance =  "<font color=#ff0000>" + d.toString()+"%</font>";
+                                    else
+                                        totalAttendance =  "<font color=#13c000>" + d.toString()+"%</font>";
+                                    String textviewText = "<font color=#FFFFFF> Total Attendance -  </font>" +  totalAttendance;
+                                    lineview.setVisibility(View.VISIBLE);
+                                    totalAttendanceTextView.setText(Html.fromHtml(textviewText));
+                                    editor.putString("total",totalAttendance);
+                                    editor.apply();
+                                    // editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
+
+
+                                } catch (Exception exception) {
+                                    Log.d(TAG, "IOException:- " + exception.getMessage());
+                                }
+                                emptyTextView.setVisibility(View.GONE);
+                                attendanceView.setVisibility(View.VISIBLE);
+                                Log.e(TAG,attendanceData.toString());
+                                if (adapter != null) {
+                                    Log.d("ad",attendanceData.toString());
+                                    adapter.setAttendanceData(response.getAttendanceData());
+                                } else {
+
+                                    Log.d("aad",attendanceData.toString());
+                                    adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
+                                    attendanceView.setAdapter(adapter);
+                                }
+                            } else{
+                                attendanceView.setVisibility(View.GONE);
+                                // emptyTextView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
             } else {
-                Log.d("size",String.valueOf(response.getAttendanceData().size()));
-                if(response.getAttendanceData().size() > 0) {
-                    try {
-                        prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
-                        editor = prefs.edit();
-                        displayed = total/total_credit;
-                        //to truncate to 2 decimal places
-                        BigDecimal d = truncateDecimal(displayed,2);
-                        Log.d("displated",d.toString());
-                        if(displayed<75.0)
-                            totalAttendance =  "<font color=#ff0000>" + d.toString()+"%</font>";
-                        else
-                            totalAttendance =  "<font color=#13c000>" + d.toString()+"%</font>";
-                        String textviewText = "<font color=#FFFFFF> Total Attendance -  </font>" +  totalAttendance;
-                        lineview.setVisibility(View.VISIBLE);
-                        totalAttendanceTextView.setText(Html.fromHtml(textviewText));
-                        editor.putString("total",totalAttendance);
-                        editor.apply();
-                       // editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
-
-
-                    } catch (Exception exception) {
-                        Log.d(TAG, "IOException:- " + exception.getMessage());
-                    }
+                Toast.makeText(getContext(), "Ad did not load", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"onPostExecute() executing");
+                //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
+                try{
                     emptyTextView.setVisibility(View.GONE);
-                    attendanceView.setVisibility(View.VISIBLE);
-                    Log.e(TAG,attendanceData.toString());
-                    if (adapter != null) {
-                        Log.d("ad",attendanceData.toString());
-                        adapter.setAttendanceData(response.getAttendanceData());
-                    } else {
-
-                        Log.d("aad",attendanceData.toString());
-                        adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
-                        attendanceView.setAdapter(adapter);
-                    }
-                } else{
-                    attendanceView.setVisibility(View.GONE);
-                   // emptyTextView.setVisibility(View.VISIBLE);
+                    Log.d(TAG,emptyTextView.toString());}
+                catch (Exception e)
+                {
+                    Log.d(TAG, String.valueOf(e.getStackTrace()));
                 }
+                if(swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                if(response.getErrorMessage().length() != 0){
+                    Snackbar.make(constraintLayout,response.getErrorMessage(),Snackbar.LENGTH_SHORT);
+                    try{
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    }
+                    catch (Exception e){
+                        Log.d(TAG,e.getMessage());
+                    }
+                    if(response.getErrorMessage().equals("Invalid Credentials")){
+                        Intent loginIntent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+                        loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(loginIntent);
+                    }
+                } else {
+                    Log.d("size",String.valueOf(response.getAttendanceData().size()));
+                    if(response.getAttendanceData().size() > 0) {
+                        try {
+                            prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+                            editor = prefs.edit();
+                            displayed = total/total_credit;
+                            //to truncate to 2 decimal places
+                            BigDecimal d = truncateDecimal(displayed,2);
+                            Log.d("displated",d.toString());
+                            if(displayed<75.0)
+                                totalAttendance =  "<font color=#ff0000>" + d.toString()+"%</font>";
+                            else
+                                totalAttendance =  "<font color=#13c000>" + d.toString()+"%</font>";
+                            String textviewText = "<font color=#FFFFFF> Total Attendance -  </font>" +  totalAttendance;
+                            lineview.setVisibility(View.VISIBLE);
+                            totalAttendanceTextView.setText(Html.fromHtml(textviewText));
+                            editor.putString("total",totalAttendance);
+                            editor.apply();
+                            // editor.putString("attendance", ObjectSerializer.serialize(response.getAttendanceData()));
+
+
+                        } catch (Exception exception) {
+                            Log.d(TAG, "IOException:- " + exception.getMessage());
+                        }
+                        emptyTextView.setVisibility(View.GONE);
+                        attendanceView.setVisibility(View.VISIBLE);
+                        Log.e(TAG,attendanceData.toString());
+                        if (adapter != null) {
+                            Log.d("ad",attendanceData.toString());
+                            adapter.setAttendanceData(response.getAttendanceData());
+                        } else {
+
+                            Log.d("aad",attendanceData.toString());
+                            adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
+                            attendanceView.setAdapter(adapter);
+                        }
+                    } else{
+                        attendanceView.setVisibility(View.GONE);
+                        // emptyTextView.setVisibility(View.VISIBLE);
+                    }
+                }
+
             }
         }
+
+
+
     }
 
 }

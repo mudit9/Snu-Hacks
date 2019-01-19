@@ -38,7 +38,7 @@ public class Fragment1 extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         Log.d("tag","fragment1 created here 2");
         super.onViewCreated(view, savedInstanceState);
-        text = view.findViewById(R.id.empty_text_view);
+        text = view.findViewById(R.id.empty_text_view1);
         buttonView = view.findViewById(R.id.buttonView);
         text.setText("Successfully marked!");
         buttonView.setColorFilter(getContext().getResources().getColor(R.color.green));

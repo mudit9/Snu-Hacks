@@ -90,6 +90,8 @@ public class firstActivity extends AppCompatActivity {
     TextView heading4;
     TextView menu1;
     TextView menu2;
+    TextView last1;
+    TextView last2;
     String DataUsageLast;
     String totalAttendance;
 
@@ -104,6 +106,7 @@ public class firstActivity extends AppCompatActivity {
         name = prefs.getString("name","");
         DataUsageLast = prefs.getString("data_usage","-");
         totalAttendance = prefs.getString("total","-");
+
         setContentView(R.layout.firstscreen_test);
         //   if (extras != null) {
         //      username = extras.getString("username");
@@ -162,6 +165,22 @@ public class firstActivity extends AppCompatActivity {
 
         card_card1.setCardBackgroundColor(Color.parseColor("#46B1C9"));
         card_card2.setCardBackgroundColor(Color.parseColor("#46B1C9"));
+
+        card_card1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(firstActivity.this,AttendanceActivity.class);
+                startActivity(intent1);
+            }
+        });
+        card_card2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(firstActivity.this,DataUsage.class);
+                startActivity(intent2);
+            }
+        });
+
    //     card_card3.setCardBackgroundColor(Color.parseColor("#fff4e6"));
      //   card_card4.setCardBackgroundColor(Color.parseColor("#fff4e6"));
 
@@ -183,50 +202,30 @@ public class firstActivity extends AppCompatActivity {
         heading2 = card2.findViewById(R.id.meal);
         menu1 = card1.findViewById(R.id.menu);
         menu2 = card2.findViewById(R.id.menu);
-        menu2.setText(DataUsageLast);
-
-        menu1.setText(Html.fromHtml(totalAttendance));
+        last1 = card1.findViewById(R.id.lastcheckedText);
+        last2= card2.findViewById(R.id.lastcheckedText);
+        if(!DataUsageLast.equals("-"))
+        last2.setVisibility(View.VISIBLE);
+        if(!totalAttendance.equals("-"))
+        last1.setVisibility(View.VISIBLE);
+        menu2.setText(DataUsageLast.substring(0, DataUsageLast.length() - 1).toUpperCase());
+        menu1.setText(Html.fromHtml(totalAttendance).toString());
         menu1.setTextColor(Color.parseColor("#f7f7f7"));
         menu2.setTextColor(Color.parseColor("#f7f7f7"));
-     //   heading3 = card3.findViewById(R.id.meal);
-     //   heading4 = card4.findViewById(R.id.meal);
-
-      //  card3.setVisibility(View.GONE);
-      //  card4.setVisibility(View.GONE);
-
-
         String xtext = "<font color=#f7f7f7 size =19>Total</font><font size =19 color=#f7f7f7> attendance</font>";
         heading1.setText(Html.fromHtml(xtext));
         xtext = "<font color=#f7f7f7 size =19>Data</font><font size =19 color=#f7f7f7> Used</font>";
         heading2.setText(Html.fromHtml(xtext));
-        xtext = "<font color=#00b159 size =19>Dh1</font><font size =19 color=#3b5998> Menu</font>";
-//        heading3.setText(Html.fromHtml(xtext));
-        xtext = "<font color=#00b159 size =19>Dh2</font><font size =19 color=#3b5998> Menu</font>";
-     //   heading4.setText(Html.fromHtml(xtext));
 
 
         int TextSize = 18;
 
         heading1.setTextSize(TextSize);
         heading2.setTextSize(TextSize);
-       // heading3.setTextSize(TextSize);
-       // heading4.setTextSize(TextSize);
-
-
 
         heading1.setTypeface(custom_font9);
         heading2.setTypeface(custom_font9);
-       // heading3.setTypeface(custom_font9);
-       // heading4.setTypeface(custom_font9);
-     /*   aboutButton = findViewById(R.id.aboutButton);
-        aboutButton.setVisibility(View.GONE);
-        aboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(firstActivity.this,About.class);
-                startActivity(intent);
-            }
-        }); */
+
         setScrollview_news();
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,7 +318,8 @@ public class firstActivity extends AppCompatActivity {
         linearLayout.addView(newsletterView);
         Button configButton = new Button(this);
         configButton.setText("Change data");
-        if(username.equals("ms418") || username.equals("sk261")){
+        if(username.equals("ms418") || username.equals("sk261") || username.equals("rk887")){
+
             linearLayout.addView(configButton);
             configButton.setOnClickListener(new View.OnClickListener() {
                 @Override

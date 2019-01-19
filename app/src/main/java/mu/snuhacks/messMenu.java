@@ -13,9 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.florent37.hollyviewpager.HollyViewPager;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -47,6 +51,8 @@ public class messMenu extends AppCompatActivity {
     public HollyViewPager hollyViewPager;
     ProgressBar mProgressbar;
     public int ACTIVITY_NUM=0;
+    private static InterstitialAd mInterstitialAd;
+
 
 
     @Override
@@ -65,9 +71,23 @@ public class messMenu extends AppCompatActivity {
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/RegencieLight.ttf");
         head.setTypeface(custom_font2);
         avi3= (AVLoadingIndicatorView) findViewById(R.id.avielement3);
-        JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
-        jsoupAsyncTask2.execute();
-
+        mInterstitialAd = new InterstitialAd(getApplicationContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
+                    jsoupAsyncTask2.execute();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "Ad did not load", Toast.LENGTH_SHORT).show();
+            JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
+            jsoupAsyncTask2.execute();
+        }
 
 
         }
