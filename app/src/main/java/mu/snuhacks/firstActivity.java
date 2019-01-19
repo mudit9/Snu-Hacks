@@ -39,6 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.util.ArrayList;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 import mu.snuhacks.Adapters.NewsletterAdapter;
 
@@ -52,11 +54,15 @@ public class firstActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference newsletterReference;
+    private DatabaseReference superuserReference;
     private ChildEventListener childEventListener;
+    private ChildEventListener superuserChildEventListener;
 
     private RecyclerView newsletterView;
     private NewsletterAdapter adapter;
     private SharedPreferences prefs;
+
+    private ArrayList<String> superUsers = new ArrayList<String>();
 
     TextView parsedHtmlNode;
     String password;
@@ -230,7 +236,44 @@ public class firstActivity extends AppCompatActivity {
         });
         firebaseDatabase = FirebaseDatabase.getInstance();
         newsletterReference = firebaseDatabase.getReference("/data/newsletter/");
+        superuserReference = firebaseDatabase.getReference("/config_data/superuser/");
         childEventListener = getValueEventListener();
+        superuserChildEventListener = getSuperUserChildEventListener();
+    }
+
+    private ChildEventListener getSuperUserChildEventListener(){
+        return new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists()) {
+                    Log.e(TAG,dataSnapshot.getValue(String.class));
+                    superUsers.add(dataSnapshot.getValue(String.class));
+                    showConfigOption();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    superUsers.remove(dataSnapshot.getValue(String.class));
+                    if(username.equals(dataSnapshot.getValue(String.class))){
+                        hideConfigOption();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
     }
 
     private ChildEventListener getValueEventListener(){
@@ -279,6 +322,9 @@ public class firstActivity extends AppCompatActivity {
         if(childEventListener != null){
             newsletterReference.removeEventListener(childEventListener);
         }
+        if(superuserChildEventListener != null){
+            superuserReference.removeEventListener(superuserChildEventListener);
+        }
     }
 
     @Override
@@ -287,7 +333,11 @@ public class firstActivity extends AppCompatActivity {
         if(childEventListener == null){
             childEventListener = getValueEventListener();
         }
+        if(superuserChildEventListener == null){
+            superuserChildEventListener = getSuperUserChildEventListener();
+        }
         newsletterReference.addChildEventListener(childEventListener);
+        superuserReference.addChildEventListener(superuserChildEventListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -311,17 +361,8 @@ public class firstActivity extends AppCompatActivity {
         newsletterView.setLayoutManager(manager);
        // linearLayout.setBackgroundColor(Color.parseColor("#f6cd61"));
         linearLayout.addView(newsletterView);
-        Button configButton = new Button(this);
-        configButton.setText("Change data");
-        if(username.equals("ms418") || username.equals("sk261")){
-            linearLayout.addView(configButton);
-            configButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent configIntent = new Intent(getApplicationContext(),add_data_activity.class);
-                    startActivity(configIntent);
-                }
-            });
+        if(isSuperuser(username)){
+            showConfigOption();
         }
        /* for (int i  = 0; i <8; i++) {
             FrameLayout frameLayout = (FrameLayout) View.inflate(this, R.layout.content_card, null);
@@ -333,6 +374,35 @@ public class firstActivity extends AppCompatActivity {
             linearLayout.addView(frameLayout);
         }*/
         //scrollview_news.addView(linearLayout);
+    }
+
+    private boolean isSuperuser(String username){
+        for(String superUserName : superUsers){
+            if(username.equals(superUserName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void showConfigOption(){
+        LinearLayout linearLayout = findViewById(R.id.linearlayout_news);
+        Button configButton = new Button(this);
+        configButton.setId(R.id.config_button);
+        configButton.setText("Change data");
+        linearLayout.addView(configButton);
+        configButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent configIntent = new Intent(getApplicationContext(),add_data_activity.class);
+                startActivity(configIntent);
+            }
+        });
+    }
+
+    private void hideConfigOption(){
+        LinearLayout linearLayout = findViewById(R.id.linearlayout_news);
+        linearLayout.removeView((Button) findViewById(R.id.config_button));
     }
 
     public void logout() {

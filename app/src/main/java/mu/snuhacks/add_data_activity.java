@@ -112,34 +112,41 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
                 passEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 final EditText usernameEditText = new EditText(add_data_activity.this);
                 usernameEditText.setHint("Enter superuser username here");
-                usernameEditText.setVisibility(View.GONE);
+                layout.addView(usernameEditText);
+                layout.addView(passEditText);
+                builder.setView(layout);
+                builder.setTitle("Add superuser");
                 builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(passEditText.isCursorVisible()){
-                            if(passEditText.getText().length() > 0){
-                                if(preferences.getString("password","").equals(passEditText.getText().toString())){
-                                    passEditText.setVisibility(View.GONE);
-                                    usernameEditText.setVisibility(View.VISIBLE);
-                                }
-                            } else{
-                                Toast.makeText(getApplicationContext(),"Enter valid password",Toast.LENGTH_SHORT).show();
-                            }
-                        } else if(usernameEditText.isCursorVisible()){
-                            if(usernameEditText.getText().length() > 0){
-                                DatabaseReference superUserReference = firebaseDatabase.getReference("/config_data/superuser").push();
-                                superUserReference.setValue(usernameEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(),"Superuser added",Toast.LENGTH_SHORT).show();
+                    public void onClick(final DialogInterface dialog, int which) {
+                        if(passEditText.getText().length() > 0) {
+                            if (preferences.getString("password", "").equals(passEditText.getText().toString())) {
+                                if (usernameEditText.getText().length() > 0) {
+                                    DatabaseReference superUserReference = firebaseDatabase.getReference("/config_data/superuser").push();
+                                    superUserReference.setValue(usernameEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                dialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "Superuser added", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Enter valid password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
                 });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog superUserDialog = builder.create();
+                superUserDialog.show();
             }
         });
     }
