@@ -20,6 +20,13 @@
         android:id="@+id/add_button"
         android:layout_marginTop="30dp"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_superuser_button"
+        android:text="Add Superuser"
+        android:layout_marginTop="30dp"/>
+
     </LinearLayout>
 
 </ScrollView>

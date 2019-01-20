@@ -94,7 +94,7 @@ public class DataUsage extends AppCompatActivity {
         netId = prefs.getString("username", "");
         password = prefs.getString("password", "");
         System.out.println(netId + " f " + password);
-        parsedHtmlNode = findViewById(R.id.welcome);
+        //parsedHtmlNode = findViewById(R.id.welcome);
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/Junction-regular.otf");
         head.setTypeface(custom_font2);
         head.setPadding(10,5,0,0);

@@ -1,6 +1,7 @@
 package mu.snuhacks;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,9 +44,11 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference newsletterReference;
     private ChildEventListener childEventListener;
+    private SharedPreferences preferences;
 
     private RecyclerView newsletterModView;
     private Button addButton;
+    private Button addSuperuserButton;
 
     private NewsletterAdapter adapter;
 
@@ -56,6 +60,8 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
         newsletterReference = firebaseDatabase.getReference("/data/newsletter/");
         newsletterModView = (RecyclerView) findViewById(R.id.newsletter_mod_view);
         addButton = (Button) findViewById(R.id.add_button);
+        addSuperuserButton = (Button) findViewById(R.id.add_superuser_button);
+        preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         newsletterModView.setLayoutManager(manager);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +99,54 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
                 });
                 AlertDialog addNewsletterDialog = builder.create();
                 addNewsletterDialog.show();
+            }
+        });
+        addSuperuserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(add_data_activity.this);
+                LinearLayout layout = new LinearLayout(add_data_activity.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                final EditText passEditText = new EditText(add_data_activity.this);
+                passEditText.setHint("Enter your password here");
+                passEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                final EditText usernameEditText = new EditText(add_data_activity.this);
+                usernameEditText.setHint("Enter superuser username here");
+                layout.addView(usernameEditText);
+                layout.addView(passEditText);
+                builder.setView(layout);
+                builder.setTitle("Add superuser");
+                builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        if(passEditText.getText().length() > 0) {
+                            if (preferences.getString("password", "").equals(passEditText.getText().toString())) {
+                                if (usernameEditText.getText().length() > 0) {
+                                    DatabaseReference superUserReference = firebaseDatabase.getReference("/config_data/superuser").push();
+                                    superUserReference.setValue(usernameEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                dialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "Superuser added", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Enter valid password", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog superUserDialog = builder.create();
+                superUserDialog.show();
             }
         });
     }

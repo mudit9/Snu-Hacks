@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.florent37.depth.Depth;
 import com.github.florent37.depth.DepthProvider;
@@ -37,6 +36,7 @@ import org.jsoup.select.Elements;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -311,7 +311,9 @@ public class CreditAttendanceF extends Fragment {
 
         @Override
         public void onPostExecute(final AttendanceResponse response){
-            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            Random rand = new Random();
+            int x = rand.nextInt(5);
+            if (mInterstitialAd != null && mInterstitialAd.isLoaded()&&x==0) {
                 mInterstitialAd.show();
                 mInterstitialAd.setAdListener(new AdListener() {
                     @Override
@@ -386,7 +388,7 @@ public class CreditAttendanceF extends Fragment {
                     }
                 });
             } else {
-                Toast.makeText(getContext(), "Ad did not load", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), "Ad did not load", Toast.LENGTH_SHORT).show();
                 Log.d(TAG,"onPostExecute() executing");
                 //Log.d(TAG, String.valueOf(response.getAttendanceData().size()));
                 try{
