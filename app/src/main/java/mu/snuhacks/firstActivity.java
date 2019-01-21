@@ -439,14 +439,16 @@ public class firstActivity extends AppCompatActivity {
     public static class NewsletterData{
         private String heading;
         private String content;
+        private String link;
         private String key;
 
         public NewsletterData(){
         }
 
-        public NewsletterData(String heading,String content){
+        public NewsletterData(String heading,String content,String key){
             this.heading = heading;
             this.content = content;
+            this.key = key;
         }
 
         public String getHeading(){
@@ -455,6 +457,10 @@ public class firstActivity extends AppCompatActivity {
 
         public String getContent(){
             return content;
+        }
+
+        public String getLink(){
+            return link;
         }
 
         public String getKey(){
@@ -467,6 +473,8 @@ public class firstActivity extends AppCompatActivity {
 
         public void setContent(String content){
             this.content = content;
+        }{
+            this.link = link;
         }
 
         public void setKey(String key){
