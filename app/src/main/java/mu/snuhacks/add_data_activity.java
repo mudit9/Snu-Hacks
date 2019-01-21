@@ -71,16 +71,20 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
                 LinearLayout linearLayout = new LinearLayout(add_data_activity.this);
                 final EditText headingEditText = new EditText(add_data_activity.this);
                 final EditText contentEditText = new EditText(add_data_activity.this);
+                final EditText linkEditText = new EditText(add_data_activity.this);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 linearLayout.addView(headingEditText);
                 linearLayout.addView(contentEditText);
+                linearLayout.addView(linkEditText);
                 builder.setView(linearLayout);
                 builder.setTitle("Add newsletter");
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
-                        newsletterReference.push().setValue(new firstActivity.NewsletterData(headingEditText.getText().toString()
-                                ,contentEditText.getText().toString())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        newsletterReference.push().setValue(new firstActivity.NewsletterData(
+                                headingEditText.getText().toString().trim(),
+                                contentEditText.getText().toString().trim(),
+                                linkEditText.getText().toString().trim())).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
@@ -213,11 +217,14 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
         LinearLayout linearLayout = new LinearLayout(this);
         final EditText headingEditText = new EditText(this);
         final EditText contentEditText = new EditText(this);
+        final EditText linkEditText = new EditText(this);
         headingEditText.setText(newsletter.getHeading());
         contentEditText.setText(newsletter.getContent());
+        linkEditText.setText(newsletter.getLink());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.addView(headingEditText);
         linearLayout.addView(contentEditText);
+        linearLayout.addView(linkEditText);
         builder.setView(linearLayout);
         builder.setTitle("Edit newsletter");
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -225,10 +232,11 @@ public class add_data_activity extends AppCompatActivity implements NewsletterAd
             public void onClick(final DialogInterface dialog, int which) {
                 String heading = headingEditText.getText().toString();
                 String content = contentEditText.getText().toString();
+                String link = linkEditText.getText().toString();
                 if(!newsletter.getHeading().equals(heading) && !newsletter.getContent().equals(content)){
                     dialog.dismiss();
                 } else{
-                    newsletterReference.child(newsletter.getKey()).setValue(new firstActivity.NewsletterData(heading,content)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    newsletterReference.child(newsletter.getKey()).setValue(new firstActivity.NewsletterData(heading,content,link)).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){

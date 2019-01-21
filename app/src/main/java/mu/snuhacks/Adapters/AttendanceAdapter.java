@@ -87,7 +87,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 DisplayMetrics displayMetrics =Context.getResources().getDisplayMetrics();
                 int height = displayMetrics.heightPixels;
                 int width = displayMetrics.widthPixels;
-                courseName.setTextSize(height/119);
+                courseName.setTextSize(height/125);
                 try{
                     attendance = Float.parseFloat(((AttendanceData) data).getCourseAttendance());
                 } catch(Exception exception){
