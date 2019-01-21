@@ -28,8 +28,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/empty_text_view"
-            android:text=""
+            android:text="Unable to connect to Student Wifi :("
             android:layout_centerInParent="true"
+            android:textColor="#FFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:visibility="gone"
             android:layout_centerHorizontal="true" />
 
         </RelativeLayout>

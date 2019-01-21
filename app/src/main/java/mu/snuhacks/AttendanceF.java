@@ -57,7 +57,7 @@ public class AttendanceF extends Fragment {
     private String netId;
     private String password;
     private Depth depth;
-    private boolean isConnected = true;
+    private boolean isConnected;
     private ProgressBar mprogress;
 
     @Override
@@ -85,7 +85,15 @@ public class AttendanceF extends Fragment {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
+                Log.d("isconnected", String.valueOf(isConnected));
+                    if(isConnected == true){
                 onRefreshListener.onRefresh();
+                if(emptyTextView.getVisibility()==View.VISIBLE)
+                    emptyTextView.setVisibility(View.GONE);
+                }
+                else {emptyTextView.setVisibility(View.VISIBLE);
+                       swipeRefreshLayout.setRefreshing(false);
+                    }
             }
         });
     }
@@ -105,10 +113,19 @@ public class AttendanceF extends Fragment {
         onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
-                fetchAttendanceTask3.execute(new String[]{netId,password});
                 Log.d(TAG,"onRefresh() called");
+                swipeRefreshLayout.setRefreshing(true);
+                Log.d("isconnected", String.valueOf(isConnected));
+                checkAndModifyWifiState();
+                if(isConnected == true){
+                    if(emptyTextView.getVisibility()==View.VISIBLE)
+                        emptyTextView.setVisibility(View.GONE);
+                    FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
+                    fetchAttendanceTask3.execute(new String[]{netId,password});
+                }
+                else {emptyTextView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         };
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
@@ -142,12 +159,15 @@ public class AttendanceF extends Fragment {
 
     private void checkAndModifyWifiState(){
         Log.d(TAG,"checkModifyState() executing");
+        Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
         if(mWifiManager != null && !isConnected){
+            Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
             if(!mWifiManager.isWifiEnabled()){
                 Log.d(TAG,"Wifi enabled");
                 mWifiManager.setWifiEnabled(true);
             }
-            if(mWifiManager.getConnectionInfo().getSSID().equals("Student")){
+            if(mWifiManager.getConnectionInfo().getSSID().equals("\"Student\"")){
+                Log.d("Wifi name here: ",mWifiManager.getConnectionInfo().getSSID());
                 isConnected = true;
             } else {
                 List<WifiConfiguration> wifiConfigurations = mWifiManager.getConfiguredNetworks();
@@ -161,7 +181,11 @@ public class AttendanceF extends Fragment {
                 }
             }
         } else{
-            Log.d(TAG,"mWifiManager null");
+            if(isConnected == true)
+                isConnected = true;
+            else{
+                isConnected = false;
+                Log.d(TAG,"mWifiManager null");}
         }
     }
 
@@ -259,6 +283,12 @@ public class AttendanceF extends Fragment {
             }
             if(response.getErrorMessage().length() != 0){
                 Snackbar.make(constraintLayout,response.getErrorMessage(),Snackbar.LENGTH_SHORT);
+                try{
+                    emptyTextView.setVisibility(View.VISIBLE);
+                }
+                catch (Exception e){
+                    Log.d(TAG,e.getMessage());
+                }
                 if(response.getErrorMessage().equals("Invalid Credentials")){
                     Intent loginIntent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
                     loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

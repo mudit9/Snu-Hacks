@@ -8,7 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 
@@ -19,9 +23,14 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 public class BottomNavigationViewHelper {
 
     private static final String TAG = "BottomNavigationViewHel";
+    private static InterstitialAd mInterstitialAd;
 
     public static void setupBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx, Context context){
         Log.d(TAG, "setupBottomNavigationView: Setting up BottomNavigationView");
+        mInterstitialAd = new InterstitialAd(context);
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
         bottomNavigationViewEx.enableAnimation(false);
         bottomNavigationViewEx.enableItemShiftingMode(false);
         bottomNavigationViewEx.enableShiftingMode(false);
@@ -40,9 +49,27 @@ public class BottomNavigationViewHelper {
                 switch (item.getItemId()){
 
                     case R.id.ic_house:
-                        Intent intent1 = new Intent(context, MainActivity.class);//ACTIVITY_NUM = 0
-                        context.startActivity(intent1);
-                        callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                            mInterstitialAd.show();
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+
+                                    Intent intent1 = new Intent(context, MainActivity.class);//ACTIVITY_NUM = 0
+                                    context.startActivity(intent1);
+                                    callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                }
+                            });
+
+                        } else {
+
+                            Toast.makeText(context, "Ad did not load", Toast.LENGTH_SHORT).show();
+                            Intent intent1 = new Intent(context, MainActivity.class);//ACTIVITY_NUM = 0
+                            context.startActivity(intent1);
+                            callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                        }
+
                         break;
 
                     case R.id.ic_data_usage:

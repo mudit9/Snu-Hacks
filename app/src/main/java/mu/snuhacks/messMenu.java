@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import com.github.florent37.hollyviewpager.HollyViewPager;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -28,6 +31,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -47,6 +51,8 @@ public class messMenu extends AppCompatActivity {
     public HollyViewPager hollyViewPager;
     ProgressBar mProgressbar;
     public int ACTIVITY_NUM=0;
+    private static InterstitialAd mInterstitialAd;
+
 
 
     @Override
@@ -65,9 +71,34 @@ public class messMenu extends AppCompatActivity {
         Typeface custom_font2 = Typeface.createFromAsset(getAssets(), "fonts/RegencieLight.ttf");
         head.setTypeface(custom_font2);
         avi3= (AVLoadingIndicatorView) findViewById(R.id.avielement3);
-        JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
-        jsoupAsyncTask2.execute();
+        mInterstitialAd = new InterstitialAd(getApplicationContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
+        Random ran = new Random();
+        int x = ran.nextInt(5);
+        if(x==0) {
+            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
+                        jsoupAsyncTask2.execute();
+                    }
+                });
+            } else {
+              //  Toast.makeText(getApplicationContext(), "Ad did not load", Toast.LENGTH_SHORT).show();
+                JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
+                jsoupAsyncTask2.execute();
+            }
+
+        }
+        else
+        {
+            JsoupAsyncTask2 jsoupAsyncTask2 = new JsoupAsyncTask2();
+            jsoupAsyncTask2.execute();
+        }
 
 
         }
@@ -131,9 +162,9 @@ public class messMenu extends AppCompatActivity {
                     Element elementsByTags1 = elementsByTags.getElementsByTag("tr").get(0);
                     Elements elementByTags2 = elementsByTags1.getElementsByTag("td");
                     try{
-                    breakfast2 = elementByTags2.get(1).text();
-                    lunch2 = elementByTags2.get(2).text();
-                    dinner2 = elementByTags2.get(3).text(); }
+                    breakfast2 = elementByTags2.get(1).text().replace("  ",",");
+                    lunch2 = elementByTags2.get(2).text().replace("  ",",");
+                    dinner2 = elementByTags2.get(3).text().replace("  ",","); }
                     catch (Exception e)
                     {
                         e.printStackTrace();
@@ -149,9 +180,10 @@ public class messMenu extends AppCompatActivity {
                     Elements elementByTags4 = elementsByTags3.getElementsByTag("td");
 
                     try{
-                        breakfast1 = elementByTags4.get(1).text();
-                        lunch1 = elementByTags4.get(2).text();
-                        dinner1 = elementByTags4.get(3).text(); }
+                       // breakfast1 = elementByTags4.get(1).text().replace(" ",",");
+                        breakfast1 = elementByTags4.get(1).text().replace("  ",",");
+                        lunch1 = elementByTags4.get(2).text().replace("  ",",");
+                        dinner1 = elementByTags4.get(3).text().replace("  ",","); }
                     catch (Exception e)
                     {
                         e.printStackTrace();
