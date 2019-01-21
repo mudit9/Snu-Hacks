@@ -8,12 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.Random;
 
 
 /**
@@ -49,13 +50,15 @@ public class BottomNavigationViewHelper {
                 switch (item.getItemId()){
 
                     case R.id.ic_house:
-                        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                        Random rn = new Random();
+                        int randomNum =  rn.nextInt(5);
+                        if (mInterstitialAd != null && mInterstitialAd.isLoaded() && randomNum ==0) {
                             mInterstitialAd.show();
                             mInterstitialAd.setAdListener(new AdListener() {
                                 @Override
                                 public void onAdClosed() {
 
-                                    Intent intent1 = new Intent(context, MainActivity.class);//ACTIVITY_NUM = 0
+                                    Intent intent1 = new Intent(context, firstActivity.class);//ACTIVITY_NUM = 0
                                     context.startActivity(intent1);
                                     callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                 }
@@ -63,8 +66,7 @@ public class BottomNavigationViewHelper {
 
                         } else {
 
-                            Toast.makeText(context, "Ad did not load", Toast.LENGTH_SHORT).show();
-                            Intent intent1 = new Intent(context, MainActivity.class);//ACTIVITY_NUM = 0
+                            Intent intent1 = new Intent(context, firstActivity.class);//ACTIVITY_NUM = 0
                             context.startActivity(intent1);
                             callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
@@ -73,29 +75,96 @@ public class BottomNavigationViewHelper {
                         break;
 
                     case R.id.ic_data_usage:
-                        Intent intent2  = new Intent(context, DataUsage.class);//ACTIVITY_NUM = 1
-                        context.startActivity(intent2);
-                        callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        rn = new Random();
+                        randomNum =  rn.nextInt(5);
+                        if (mInterstitialAd != null && mInterstitialAd.isLoaded()&&randomNum ==0) {
+                            mInterstitialAd.show();
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+                                    Intent intent2  = new Intent(context, DataUsage.class);//ACTIVITY_NUM = 1
+                                    context.startActivity(intent2);
+                                    callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                }
+                            });
+
+                        } else {
+                            Intent intent2  = new Intent(context, DataUsage.class);//ACTIVITY_NUM = 1
+                            context.startActivity(intent2);
+                            callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                        }
                         break;
 
                     case R.id.ic_mess_menu:
-                        Intent intent3 = new Intent(context, messMenu.class);//ACTIVITY_NUM = 2
-                        context.startActivity(intent3);
-                        callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        rn = new Random();
+                        randomNum =  rn.nextInt(5);
+                        if (mInterstitialAd != null && mInterstitialAd.isLoaded()&&randomNum ==0) {
+                            mInterstitialAd.show();
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+                                    Intent intent3 = new Intent(context, messMenu.class);//ACTIVITY_NUM = 2
+                                    context.startActivity(intent3);
+                                    callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                }
+                            });
+
+                        } else {
+                            Intent intent3 = new Intent(context, messMenu.class);//ACTIVITY_NUM = 2
+                            context.startActivity(intent3);
+                            callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                        }
                         break;
 
+
                     case R.id.ic_mark_attendance:
-                        Intent intent4 = new Intent(context, AttendanceActivity.class);//ACTIVITY_NUM = 3
-                        context.startActivity(intent4);
-                        callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        rn = new Random();
+                        randomNum =  rn.nextInt(5);
+                        if (mInterstitialAd != null && mInterstitialAd.isLoaded()&&randomNum ==0) {
+                            mInterstitialAd.show();
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+                                    Intent intent4 = new Intent(context, AttendanceActivity.class);//ACTIVITY_NUM = 3
+                                    context.startActivity(intent4);
+                                    callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                }
+                            });
+
+                        } else {
+                            Intent intent4 = new Intent(context, AttendanceActivity.class);//ACTIVITY_NUM = 3
+                            context.startActivity(intent4);
+                            callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                        }
                         break;
+
 
 
                     case R.id.ic_help:
-                        Intent intent5 = new Intent(context, About.class);//ACTIVITY_NUM = 4
-                        context.startActivity(intent5);
-                        callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        rn = new Random();
+                        randomNum =  rn.nextInt(5);
+                        if (mInterstitialAd != null && mInterstitialAd.isLoaded()&&randomNum ==0) {
+                            mInterstitialAd.show();
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+                                    Intent intent5 = new Intent(context, About.class);//ACTIVITY_NUM = 4
+                                    context.startActivity(intent5);
+                                    callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                }
+                            });
+
+                        } else {
+                            Intent intent5 = new Intent(context, About.class);//ACTIVITY_NUM = 4
+                            context.startActivity(intent5);
+                            callingActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                        }
                         break;
+
                 }
 
 

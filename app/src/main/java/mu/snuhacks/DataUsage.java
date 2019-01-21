@@ -316,7 +316,6 @@ public class DataUsage extends AppCompatActivity {
             try{
             emptyTextView.setText(htmlContentInStringFormat.toUpperCase());}
             catch (Exception e){
-
             }
             if(emptyTextView.getVisibility()==View.GONE)
                 emptyTextView.setVisibility(View.VISIBLE);

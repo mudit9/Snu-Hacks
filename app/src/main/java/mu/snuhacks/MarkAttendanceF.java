@@ -261,6 +261,7 @@ public class MarkAttendanceF extends Fragment {
             emptyTextView1.setText(Html.fromHtml(htmlContentInStringFormat));
             if (flag == true) {
                 ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+
                 buttonview.setColorFilter(getContext().getResources().getColor(R.color.red));
                 buttonview.setVisibility(View.VISIBLE);
             }

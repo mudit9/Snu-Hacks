@@ -25,14 +25,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/acm"
+            android:src="@drawable/kedia_cover"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mudit Saxena"
-            android:textColor="@android:color/white"
+            android:text="Shashvat Kedia"
+            android:textColor="@android:color/black"
             android:layout_gravity="top|left"
             android:fontFamily="sans-serif-light"
             android:layout_marginLeft="30dp"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Developer"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:layout_gravity="top|left"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-condensed"
@@ -63,9 +63,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Footballer"
+                android:text="Data Scientist"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:layout_gravity="top|left"
                 android:fontFamily="sans-serif-condensed"
                 android:layout_marginLeft="10dp"
@@ -75,9 +75,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gamer"
+                android:text="Full Stack Developer"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:layout_gravity="top|left"
                 android:fontFamily="sans-serif-condensed"
                 android:layout_marginLeft="10dp"
@@ -95,7 +95,7 @@
         android:layout_marginTop="190dp"
         android:elevation="15dp"
         android:background="@drawable/diagonallayout_circle"
-        android:src="@drawable/mudit"/>
+        android:src="@drawable/kedia"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -133,35 +133,11 @@
                 android:fontFamily="sans-serif-condensed"
                 android:layout_marginLeft="10dp"
                 android:shadowColor="@color/black"
-                android:textSize="13dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/IG"
-                android:text="1000 Acts Of Kindness!"
-                android:textColor="#000"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_marginLeft="10dp"
-                android:shadowColor="@color/black"
-                android:textSize="13dp"/>
-
+                android:textSize="23dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
-        android:layout_marginLeft="30dp"
-        android:gravity="center"
-        android:layout_marginRight="30dp"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:visibility="gone"
-        android:text="hi my name is mudit saxena :) "/>
-
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
