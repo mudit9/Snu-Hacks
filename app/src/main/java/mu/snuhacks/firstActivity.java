@@ -478,10 +478,6 @@ public class firstActivity extends AppCompatActivity {
             this.content = content;
         }
 
-        public void setLink(String link){
-            this.link = link;
-        }
-
         public void setKey(String key){
             this.key = key;
         }
