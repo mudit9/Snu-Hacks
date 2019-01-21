@@ -53,7 +53,9 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
     }
 
     public void setAttendanceData(ArrayList<Object> attendanceData){
-        this.attendanceData = attendanceData;
+        Log.e(TAG,attendanceData.toString());
+        this.attendanceData.clear();
+        this.attendanceData.addAll(attendanceData);
         notifyDataSetChanged();
     }
 

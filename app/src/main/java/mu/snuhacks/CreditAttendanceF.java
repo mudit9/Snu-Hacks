@@ -446,7 +446,6 @@ public class CreditAttendanceF extends Fragment {
                             Log.d("ad",attendanceData.toString());
                             adapter.setAttendanceData(response.getAttendanceData());
                         } else {
-
                             Log.d("aad",attendanceData.toString());
                             adapter = new AttendanceAdapterCC(response.getAttendanceData(),getActivity().getApplicationContext());
                             attendanceView.setAdapter(adapter);
