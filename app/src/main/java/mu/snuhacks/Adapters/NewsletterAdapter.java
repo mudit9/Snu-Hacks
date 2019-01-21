@@ -1,11 +1,14 @@
 package mu.snuhacks.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +65,8 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         if(index != -1){
             newsletterData.get(index).setHeading(data.getHeading());
             newsletterData.get(index).setContent(data.getContent());
+            newsletterData.get(index).setLink(data.getLink());
+            newsletterData.get(index).setKey(data.getKey());
             notifyDataSetChanged();
         }
     }
@@ -94,6 +99,7 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
 
         private TextView heading;
         private TextView content;
+        private String url_text;
         private ImageButton editButton;
         private ImageButton deleteButton;
         private ImageButton sendNotificationButton;
@@ -105,7 +111,6 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
             heading.setPadding(0,0,0,5);
             content = (TextView) view.findViewById(R.id.menu);
             card = (CardView) view.findViewById(R.id.card);
-            card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
             if(newsletterAdapterInterface != null){
                 editButton = (ImageButton) view.findViewById(R.id.edit_image_button);
                 deleteButton = (ImageButton) view.findViewById(R.id.delete_image_button);
@@ -119,12 +124,28 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         public void bind(final firstActivity.NewsletterData data){
             heading.setText(data.getHeading());
             content.setText(data.getContent());
+            url_text = data.getKey();
+            Log.d("url is ::: ",url_text);
             content.setTextSize(17);
             heading.setTextSize(24);
             Typeface custom_font7 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Biko_Regular.otf");
             heading.setTypeface(custom_font7);
             content.setTypeface(custom_font7);
             card.setCardBackgroundColor(Color.parseColor("#E8FAEF"));
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try{
+                    if(!url_text.equals("-")){
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url_text));
+                    mContext.startActivity(i);}}
+                    catch (Exception e)
+                    {
+                     //   Log.d(TAG,url_text);
+                    }
+                }
+            });
            // card.setCardBackgroundColor(R.drawable.card_background);
             if(newsletterAdapterInterface != null){
                 editButton.setOnClickListener(new View.OnClickListener() {

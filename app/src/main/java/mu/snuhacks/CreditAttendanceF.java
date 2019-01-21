@@ -221,6 +221,10 @@ public class CreditAttendanceF extends Fragment {
 
         @Override
         protected AttendanceResponse doInBackground(String... credentials) {
+                 total_credit =0.0;
+                 total = 0.0;
+                 displayed = 0.0;
+
                 Log.d(TAG, "doInBackground() executing");
                 ArrayList<Object> ccattendanceData = new ArrayList<Object>();
                 try{

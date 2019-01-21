@@ -47,6 +47,8 @@ public class About extends AppCompatActivity {
         about_main.setTypeface(custom_font); */
      setupBottomNavigationView();
        muditbutton = findViewById(R.id.mudit_text);
+       tarinibutton = findViewById(R.id.tarini_text);
+       shashvatbutton = findViewById(R.id.kedia_text);
        haributton = findViewById(R.id.hari_text);
        muditbutton.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -55,6 +57,20 @@ public class About extends AppCompatActivity {
                getApplicationContext().startActivity(intent);
            }
        });
+        shashvatbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),diagonal_layout_kedia.class);
+                getApplicationContext().startActivity(intent);
+            }
+        });
+        tarinibutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),tarini_diagonal_layout.class);
+                getApplicationContext().startActivity(intent);
+            }
+        });
         haributton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -32,9 +32,6 @@
             android:name=".About"
             android:label="SnuHacks" />
         <activity
-            android:name=".Attendance"
-            android:label="SnuHacks" />
-        <activity
             android:name=".DataUsage"
             android:label="SnuHacks" />
         <activity
@@ -48,6 +45,12 @@
             android:label="SnuHacks" />
         <activity
             android:name=".diagonal_layout_mudit"
+            android:label="SnuHacks" />
+        <activity
+            android:name=".diagonal_layout_kedia"
+            android:label="SnuHacks" />
+        <activity
+            android:name=".tarini_diagonal_layout"
             android:label="SnuHacks" />
         <activity android:name=".add_data_activity"
             android:label="SnuHacks"/>

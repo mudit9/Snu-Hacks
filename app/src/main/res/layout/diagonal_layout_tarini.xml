@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="#222"
     >
 
     <com.github.florent37.diagonallayout.DiagonalLayout
@@ -25,14 +25,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/acm"
+            android:src="@drawable/tarini_cover"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mudit Saxena"
-            android:textColor="@android:color/white"
+            android:text="Tarini Anchan"
+            android:textColor="@android:color/black"
             android:layout_gravity="top|left"
             android:fontFamily="sans-serif-light"
             android:layout_marginLeft="30dp"
@@ -52,37 +52,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Developer"
-                android:textColor="@android:color/white"
+                android:text="Co-founder of 1,000 Acts Of Kindness"
+                android:textColor="@android:color/black"
                 android:layout_gravity="top|left"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-condensed"
                 android:textSize="14sp"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Footballer"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:layout_gravity="top|left"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gamer"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:layout_gravity="top|left"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                />
         </LinearLayout>
 
     </com.github.florent37.diagonallayout.DiagonalLayout>
@@ -95,7 +72,7 @@
         android:layout_marginTop="190dp"
         android:elevation="15dp"
         android:background="@drawable/diagonallayout_circle"
-        android:src="@drawable/mudit"/>
+        android:src="@drawable/tarini"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,31 +96,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/diagonalLayout"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:layout_marginTop="20sp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/website"
-                android:text="Visit webiste!"
-                android:textColor="#000"
+                android:id="@+id/IG1"
+                android:layout_marginTop="30dp"
+                android:text="1000 Acts Of Kindness!"
+                android:textColor="#FFF"
+                android:visibility="gone"
                 android:gravity="center"
                 android:fontFamily="sans-serif-condensed"
                 android:layout_marginLeft="10dp"
                 android:shadowColor="@color/black"
-                android:textSize="13dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/IG"
-                android:text="1000 Acts Of Kindness!"
-                android:textColor="#000"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_marginLeft="10dp"
-                android:shadowColor="@color/black"
-                android:textSize="13dp"/>
+                android:textSize="22dp"/>
 
 
         </LinearLayout>
@@ -155,12 +124,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="320dp"
         android:layout_marginLeft="30dp"
+        android:id="@+id/IG"
         android:gravity="center"
         android:layout_marginRight="30dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30sp"
-        android:visibility="gone"
-        android:text="hi my name is mudit saxena :) "/>
+        android:text="1000 Acts Of Kindness "/>
 
 
     <android.support.v7.widget.Toolbar

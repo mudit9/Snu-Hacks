@@ -31,8 +31,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.florent37.diagonallayout.DiagonalLayout;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,7 +73,6 @@ public class firstActivity extends AppCompatActivity {
     TextView Superheading;
     public int ACTIVITY_NUM = 2;
     ScrollView scrollview_news;
-    private InterstitialAd mInterstitialAd;
     DiagonalLayout diaongal;
     LinearLayout linear_news;
     FrameLayout card1;
@@ -119,9 +116,9 @@ public class firstActivity extends AppCompatActivity {
         //       password = extras.getString("password");
         //   }
         setupBottomNavigationView();
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+      //  mInterstitialAd = new InterstitialAd(this);
+      //  mInterstitialAd.setAdUnitId("ca-app-pub-2461190858191596/4980119936");
+       // mInterstitialAd.loadAd(new AdRequest.Builder().build());
         //  FancyButton messMenu1 = (FancyButton) findViewById(R.id.messMenuButton);
         head = findViewById(R.id.heading);
         logoutButton = findViewById(R.id.logout_button);
@@ -473,10 +470,12 @@ public class firstActivity extends AppCompatActivity {
             this.heading = heading;
         }
 
+        public void setLink(String link){
+            this.link = link;
+        }
+
         public void setContent(String content){
             this.content = content;
-        }{
-            this.link = link;
         }
 
         public void setLink(String link){

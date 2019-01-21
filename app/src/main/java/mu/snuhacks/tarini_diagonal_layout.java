@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-public class diagonal_layout_mudit extends AppCompatActivity {
+public class tarini_diagonal_layout extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView website;
@@ -17,19 +17,9 @@ public class diagonal_layout_mudit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.diagonal_layout_mudit);
-        website = findViewById(R.id.website);
+        setContentView(R.layout.diagonal_layout_tarini);
         ig = findViewById(R.id.IG);
-        website.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "https://mudit9.github.io";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
 
-            }
-        });
         ig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

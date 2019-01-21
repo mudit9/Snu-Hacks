@@ -54,8 +54,8 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
 
     public void setAttendanceData(ArrayList<Object> attendanceData){
         Log.e(TAG,attendanceData.toString());
-        this.attendanceData.clear();
-        this.attendanceData.addAll(attendanceData);
+       // this.attendanceData.clear();
+       // this.attendanceData.addAll(attendanceData);
         notifyDataSetChanged();
     }
 
@@ -88,7 +88,7 @@ public class AttendanceAdapterCC extends RecyclerView.Adapter<AttendanceAdapterC
             DisplayMetrics displayMetrics =Context.getResources().getDisplayMetrics();
             int height = displayMetrics.heightPixels;
             int width = displayMetrics.widthPixels;
-            courseName.setTextSize(height/119);
+            courseName.setTextSize(height/125);
             try{
                     attendance = Float.parseFloat(((AttendanceDataCC) data).getAttendance());
                 } catch(Exception exception){
