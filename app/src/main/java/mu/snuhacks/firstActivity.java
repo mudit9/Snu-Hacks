@@ -250,7 +250,9 @@ public class firstActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     Log.e(TAG,dataSnapshot.getValue(String.class));
                     superUsers.add(dataSnapshot.getValue(String.class));
-                    showConfigOption();
+                    if(username.equals(dataSnapshot.getValue(String.class))) {
+                        showConfigOption();
+                    }
                 }
             }
 
