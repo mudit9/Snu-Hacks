@@ -99,6 +99,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 details_here = ((AttendanceData) data).getAllDetails();
             } else{
                 courseName.setText(((AttendanceDataCC) data).getCourseName());
+
                 try{
                     String subs = ((AttendanceDataCC) data).getAttendance().trim().substring(0,((AttendanceDataCC) data).getAttendance().indexOf('%'));
                     attendance = Float.parseFloat(subs);

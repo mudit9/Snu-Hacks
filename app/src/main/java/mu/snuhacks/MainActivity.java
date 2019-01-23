@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                    .url("https://hms.webapps.snu.edu.in/hostel/public/snuhostel/hostel/registerroom")
                  .post(requestBody)
                   .build();
-        Log.d("a",request.toString());
+       // Log.d("a",request.toString());
 
 
         Call call = client.newCall(request);
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Response response) throws IOException {
-                    System.out.println(response.toString());
+                   // System.out.println(response.toString());
                     /**
                      * The student details website uses class "label label-danger"
                      * to show error in authentication. If this class is refereed
@@ -194,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
                     Document doc = html.parse();
                     Elements a = doc.getElementsByClass("glyphicon glyphicon-user");
                     Elements b =  doc.getElementsByClass("pull-right");
-                    Log.d("a",doc.toString());
-                    Log.d("aaa",a.toString());
+                //    Log.d("a",doc.toString());
+                //    Log.d("aaa",a.toString());
                     Log.d("AAAA",b.text());
                     String name2 = b.text();
                     String an = name2.replaceAll("Welcome", "");
@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+                    Log.d(TAG + "AAAAA",name2);
                     nam2 = name2.substring(8, name2.length()-9);
                     name2 = nam2.trim();
                     Log.d("name",nam2);
