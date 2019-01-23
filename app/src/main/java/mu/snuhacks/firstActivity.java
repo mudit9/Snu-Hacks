@@ -31,11 +31,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.florent37.diagonallayout.DiagonalLayout;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
@@ -103,13 +108,12 @@ public class firstActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences prefs = getSharedPreferences("MyPref", 0);
+        final SharedPreferences prefs = getSharedPreferences("MyPref", 0);
         username = prefs.getString("username","");
         password = prefs.getString("password","");
         name = prefs.getString("name","");
         DataUsageLast = prefs.getString("data_usage","-");
         totalAttendance = prefs.getString("total","-");
-
         setContentView(R.layout.firstscreen_test);
         //   if (extras != null) {
         //      username = extras.getString("username");
@@ -241,6 +245,44 @@ public class firstActivity extends AppCompatActivity {
         superuserReference = firebaseDatabase.getReference("/config_data/superuser/");
         childEventListener = getValueEventListener();
         superuserChildEventListener = getSuperUserChildEventListener();
+        if(prefs.getString("fcm_key","").length() == 0){
+            final DatabaseReference ref = firebaseDatabase.getReference("/data/fcm_tokens/").push();
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("fcm_key",ref.getKey());
+                    editor.putString("fcm_token",instanceIdResult.getToken());
+                    editor.apply();
+                    DatabaseReference reference = firebaseDatabase.getReference("/data/fcm_tokens/" + ref.getKey());
+                    reference.setValue(instanceIdResult.getToken()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG,"FCM token stored in DB");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        else{
+            if(prefs.getBoolean("name_saved",false)) {
+                Log.d(TAG, "FCM token already saved in DB");
+                DatabaseReference reference = firebaseDatabase.getReference("/data/fcm/user/" + prefs.getString("fcm_key", ""));
+                reference.setValue(username).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putBoolean("name_saved", true);
+                            editor.apply();
+                            Log.d(TAG, "Name saved in DB");
+                        }
+                    }
+                });
+            }
+        }
     }
 
     private ChildEventListener getSuperUserChildEventListener(){

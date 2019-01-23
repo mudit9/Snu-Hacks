@@ -95,7 +95,7 @@ public class NewsletterMessagingService extends FirebaseMessagingService {
         editor.putString("fcm_token",s);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         if(key.length() == 0) {
-            DatabaseReference reference = database.getReference("/fcmTokens").push();
+            DatabaseReference reference = database.getReference("/data/fcm_tokens/").push();
             editor.putString("fcm_key", reference.getKey());
             key = reference.getKey();
         }
