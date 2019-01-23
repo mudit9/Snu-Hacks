@@ -136,7 +136,7 @@ public class AttendanceActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new CreditAttendanceF(), "Credit Hours");
-        adapter.addFragment(new AttendanceF(), "Check");
+        adapter.addFragment(new AttendanceF(), "Normal");
         adapter.addFragment(new MarkAttendanceF(), "Mark");
         viewPager.setAdapter(adapter);
     }

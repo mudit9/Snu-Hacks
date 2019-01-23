@@ -1,16 +1,19 @@
 package mu.snuhacks;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -79,21 +82,11 @@ public class AttendanceF extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        Log.d(TAG,"onResume() called");
-        checkAndModifyWifiState();
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                Log.d("isconnected", String.valueOf(isConnected));
-                    if(isConnected == true){
+            //    swipeRefreshLayout.setRefreshing(true);
                 onRefreshListener.onRefresh();
-                if(emptyTextView.getVisibility()==View.VISIBLE)
-                    emptyTextView.setVisibility(View.GONE);
-                }
-                else {emptyTextView.setVisibility(View.VISIBLE);
-                       swipeRefreshLayout.setRefreshing(false);
-                    }
             }
         });
     }
@@ -114,25 +107,28 @@ public class AttendanceF extends Fragment {
             @Override
             public void onRefresh() {
                 Log.d(TAG,"onRefresh() called");
-                swipeRefreshLayout.setRefreshing(true);
+              //  swipeRefreshLayout.setRefreshing(true);
                 Log.d("isconnected", String.valueOf(isConnected));
+                FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
+                fetchAttendanceTask3.execute(new String[]{netId,password});
                 checkAndModifyWifiState();
-                if(isConnected == true){
+              //  checkAndModifyWifiState();
+            /*    if(isConnected == true){
                     if(emptyTextView.getVisibility()==View.VISIBLE)
                         emptyTextView.setVisibility(View.GONE);
-                    FetchAttendanceTask fetchAttendanceTask3 = new FetchAttendanceTask();
+                    fetchAttendanceTask3 = new FetchAttendanceTask();
                     fetchAttendanceTask3.execute(new String[]{netId,password});
                 }
                 else {emptyTextView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
-                }
+                } */
             }
         };
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
         String attendace = sharedPreferences.getString("attendance","");
         if(attendace.length() == 0){
-            emptyTextView.setVisibility(View.VISIBLE);
-            attendanceView.setVisibility(View.GONE);
+       //     emptyTextView.setVisibility(View.VISIBLE);
+         //   attendanceView.setVisibility(View.GONE);
             Log.d(TAG,"Executing hereaa");
 
         } else{
@@ -159,33 +155,88 @@ public class AttendanceF extends Fragment {
 
     private void checkAndModifyWifiState(){
         Log.d(TAG,"checkModifyState() executing");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
         Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
         if(mWifiManager != null && !isConnected){
             Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
             if(!mWifiManager.isWifiEnabled()){
                 Log.d(TAG,"Wifi enabled");
-                mWifiManager.setWifiEnabled(true);
+                builder.setTitle("Switch on Wifi?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, int which) {
+                        mWifiManager.disconnect();
+                        Log.d(TAG,"Trying");
+                        mWifiManager.setWifiEnabled(true);
+                        if("".equals(mWifiManager.getConnectionInfo().getSSID())){
+                            isConnected = true;
+                        }
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onResume();
+                            }
+                        }, 7000);
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG,"Wifi off");
+                        isConnected = false;
+                        mWifiManager = null;
+                        Log.d(TAG,"mWifiManager null");
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog deleteDialog = builder.create();
+                deleteDialog.show();
             }
-            if(mWifiManager.getConnectionInfo().getSSID().equals("\"Student\"")){
+            if(mWifiManager.getConnectionInfo().getSSID().equals("\"Student\"")||mWifiManager.getConnectionInfo().getSSID().equals("<unknown ssid>")){
                 Log.d("Wifi name here: ",mWifiManager.getConnectionInfo().getSSID());
                 isConnected = true;
             } else {
                 List<WifiConfiguration> wifiConfigurations = mWifiManager.getConfiguredNetworks();
-                for (WifiConfiguration configuration : wifiConfigurations) {
+                for (final WifiConfiguration configuration : wifiConfigurations) {
                     if (configuration.SSID.equals("Student")) {
+                        builder.setTitle("Connect to Student Wifi?");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int which) {
+                                mWifiManager.disconnect();
+                                mWifiManager.enableNetwork(configuration.networkId,true);
+                                Log.d(TAG,"Trying");
+                                isConnected = mWifiManager.reconnect();
+                                dialog.dismiss();
+                            }
+
+
+                        });
+
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG,"Deletion cancelled");
+                                isConnected = false;
+                                Log.d(TAG,"mWifiManager null");
+                                dialog.dismiss();
+                            }
+                        });
                         mWifiManager.disconnect();
                         mWifiManager.enableNetwork(configuration.networkId,true);
                         Log.d(TAG,"Trying");
                         isConnected = mWifiManager.reconnect();
+                        AlertDialog deleteDialog = builder.create();
+                        deleteDialog.show();
+
                     }
                 }
             }
         } else{
-            if(isConnected == true)
-                isConnected = true;
-            else{
-                isConnected = false;
-                Log.d(TAG,"mWifiManager null");}
+            isConnected = false;
+            Log.d(TAG,"mWifiManager null");
         }
     }
 
@@ -203,12 +254,14 @@ public class AttendanceF extends Fragment {
             if(!swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(true);
             }
+            if(emptyTextView.getVisibility()==View.VISIBLE){
+                emptyTextView.setVisibility(View.GONE);
+            }
         }
 
 
         @Override
         protected AttendanceResponse doInBackground(String... credentials) {
-            if(isConnected) {
                 Log.d(TAG, "doInBackground() executing");
                 ArrayList<Object> attendanceData = new ArrayList<Object>();
                 try{
@@ -264,15 +317,18 @@ public class AttendanceF extends Fragment {
 
                             }
                         } catch (Exception exception) {
-                            Log.d(TAG, "Exception:- " + exception.getMessage());
+                            Log.d(TAG, "Exception2:- " + exception.getMessage());
                         }
                     }
                 } catch(Exception exception){
-                    Log.d(TAG,"Exception:- " + exception.getMessage());
+                    Log.d(TAG,"Exception1:- " + exception.getMessage());
+                    if(exception.getMessage().equals("Failed to connect to markattendance.webapps.snu.edu.in/10.2.34.4:443")){
+                        return new AttendanceResponse(null,"Not connected to Student Wifi");
+
+                    }
                 }
-                return new AttendanceResponse(attendanceData,"");
-            }
-            return new AttendanceResponse(null,"Not connected to Student Wifi");
+
+              return new AttendanceResponse(attendanceData,"");
         }
 
         @Override
@@ -282,6 +338,7 @@ public class AttendanceF extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
             if(response.getErrorMessage().length() != 0){
+                Log.d("response.erorr",response.getErrorMessage());
                 Snackbar.make(constraintLayout,response.getErrorMessage(),Snackbar.LENGTH_SHORT);
                 try{
                     emptyTextView.setVisibility(View.VISIBLE);
@@ -295,6 +352,7 @@ public class AttendanceF extends Fragment {
                     startActivity(loginIntent);
                 }
             } else {
+                Log.d(TAG,"onPostExecute() executing..");
                 if(response.getAttendanceData().size() > 0) {
                     try {
                         prefs = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);

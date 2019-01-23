@@ -124,8 +124,11 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
         public void bind(final firstActivity.NewsletterData data){
             heading.setText(data.getHeading());
             content.setText(data.getContent());
-            url_text = data.getKey();
-            Log.d("url is ::: ",url_text);
+            url_text = data.getLink();
+            try{
+            Log.d("url is ::: ",url_text);}
+            catch (Exception e){
+            }
             content.setTextSize(17);
             heading.setTextSize(24);
             Typeface custom_font7 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Biko_Regular.otf");
@@ -139,14 +142,14 @@ public class NewsletterAdapter extends RecyclerView.Adapter<NewsletterAdapter.Vi
                     if(!url_text.equals("-")){
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url_text));
-                    mContext.startActivity(i);}}
+                        Log.d("url is ::: ",url_text);
+                        mContext.startActivity(i);}}
                     catch (Exception e)
                     {
                      //   Log.d(TAG,url_text);
                     }
                 }
             });
-           // card.setCardBackgroundColor(R.drawable.card_background);
             if(newsletterAdapterInterface != null){
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override

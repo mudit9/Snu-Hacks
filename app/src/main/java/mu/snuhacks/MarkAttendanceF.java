@@ -57,7 +57,7 @@ public class MarkAttendanceF extends Fragment {
 
     private ArrayList<Object> attendanceData;
     private String netId;
-    private boolean flag;
+    private int flag;
     private String password;
     private View view1;
     private Depth depth;
@@ -232,17 +232,18 @@ public class MarkAttendanceF extends Fragment {
                     Element alert = doc.getElementsByClass("alert alert-warning alert-dismissible").first();
                     Element success = doc.getElementsByClass("alert alert-success alert-dismissible").first();
                     if(alert!=null)
-                    {flag = true;
-                        htmlContentInStringFormat ="<br> <br> <font color = #ff0000>" + alert.text() + "</font>";}
+                    {flag = 1;
+                        htmlContentInStringFormat ="<br> <br> <font color = #ff0000>" + alert.text() + "</font> <br> Swipe down to refresh!";}
                     else if(success!=null) {
-                        flag = false;
+                        flag = 0;
                         htmlContentInStringFormat = "<br> <br> <font color = #13c000>" + success.text() + "</font>";
                     }
                     else
                         htmlContentInStringFormat = "Failed.";
                 }
                 catch (IOException e) {
-                    htmlContentInStringFormat = "Probably not connected to Student Wifi.";
+                    htmlContentInStringFormat = "Probably not connected to Student Wifi. \n Swipe down to refresh!";
+                    flag = 2;
                 }
 
             Log.d("HtmL",htmlContentInStringFormat);
@@ -257,17 +258,26 @@ public class MarkAttendanceF extends Fragment {
             if (swipeRefreshLayout1.isRefreshing()) {
                 swipeRefreshLayout1.setRefreshing(false);
             }
-            emptyTextView1.setVisibility(View.VISIBLE);
-            emptyTextView1.setText(Html.fromHtml(htmlContentInStringFormat));
-            if (flag == true) {
-                ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
 
+
+            if (flag == 1) {
+                ((AttendanceActivity) getActivity()).openResetFragment(MarkAttendanceF.this);
+                emptyTextView1.setText(Html.fromHtml(htmlContentInStringFormat));
                 buttonview.setColorFilter(getContext().getResources().getColor(R.color.red));
                 buttonview.setVisibility(View.VISIBLE);
             }
 
-            else
+            else if(flag ==0)
                 ((AttendanceActivity) getActivity()).changeFragment(MarkAttendanceF.this);
+            else if(flag ==2){
+                emptyTextView1.setText(Html.fromHtml(htmlContentInStringFormat));
+                emptyTextView1.setVisibility(View.VISIBLE);
+            }
+            else{
+                emptyTextView1.setVisibility(View.VISIBLE);
+                emptyTextView1.setText("Something went wrong.");
+            }
+
 
 
         }
