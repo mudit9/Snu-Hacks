@@ -81,6 +81,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
         public void bind(Object data){
             float attendance = 0.0f;
+            Log.d(TAG,"happing1");
             ArrayList<String> details_here;
             if(data instanceof AttendanceData){
                 courseName.setText(((AttendanceData) data).getCourseName());

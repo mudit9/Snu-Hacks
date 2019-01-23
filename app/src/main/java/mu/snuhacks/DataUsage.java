@@ -108,13 +108,13 @@ public class DataUsage extends AppCompatActivity {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
                 JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
+                jsoupAsyncTask.execute();
 
                 Log.d(TAG,"onRefresh() called");
 
                 checkAndModifyWifiState();
                 if(isConnected == true){
 
-                    jsoupAsyncTask.execute();
                 }
                 else {emptyTextView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
@@ -124,17 +124,6 @@ public class DataUsage extends AppCompatActivity {
         };
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 
-       data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               if (mInterstitialAd.isLoaded()) {
-                   mInterstitialAd.show();
-                } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
-                }
-
-            }
-        });
         data.setVisibility(View.GONE);
     }
     @Override
@@ -159,7 +148,7 @@ public class DataUsage extends AppCompatActivity {
             Log.d("Wifi name: ",mWifiManager.getConnectionInfo().getSSID());
             if(!mWifiManager.isWifiEnabled()){
                 Log.d(TAG,"Wifi enabled");
-                builder.setTitle("Connect to Student Wifi?");
+                builder.setTitle("Switch on Wifi?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, int which) {
                         mWifiManager.disconnect();
