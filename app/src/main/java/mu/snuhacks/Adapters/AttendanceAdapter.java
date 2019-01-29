@@ -51,7 +51,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return attendanceData.size();
+        if(attendanceData != null) {
+            return attendanceData.size();
+        }
+        return 0;
     }
 
     public void setAttendanceData(ArrayList<Object> attendanceData){
